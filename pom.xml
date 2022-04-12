@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>guc.bttsBtngan</groupId>
+  <artifactId>the-gaming-platform</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>The Gaming Platform</name>
+    <modules>
+   	<module>chat-service</module>
+   	<module>user-service</module>
+   	<module>post-service</module>
+   	<module>notification-ms</module>
+   	<module>authentication-service</module>
+    </modules>
+  <properties>
+  <java.version>1.8</java.version>
+  </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.5.7</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+           </dependencies>
+      </dependencyManagement>
+      
+      <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+      </dependencies>
+      
+    <build>
+     <pluginManagement>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    </plugins>
+    </pluginManagement>
+</build>
+
+</project>
