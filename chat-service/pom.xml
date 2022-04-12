@@ -7,4 +7,14 @@
   </parent>
   <artifactId>chat-service</artifactId>
   <name>Chat Service</name>
+  
+  <dependencies>
+  <dependency>
+  <groupId>com.google.firebase</groupId>
+  <artifactId>firebase-admin</artifactId>
+  <version>8.1.0</version>
+</dependency>
+     
+  </dependencies>
+  
 </project>
