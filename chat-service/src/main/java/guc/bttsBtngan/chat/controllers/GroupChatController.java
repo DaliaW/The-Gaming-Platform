@@ -24,8 +24,17 @@ public class GroupChatController {
 	}
 	
 	@PostMapping("/groups/admin")
-	public String changeAdmin(@RequestBody() HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String changeAdmin(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
 		return service.changeAdmin((String)body.get("user_id"), (String)body.get("admin_id"), (String)body.get("group_id"));
 	}
-
+	
+	@PostMapping("/groups/join")
+	public String joinGroup(@RequestBody HashMap<String, Object> body) {
+		return service.joinGroup((String)body.get("user_id"), (String)body.get("group_id"));
+	}
+	
+	@PostMapping("/groups/message")
+	public String sendGroupMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+		return service.sendGroupMessage((String) body.get("user_id"), (String) body.get("group_id"), (String) body.get("content"));
+	}
 }

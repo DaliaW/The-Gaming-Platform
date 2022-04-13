@@ -10,8 +10,7 @@ public class GroupChat {
 	
 	public GroupChat() {}
 	
-	public GroupChat(String document_id, String name, String admin_id, List<String> participants,
-			List<Message> messages) {
+	public GroupChat(String document_id, String name, String admin_id, List<String> participants) {
 		super();
 		this.name = name;
 		this.admin_id = admin_id;
