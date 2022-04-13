@@ -6,15 +6,13 @@ public class PrivateChat {
 
 	private String user_1;
 	private String user_2;
-	private List<Message> messages;
 	
 	public PrivateChat() {}
 	
-	public PrivateChat(String user_1, String user_2, List<Message> messages) {
+	public PrivateChat(String user_1, String user_2) {
 		super();
 		this.user_1 = user_1;
 		this.user_2 = user_2;
-		this.messages = messages;
 	}
 
 	public String getUser_1() {
@@ -29,15 +27,9 @@ public class PrivateChat {
 	public void setUser_2(String user_2) {
 		this.user_2 = user_2;
 	}
-	public List<Message> getMessages() {
-		return messages;
-	}
-	public void setMessages(List<Message> messages) {
-		this.messages = messages;
-	}
 
 	@Override
 	public String toString() {
-		return "PrivateChat [user_1=" + user_1 + ", user_2=" + user_2 + ", messages=" + messages + "]";
+		return "PrivateChat [user_1=" + user_1 + ", user_2=" + user_2 + "]";
 	}
 }
