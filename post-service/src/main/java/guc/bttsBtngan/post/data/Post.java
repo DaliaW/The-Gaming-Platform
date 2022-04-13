@@ -86,17 +86,17 @@ public class Post {
 	
 	private class PostReports{
 		private String userId;
-		private boolean comment;
+		private String comment;
 		public String getUserId() {
 			return userId;
 		}
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
-		public boolean isComment() {
+		public String isComment() {
 			return comment;
 		}
-		public void setComment(boolean comment) {
+		public void setComment(String comment) {
 			this.comment = comment;
 		}
 		

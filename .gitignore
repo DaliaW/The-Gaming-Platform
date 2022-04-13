@@ -236,3 +236,5 @@ config.json
 
 # Exception for class files as resources
 !**/resources/**/*.class
+.idea/vcs.xml
+.idea/runConfigurations.xml
