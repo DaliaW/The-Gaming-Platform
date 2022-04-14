@@ -1,2 +1,7 @@
 server:
   port: 4000
+  
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://Omar:KYCcRa1SwN5stM0n@cluster0.yuezt.mongodb.net/PostMS?retryWrites=true&w=majority
