@@ -19,7 +19,7 @@ public class PostController {
         this.service=service;
     }
 
-    @GetMapping
+    @PostMapping
     public String createPost() throws InterruptedException, ExecutionException {
         return service.createPost();
     }

@@ -1,7 +1,11 @@
 package guc.bttsBtngan.post.data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+
+@Document
 public class Post {
 	private String userId;
 	private String content;
