@@ -20,7 +20,8 @@ public class PostController {
     }
 
     @PostMapping
-    public String createPost() throws InterruptedException, ExecutionException {
-        return service.createPost();
+    public String createPost(@RequestBody Post post) throws InterruptedException, ExecutionException {
+        post.setModeratorId("3amo moderator");
+        return service.createPost(post);
     }
 }

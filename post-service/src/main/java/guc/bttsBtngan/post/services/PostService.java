@@ -17,12 +17,7 @@ public class PostService {
     @Autowired
     MongoOperations mongoOperations;
 
-    public String createPost() throws InterruptedException, ExecutionException {
-        Post post = new Post();
-        post.setContent("btats potatoeeesss");
-        post.setUserId("id gamed");
-        post.setModeratorId("3amo moderator");
-
+    public String createPost(Post post) throws InterruptedException, ExecutionException {
         mongoOperations.save(post);
         return "DONE, created post is: "+(post).toString();
     }
