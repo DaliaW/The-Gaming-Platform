@@ -33,7 +33,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public DAOUser save(UserDTO user) throws IllegalAccessException,InstantiationException{
         DAOUser newUser = DAOUser.class.newInstance();
         newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
         return userRespository.save(newUser);
     }
 }
