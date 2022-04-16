@@ -1,2 +1,7 @@
 server:
   port: 5000
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://Dalia:hgdw-09123@cluster0.wtjb5.mongodb.net/userMS?retryWrites=true&w=majority
