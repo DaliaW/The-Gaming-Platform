@@ -11,4 +11,8 @@ public class UserPostService {
     @Autowired
     MongoOperations mongoOperations; // this variable contains the mongoDB operations including CRUD operations
 
+    public String getAllFollowers() {
+        //TODO: this method will return all followers of the current user
+        return "";
+    }
 }

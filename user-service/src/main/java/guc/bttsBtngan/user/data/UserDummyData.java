@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 @Configuration
 public class UserDummyData {
-
+    // inserted to postgres
     @Bean
     CommandLineRunner commandLineRunner(UserRepository repository) {
         return args -> {
