@@ -69,6 +69,22 @@ public class Post {
 		this.moderatorId = moderatorId;
 	}
 	
+	public ArrayList<String> getPostTags() {
+		return postTags;
+	}
+
+	public void setPostTags(ArrayList<String> postTags) {
+		this.postTags = postTags;
+	}
+
+	public ArrayList<String> getPostFollowers() {
+		return postFollowers;
+	}
+
+	public void setPostFollowers(ArrayList<String> postFollowers) {
+		this.postFollowers = postFollowers;
+	}
+
 	private class PostVotes{
 		private String voterId;
 		private boolean upVote;
