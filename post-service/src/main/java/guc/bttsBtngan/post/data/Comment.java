@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Comment {
 	private String content;
 	private String commenterId;
-	private CommentVotes commentVotes;
+	private ArrayList<CommentVotes> commentVotes;
 	private ArrayList<String> commentTags;
 	
 	
 	public Comment() {}
 	
-	public Comment(String content, String commenterId, CommentVotes commentVotes, ArrayList<String> commentTags) {
+	public Comment(String content, String commenterId) {
 		super();
 		this.content = content;
 		this.commenterId = commenterId;
-		this.commentVotes = commentVotes;
-		this.commentTags = commentTags;
+		this.commentVotes = new ArrayList<CommentVotes>();
+		this.commentTags = new ArrayList<String>();
 	}
 
 	
@@ -37,11 +37,11 @@ public class Comment {
 		this.commenterId = commenterId;
 	}
 
-	public CommentVotes getCommentVotes() {
+	public ArrayList<CommentVotes> getCommentVotes() {
 		return commentVotes;
 	}
 
-	public void setCommentVotes(CommentVotes commentVotes) {
+	public void setCommentVotes(ArrayList<CommentVotes> commentVotes) {
 		this.commentVotes = commentVotes;
 	}
 
