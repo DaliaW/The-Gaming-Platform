@@ -115,7 +115,7 @@ public class Post {
 		this.postFollowers = postFollowers;
 	}
 
-	private class PostVote{
+	public static class PostVote{
 		private String voterId;
 		private boolean upVote;
 		
@@ -140,7 +140,7 @@ public class Post {
 		
 	}
 	
-	private class PostReport{
+	public static class PostReport{
 		private String userId;
 		private String comment;
 		

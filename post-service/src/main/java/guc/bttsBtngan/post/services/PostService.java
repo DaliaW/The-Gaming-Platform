@@ -37,4 +37,19 @@ public class PostService {
     	return "DONE, Potatoes follow post : "+(post).toString();
     	
     }
+    
+    public String reportPost(String userId, String postId, String reportComment)throws InterruptedException, ExecutionException {
+    	Query query = new Query();
+    	query.addCriteria(Criteria.where("_id").is(postId));
+    	Post post = mongoOperations.findById(query, Post.class, "post");  	
+    	
+    	Post.PostReport postReport = new Post.PostReport(userId, reportComment);
+    	    	
+    	post.getPostReports().add(postReport);
+    	
+    	mongoOperations.save(post);
+    	
+    	return "DONE, Potatoes report post : "+(post).toString();
+    	
+    }
 }

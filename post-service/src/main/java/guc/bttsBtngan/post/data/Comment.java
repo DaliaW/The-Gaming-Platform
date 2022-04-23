@@ -55,7 +55,7 @@ public class Comment {
 
 
 
-	private class CommentVote{
+	public static class CommentVote{
 		private String voterId;
 		private boolean upVote;
 		

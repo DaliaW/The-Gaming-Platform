@@ -24,4 +24,6 @@ public class PostController {
         post.setModeratorId("3amo moderator");
         return service.createPost(post);
     }
+    
+    
 }
