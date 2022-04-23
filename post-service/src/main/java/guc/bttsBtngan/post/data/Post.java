@@ -25,6 +25,8 @@ public class Post {
 		this.photoRef = photoRef;
 		this.date = date;
 		this.moderatorId = moderatorId;
+		this.postTags = new ArrayList<String>();
+		this.postFollowers = new ArrayList<String>();
 	}
 
 	public String getUserId() {
@@ -97,7 +99,7 @@ public class Post {
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
-		public String isComment() {
+		public String getComment() {
 			return comment;
 		}
 		public void setComment(String comment) {
