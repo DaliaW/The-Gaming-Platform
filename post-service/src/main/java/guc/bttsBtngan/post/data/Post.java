@@ -12,6 +12,9 @@ public class Post {
 	private String photoRef;
 	private Timestamp date;
 	private String moderatorId;
+	private ArrayList<Comment> comments;
+	private ArrayList<PostVote> postVotes;
+	private ArrayList<PostReport> postReports;
 	private ArrayList<String> postTags;
 	private ArrayList<String> postFollowers;
 	
@@ -25,8 +28,35 @@ public class Post {
 		this.photoRef = photoRef;
 		this.date = date;
 		this.moderatorId = moderatorId;
+		this.comments = new ArrayList<Comment>();
+		this.postVotes = new ArrayList<PostVote>();
+		this.postReports = new ArrayList<PostReport>();
 		this.postTags = new ArrayList<String>();
 		this.postFollowers = new ArrayList<String>();
+	}
+
+	public ArrayList<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public ArrayList<PostVote> getPostVotes() {
+		return postVotes;
+	}
+
+	public void setPostVotes(ArrayList<PostVote> postVotes) {
+		this.postVotes = postVotes;
+	}
+
+	public ArrayList<PostReport> getPostReports() {
+		return postReports;
+	}
+
+	public void setPostReports(ArrayList<PostReport> postReports) {
+		this.postReports = postReports;
 	}
 
 	public String getUserId() {
@@ -85,10 +115,14 @@ public class Post {
 		this.postFollowers = postFollowers;
 	}
 
-	private class PostVotes{
+	private class PostVote{
 		private String voterId;
 		private boolean upVote;
 		
+		public PostVote(String voterId, boolean upVote) {
+			this.voterId = voterId;
+			this.upVote = upVote;
+		}
 		
 		public String getVoterId() {
 			return voterId;
@@ -106,9 +140,15 @@ public class Post {
 		
 	}
 	
-	private class PostReports{
+	private class PostReport{
 		private String userId;
 		private String comment;
+		
+		public PostReport(String userId, String comment) {
+			this.userId = userId;
+			this.comment = comment;
+		}
+		
 		public String getUserId() {
 			return userId;
 		}

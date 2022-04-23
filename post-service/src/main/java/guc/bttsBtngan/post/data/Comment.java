@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Comment {
 	private String content;
 	private String commenterId;
-	private ArrayList<CommentVotes> commentVotes;
+	private ArrayList<CommentVote> commentVotes;
 	private ArrayList<String> commentTags;
 	
 	
@@ -15,7 +15,7 @@ public class Comment {
 		super();
 		this.content = content;
 		this.commenterId = commenterId;
-		this.commentVotes = new ArrayList<CommentVotes>();
+		this.commentVotes = new ArrayList<CommentVote>();
 		this.commentTags = new ArrayList<String>();
 	}
 
@@ -37,11 +37,11 @@ public class Comment {
 		this.commenterId = commenterId;
 	}
 
-	public ArrayList<CommentVotes> getCommentVotes() {
+	public ArrayList<CommentVote> getCommentVotes() {
 		return commentVotes;
 	}
 
-	public void setCommentVotes(ArrayList<CommentVotes> commentVotes) {
+	public void setCommentVotes(ArrayList<CommentVote> commentVotes) {
 		this.commentVotes = commentVotes;
 	}
 
@@ -55,10 +55,14 @@ public class Comment {
 
 
 
-	private class CommentVotes{
+	private class CommentVote{
 		private String voterId;
 		private boolean upVote;
 		
+		public CommentVote(String voterId, boolean upVote) {
+			this.voterId = voterId;
+			this.upVote = upVote;
+		}
 		
 		public String getVoterId() {
 			return voterId;
