@@ -25,5 +25,14 @@ public class PostController {
         return service.createPost(post);
     }
     
+    @PostMapping
+    public String followPost(@RequestBody String userId,@RequestBody String postId) throws InterruptedException, ExecutionException {
+        return service.followPost(userId,postId);
+    }
+    
+    @PostMapping
+    public String reportPost(@RequestBody String userId,@RequestBody String postId, @RequestBody String reportComment) throws InterruptedException, ExecutionException {
+        return service.reportPost(userId,postId,reportComment);
+    }
     
 }
