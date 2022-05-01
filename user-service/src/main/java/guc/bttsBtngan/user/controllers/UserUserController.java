@@ -5,6 +5,8 @@ import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "user/user-profile")
 public class UserUserController {
@@ -35,4 +37,16 @@ public class UserUserController {
                            @RequestParam(required = false) String password) {
         userUserService.updateUser(id, username, email, password);
     }
+
+    @GetMapping(path = "{photoRef}")
+    public String getAllPhotos(@PathVariable("photoRef") String photoRef) {
+        return userUserService.getAllphotoRef(photoRef);
+    }
+
+//    @GetMapping("/api/employeeswithvariable/{id}")
+//    @ResponseBody
+//    public String getEmployeesByIdWithVariableName(@PathVariable("id") String employeeId) {
+//        return "ID: " + employeeId;
+//    }
+
 }

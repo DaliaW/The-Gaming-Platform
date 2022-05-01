@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.swing.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
+@Service // to specify that this class is responsible for the business logic
 public class UserUserService {
     // this class will deal with all user-user interaction and database operations in postgres
 
@@ -28,7 +30,7 @@ public class UserUserService {
 
     public void registerUser(UserUserInteraction user) {
         // register a user
-        Optional<UserUserInteraction> email = userRepository.findByEmail(user.getEmail());
+        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
         // check if the email is already registered
         if (email.isPresent()) {
             // if the user email already exists
@@ -64,7 +66,7 @@ public class UserUserService {
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){
-            Optional<UserUserInteraction> emailExists = userRepository.findByEmail(email);
+            Optional<UserUserInteraction> emailExists = userRepository.findByEmail2(email);
             // check if the email is already registered
             if (emailExists.isPresent()) {
                 // if the user email already exists
@@ -79,5 +81,12 @@ public class UserUserService {
             // update the password
             user.setPassword(password);
         }
+    }
+
+    public String getAllphotoRef(String photoRef) {
+        Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
+//        userRepository.findByphotoRef(photoRef);
+        System.out.println(userRepository.findByphotoRef(photoRef).toString());
+        return "";
     }
 }

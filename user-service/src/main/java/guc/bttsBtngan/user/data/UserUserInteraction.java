@@ -2,6 +2,7 @@ package guc.bttsBtngan.user.data;
 
 import javax.persistence.*;
 
+// For postgresql
 @Entity
 @Table
 public class UserUserInteraction {
