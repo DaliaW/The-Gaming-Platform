@@ -14,6 +14,7 @@ import com.google.cloud.firestore.Firestore;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 
 @SpringBootApplication
 public class ChatMain {
@@ -29,6 +30,7 @@ public class ChatMain {
 		    .build();
 		FirebaseApp.initializeApp(options);
 		SpringApplication.run(ChatMain.class, args);
+		FirestoreClient.getFirestore();
 	}
 
 }
