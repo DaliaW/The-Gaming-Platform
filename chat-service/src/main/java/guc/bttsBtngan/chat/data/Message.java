@@ -1,6 +1,6 @@
 package guc.bttsBtngan.chat.data;
 
-import java.sql.Timestamp;
+import com.google.protobuf.Timestamp;
 
 public class Message {
 	
