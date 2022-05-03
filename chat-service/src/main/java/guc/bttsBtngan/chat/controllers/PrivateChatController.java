@@ -48,7 +48,7 @@ public class PrivateChatController {
 	}
 	
 	@GetMapping("/private/{id}")
-	public Map<String, Object> getGroup(@PathVariable String id, @RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public Map<String, Object> getPrivateChat(@PathVariable String id, @RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
 		return service.getPrivateChat((String) body.get("user_id"), id);
 	}
 }
