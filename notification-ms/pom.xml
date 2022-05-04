@@ -7,4 +7,12 @@
   </parent>
   <artifactId>notification-ms</artifactId>
   <name>Notifications Miscroservice</name>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>8.1.0</version>
+    </dependency>
+
+  </dependencies>
 </project>
