@@ -31,6 +31,47 @@ public class NotificationService<retun> {
         return null;
     }
 
+
+    public String updateNotification(String notificationID,Notifications notification){
+
+        Firestore firestoredb= FirestoreClient.getFirestore();
+
+        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(notificationID).set(notification);
+
+        try {
+            return collectionApi.get().getUpdateTime().toString();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String deleteNotification(String notificationID,String userID) throws ExecutionException, InterruptedException {
+        Firestore firestoredb= FirestoreClient.getFirestore();
+        DocumentReference documentReference=firestoredb.collection("notification").document(notificationID);
+        ApiFuture<DocumentSnapshot> future=documentReference.get();
+        DocumentSnapshot document=future.get();
+        Notifications notifications=null;
+        if(document.exists()){
+            notifications=document.toObject(Notifications.class);
+            List<String> oldList=notifications.getUserIDs();
+            oldList.remove(userID);
+            notifications.setUserIDs(oldList);
+        }
+        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(notificationID).set(notifications);
+
+        try {
+            return collectionApi.get().getUpdateTime().toString();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 //    public Notifications getNotification(String name) throws ExecutionException, InterruptedException {
 //        Firestore firestoredb= FirestoreClient.getFirestore();
 //
@@ -56,23 +97,16 @@ public class NotificationService<retun> {
             Iterator<DocumentReference> iterator=documentReference.iterator();
             while (iterator.hasNext()) {
                 ApiFuture<DocumentSnapshot> future = iterator.next().get();
-//                System.out.println(documentReference.iterator().next().get());
-//                System.out.println(documentReference);
-//                System.out.println("\nhiiiiiiiiiiiiiiiiiiiii\n");
-
                 DocumentSnapshot document = future.get();
 
                 Notifications notifications = null;
                 if (document.exists()) {
                     notifications = document.toObject(Notifications.class);
-               //     System.out.println(document);
-                  //  System.out.println(notifications.getUserIDs().contains(userID));
                     if(notifications.getUserIDs()!=null&&contains(notifications.getUserIDs(),userID)){
                         System.out.println(notifications.getUserIDs().get(0));
                         notificationTypes.add(notifications.getType());
                     }
                 }
-              //  documentReference.iterator().next();
             }
             return notificationTypes;
         }

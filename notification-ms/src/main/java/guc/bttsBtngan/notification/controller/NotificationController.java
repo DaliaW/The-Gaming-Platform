@@ -17,8 +17,16 @@ public class NotificationController {
 
     @PostMapping("/notifications")
     public String saveNotification(@RequestBody Notifications notification)throws ExecutionException {
-      //  System.out.println("\n\nhi1\n\n");
         return notificationService.createNotification(notification);
+    }
+
+    @PutMapping("/notifications/{notificationID}")
+    public String updateNotification(@PathVariable String notificationID,@RequestBody Notifications notification)throws ExecutionException {
+        return notificationService.updateNotification(notificationID,notification);
+    }
+    @DeleteMapping("/notifications/{notificationID}/{userID}")
+    public String deleteNotification(@PathVariable String notificationID,@PathVariable String userID) throws ExecutionException, InterruptedException {
+        return notificationService.deleteNotification(notificationID,userID);
     }
 
 //    @GetMapping("/notifications/{name}")
@@ -30,7 +38,6 @@ public class NotificationController {
 
     @GetMapping("/notifications/{userID}")
     public ArrayList getNotification(@PathVariable String userID) throws ExecutionException, InterruptedException {
-        //  System.out.println("\n\nhi1\n\n");
         return notificationService.getNotification(userID);
     }
 }
