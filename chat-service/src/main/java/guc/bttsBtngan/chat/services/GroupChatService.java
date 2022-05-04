@@ -212,11 +212,10 @@ public class GroupChatService {
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
 			Map<String, Object> gp = document.getData();
-			List<Map<String, Object>> msgs = new ArrayList<>();
+			List<guc.bttsBtngan.chat.data.Message> msgs = new ArrayList<>();
 			List<QueryDocumentSnapshot> documents = future2.get().getDocuments();
 			for (QueryDocumentSnapshot message : documents) {
-				msgs.add(message.getData());
-//				System.out.println(msgs.get(0).getDate());
+				msgs.add(message.toObject(guc.bttsBtngan.chat.data.Message.class));
 			}
 			gp.put("messages", msgs);
 			return gp;
