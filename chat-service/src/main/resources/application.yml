@@ -1,2 +1,15 @@
 server:
   port: 2000
+
+spring:
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 15
+        prefetch: 1
+   

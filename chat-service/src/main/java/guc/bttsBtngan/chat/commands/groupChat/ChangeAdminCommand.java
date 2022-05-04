@@ -1,7 +1,6 @@
 package guc.bttsBtngan.chat.commands.groupChat;
 
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Component;
 
