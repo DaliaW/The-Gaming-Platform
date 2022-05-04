@@ -9,13 +9,8 @@ import org.springframework.stereotype.Component;
 public class GetPrivateChatCommand extends PrivateChatCommand{
 	
 	@Override
-	public void execute(HashMap<String, Object> body) {
-		try {
-			Map<String, Object> res = getService().getPrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
-			//TODO: message queues
-		} catch (Exception  e) {
-			//TODO:
-		}
+	public Object execute(HashMap<String, Object> body) throws Exception{
+		return getService().getPrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
 	}
 
 }

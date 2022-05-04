@@ -29,48 +29,48 @@ public class GroupChatController {
 	}
 	
 	@PostMapping("/groups/admin")
-	public String changeAdmin(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String changeAdmin(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.changeAdmin((String)body.get("user_id"), (String)body.get("admin_id"), (String)body.get("group_id"));
 	}
 	
 	@PostMapping("/groups/join")
-	public String joinGroup(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String joinGroup(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.joinGroup((String)body.get("user_id"), (String)body.get("group_id"));
 	}
 	
 	@PostMapping("/groups/message")
-	public String sendGroupMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String sendGroupMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.sendGroupMessage((String) body.get("user_id"), (String) body.get("group_id"), (String) body.get("content"));
 	}
 	
 	@PostMapping("/groups/name")
-	public String changeGroupName(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String changeGroupName(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.changeGroupName((String)body.get("user_id"), (String)body.get("name"), (String)body.get("group_id"));
 	}
 	
 	@PostMapping("/groups/leave")
-	public String leaveGroup(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String leaveGroup(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.leaveGroup((String)body.get("user_id"), (String)body.get("group_id"));
 	}
 	
 	@DeleteMapping("/groups")
-	public String deleteGroup(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String deleteGroup(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.deleteGroup((String) body.get("group_id"), (String) body.get("user_id"));
 	}
 	
 	@DeleteMapping("/groups/message")
-	public String deleteMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String deleteMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.deleteMessage((String) body.get("group_id"), (String) body.get("user_id"), (String) body.get("message_id"));
 	}
 	
 	@PutMapping("/groups/message")
-	public String updateMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String updateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.updateMessage((String) body.get("group_id"), (String) body.get("user_id"),
 					(String) body.get("message_id"), (String) body.get("content"));
 	}
 	
 	@GetMapping("/groups/{id}")
-	public Map<String, Object> getGroup(@PathVariable String id) throws InterruptedException, ExecutionException {
+	public Map<String, Object> getGroup(@PathVariable String id) throws Exception {
 		return service.getGroup(id);
 	}
 }
