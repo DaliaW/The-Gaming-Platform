@@ -3,16 +3,16 @@ package guc.bttsBtngan.chat.data;
 import com.google.cloud.firestore.annotation.ServerTimestamp;
 import com.google.cloud.Timestamp;
 
-public class Message {
+public class ChatMessage {
 	
 	private String content;
 	private String sender_id;
 	@ServerTimestamp
 	private Timestamp timestamp;
 	
-	public Message() {}
+	public ChatMessage() {}
 	
-	public Message(String content, String sender_id, Timestamp timestamp) {
+	public ChatMessage(String content, String sender_id, Timestamp timestamp) {
 		super();
 		this.content = content;
 		this.sender_id = sender_id;
@@ -40,7 +40,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "Message [content=" + content + ", sender_id=" + sender_id + ", timestamp=" + timestamp + "]";
+		return "ChatMessage [content=" + content + ", sender_id=" + sender_id + ", timestamp=" + timestamp + "]";
 	}
 	
 }

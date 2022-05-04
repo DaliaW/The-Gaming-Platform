@@ -18,10 +18,9 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.messaging.Message;
 
+import guc.bttsBtngan.chat.data.ChatMessage;
 import guc.bttsBtngan.chat.data.GroupChat;
-import guc.bttsBtngan.chat.data.PrivateChat;
 
 @Service
 public class GroupChatService {
@@ -165,7 +164,7 @@ public class GroupChatService {
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
-			guc.bttsBtngan.chat.data.Message msg = document.toObject(guc.bttsBtngan.chat.data.Message.class);
+			ChatMessage msg = document.toObject(ChatMessage.class);
 			if(!msg.getSender_id().equals(user_id)) {
 				return "user " + user_id + " is not allowed to delete this message"; 
 			}
@@ -188,7 +187,7 @@ public class GroupChatService {
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
-			guc.bttsBtngan.chat.data.Message msg = document.toObject(guc.bttsBtngan.chat.data.Message.class);
+			ChatMessage msg = document.toObject(ChatMessage.class);
 			if(!msg.getSender_id().equals(user_id)) {
 				return "user " + user_id + " is not allowed to update this message"; 
 			}
@@ -212,10 +211,10 @@ public class GroupChatService {
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
 			Map<String, Object> gp = document.getData();
-			List<guc.bttsBtngan.chat.data.Message> msgs = new ArrayList<>();
+			List<ChatMessage> msgs = new ArrayList<>();
 			List<QueryDocumentSnapshot> documents = future2.get().getDocuments();
 			for (QueryDocumentSnapshot message : documents) {
-				msgs.add(message.toObject(guc.bttsBtngan.chat.data.Message.class));
+				msgs.add(message.toObject(ChatMessage.class));
 			}
 			gp.put("messages", msgs);
 			return gp;

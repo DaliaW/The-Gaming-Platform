@@ -18,7 +18,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
-import guc.bttsBtngan.chat.data.Message;
+import guc.bttsBtngan.chat.data.ChatMessage;
 import guc.bttsBtngan.chat.data.PrivateChat;
 
 @Service
@@ -82,7 +82,7 @@ public class PrivateChatService {
 		DocumentSnapshot document = future.get();
 		
 		if(document.exists()) {
-			Message message = document.toObject(Message.class);
+			ChatMessage message = document.toObject(ChatMessage.class);
 			if(!message.getSender_id().equals(user_id)) 
 				return "You didn't send this message: " + message_id;
 			ApiFuture<WriteResult> writeResult = doc_ref.delete();
@@ -99,7 +99,7 @@ public class PrivateChatService {
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
-			Message msg = document.toObject(Message.class);
+			ChatMessage msg = document.toObject(ChatMessage.class);
 			if(!msg.getSender_id().equals(user_id)) {
 				return "user " + user_id + " is not allowed to update this message"; 
 			}
@@ -129,10 +129,10 @@ public class PrivateChatService {
 				return null;
 			}
 			
-			List<guc.bttsBtngan.chat.data.Message> msgs = new ArrayList<>();
+			List<ChatMessage> msgs = new ArrayList<>();
 			List<QueryDocumentSnapshot> documents = future2.get().getDocuments();
 			for (QueryDocumentSnapshot message : documents) {
-				msgs.add(message.toObject(guc.bttsBtngan.chat.data.Message.class));
+				msgs.add(message.toObject(ChatMessage.class));
 			}
 			gp.put("messages", msgs);
 			return gp;
