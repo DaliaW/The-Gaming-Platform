@@ -1,11 +1,12 @@
 package guc.bttsBtngan.notification.entity;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class notifications {
+public class Notifications {
 
     private String type;
-    private String[] userIDs;
+    private List<String> userIDs;
 
     public String getType() {
         return type;
@@ -17,17 +18,17 @@ public class notifications {
 
     @Override
     public String toString() {
-        return "notifications{" +
+        return "Notifications{" +
                 "type='" + type + '\'' +
-                ", userIDs=" + Arrays.toString(userIDs) +
+                ", userIDs=" + userIDs +
                 '}';
     }
 
-    public String[] getUserIDs() {
+    public List<String> getUserIDs() {
         return userIDs;
     }
 
-    public void setUserIDs(String[] userIDs) {
+    public void setUserIDs(List<String> userIDs) {
         this.userIDs = userIDs;
     }
 }

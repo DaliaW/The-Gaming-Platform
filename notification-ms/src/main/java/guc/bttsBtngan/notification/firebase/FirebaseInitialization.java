@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,12 +13,13 @@ import java.io.IOException;
 
 @Service
 public class FirebaseInitialization {
+    @PostConstruct
     public void initialization(){
 
         FileInputStream serviceAccount =
                 null;
-        try {
-            serviceAccount = new FileInputStream("src/main/java/guc/bttsBtngan/notification/firebase/gaming-platform-notificationms-firebase-adminsdk-merdm-c95c9d247b.json");
+        try {//check directory
+            serviceAccount = new FileInputStream("notification-ms/gaming-platform-notificationms-firebase-adminsdk-merdm-c95c9d247b.json");
 
 
         FirebaseOptions options = new FirebaseOptions.Builder()
