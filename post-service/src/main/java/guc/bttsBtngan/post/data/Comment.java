@@ -53,6 +53,14 @@ public class Comment {
 		this.commentTags = commentTags;
 	}
 
+	public void addCommentTags(String tag) {
+		this.commentTags.add(tag);
+	}
+
+	public void delCommentTags(String tag) {
+		this.commentTags.remove(tag);
+	}
+
 
 
 	public static class CommentVote{

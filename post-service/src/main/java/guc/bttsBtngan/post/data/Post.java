@@ -1,4 +1,5 @@
 package guc.bttsBtngan.post.data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
@@ -105,6 +106,14 @@ public class Post {
 
 	public void setPostTags(ArrayList<String> postTags) {
 		this.postTags = postTags;
+	}
+
+	public void addPostTags(String userId) {
+		this.postTags.add(userId);
+	}
+
+	public void delPostTags(String userId) {
+		this.postTags.remove(userId);
 	}
 
 	public ArrayList<String> getPostFollowers() {
