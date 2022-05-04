@@ -8,12 +8,9 @@ import org.springframework.stereotype.Component;
 public class DeleteMessageCommand extends GroupChatCommand{
 
 	@Override
-	public void execute(HashMap<String, Object> map) {
-		try {
-			String res = getService().deleteMessage((String) map.get("group_id"), (String) map.get("user_id"), (String) map.get("message_id"));
-		} catch(Exception e) {
-			
-		}
+	public Object execute(HashMap<String, Object> map) throws Exception {
+		return getService().deleteMessage((String) map.get("group_id"), (String) map.get("user_id"),
+				(String) map.get("message_id"));
 	}
 
 }

@@ -11,18 +11,12 @@ import guc.bttsBtngan.chat.data.GroupChat;
 @Component
 public class CreateGroupCommand extends GroupChatCommand {
 	
-
 	@Override
-	public void execute(HashMap<String, Object> map) {
+	public Object execute(HashMap<String, Object> map) throws Exception {
 		GroupChat chat = new GroupChat();
 		chat.setAdmin_id((String) map.get("admin_id"));
 		chat.setName((String) map.get("name"));
-		try {
-			String res = getService().createGroup(chat);
-			//TODO: message queues
-		} catch (Exception  e) {
-			//TODO:
-		}
+		return getService().createGroup(chat);
 	}
 
 }

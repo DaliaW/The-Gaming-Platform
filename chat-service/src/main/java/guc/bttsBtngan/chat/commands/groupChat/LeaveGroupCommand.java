@@ -8,12 +8,8 @@ import org.springframework.stereotype.Component;
 public class LeaveGroupCommand extends GroupChatCommand{
 
 	@Override
-	public void execute(HashMap<String, Object> map) {
-		try {
-			String res = getService().leaveGroup((String)map.get("user_id"), (String)map.get("group_id"));
-		} catch(Exception e) {
-			
-		}
+	public Object execute(HashMap<String, Object> map) throws Exception {
+		return getService().leaveGroup((String)map.get("user_id"), (String)map.get("group_id"));
 	}
 
 }

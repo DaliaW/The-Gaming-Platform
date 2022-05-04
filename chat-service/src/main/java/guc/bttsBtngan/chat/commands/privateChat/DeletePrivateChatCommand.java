@@ -8,13 +8,8 @@ import org.springframework.stereotype.Component;
 public class DeletePrivateChatCommand extends PrivateChatCommand{
 	
 	@Override
-	public void execute(HashMap<String, Object> body) {
-		try {
-			String res = getService().deletePrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
-			//TODO: message queues
-		} catch (Exception  e) {
-			//TODO:
-		}
+	public Object execute(HashMap<String, Object> body) throws Exception {
+		return getService().deletePrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
 	}
 
 }

@@ -9,13 +9,8 @@ import org.springframework.stereotype.Component;
 public class GetGroupCommand extends GroupChatCommand{
 
 	@Override
-	public void execute(HashMap<String, Object> map) {
-		try {
-			Map<String, Object> res = getService().getGroup((String) map.get("id"));
-		} catch(Exception e) {
-			
-		}
+	public Object execute(HashMap<String, Object> map) throws Exception {
+		return getService().getGroup((String) map.get("id"));
 	}
-
 	
 }
