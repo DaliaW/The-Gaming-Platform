@@ -1,23 +1,22 @@
 package guc.bttsBtngan.chat.data;
 
-import java.util.Date;
-
 import com.google.cloud.firestore.annotation.ServerTimestamp;
+import com.google.cloud.Timestamp;
 
 public class Message {
 	
 	private String content;
 	private String sender_id;
 	@ServerTimestamp
-	private Date date;
+	private Timestamp timestamp;
 	
 	public Message() {}
 	
-	public Message(String content, String sender_id, Date date) {
+	public Message(String content, String sender_id, Timestamp timestamp) {
 		super();
 		this.content = content;
 		this.sender_id = sender_id;
-		this.date = date;
+		this.timestamp = timestamp;
 	}
 
 	public String getContent() {
@@ -32,16 +31,16 @@ public class Message {
 	public void setSender_id(String sender_id) {
 		this.sender_id = sender_id;
 	}
-	public Date getDate() {
-		return date;
+	public Timestamp gettimestamp() {
+		return timestamp;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void settimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	@Override
 	public String toString() {
-		return "Message [content=" + content + ", sender_id=" + sender_id + ", date=" + date + "]";
+		return "Message [content=" + content + ", sender_id=" + sender_id + ", timestamp=" + timestamp + "]";
 	}
 	
 }
