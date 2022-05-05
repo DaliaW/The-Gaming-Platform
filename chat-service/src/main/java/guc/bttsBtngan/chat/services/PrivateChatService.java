@@ -30,7 +30,7 @@ public class PrivateChatService {
 		return "Added private chat with ID: " + doc_ref.get().getId();
 	}
 	
-	public String sendPrivateMessage(String user_id, String private_id, String content) throws InterruptedException, ExecutionException {
+	public String sendPrivateMessage(String user_id, String private_id, String content) throws Exception {
 		
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id);
@@ -48,12 +48,12 @@ public class PrivateChatService {
 					.collection("messages").add(map);
 			return "Added message with id: " + ref.get().getId();
 		} else {
-			return "No private chat exists with id: " + private_id;
+			throw new Exception("No private chat exists with id: " + private_id);
 		}
 		
 	}
 	
-	public String deletePrivateChat(String user_id, String private_id) throws InterruptedException, ExecutionException {
+	public String deletePrivateChat(String user_id, String private_id) throws Exception {
 		
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id);
@@ -68,12 +68,12 @@ public class PrivateChatService {
 			ApiFuture<WriteResult> writeResult = doc_ref.delete();
 			return "Update time : " + writeResult.get().getUpdateTime();
 		} else {
-			return "No private chat exists with id: " + private_id;
+			throw new Exception("No private chat exists with id: " + private_id);
 		}
 		
 	}
 	
-	public String deletePrivateMessage(String user_id, String private_id, String message_id) throws InterruptedException, ExecutionException {
+	public String deletePrivateMessage(String user_id, String private_id, String message_id) throws Exception {
 		
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id).collection("messages").document(message_id);
@@ -88,12 +88,12 @@ public class PrivateChatService {
 			ApiFuture<WriteResult> writeResult = doc_ref.delete();
 			return "Update time : " + writeResult.get().getUpdateTime();
 		} else {
-			return "No private chat exists with id: " + private_id;
+			throw new Exception("No private chat exists with id: " + private_id);
 		}
 		
 	}
 	
-	public String updateMessage(String user_id, String private_id, String message_id, String content) throws InterruptedException, ExecutionException {
+	public String updateMessage(String user_id, String private_id, String message_id, String content) throws Exception {
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id).collection("messages").document(message_id);
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
@@ -111,11 +111,11 @@ public class PrivateChatService {
 			}
 
 		} else {
-			return "No message exists with id: " + message_id;
+			throw new Exception("No message exists with id: " + message_id);
 		}
 	}
 	
-	public Map<String, Object> getPrivateChat(String user_id, String private_id) throws InterruptedException, ExecutionException {
+	public Map<String, Object> getPrivateChat(String user_id, String private_id) throws Exception {
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id);
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
@@ -137,7 +137,7 @@ public class PrivateChatService {
 			gp.put("messages", msgs);
 			return gp;
 		} else {
-			throw new Error("No private chat exists with id: " + private_id);
+			throw new Exception("No private chat exists with id: " + private_id);
 		}
 
 	}
