@@ -28,27 +28,27 @@ public class PrivateChatController {
 	}
 	
 	@PostMapping("/private/message")
-	public String sendPrivateMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String sendPrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.sendPrivateMessage((String) body.get("user_id"), (String) body.get("private_id"), (String) body.get("content"));
 	}
 
 	@DeleteMapping("/private")
-	public String deletePrivateChat(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String deletePrivateChat(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.deletePrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
 	}
 	
 	@DeleteMapping("/private/message")
-	public String deletePrivateMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String deletePrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.deletePrivateMessage((String) body.get("user_id"), (String) body.get("private_id"), (String) body.get("message_id"));
 	}
 	
 	@PutMapping("/private/message")
-	public String updatePrivateMessage(@RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public String updatePrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
 		return service.updateMessage((String) body.get("user_id"), (String) body.get("private_id"), (String) body.get("message_id"), (String) body.get("content"));
 	}
 	
 	@GetMapping("/private/{id}")
-	public Map<String, Object> getPrivateChat(@PathVariable String id, @RequestBody HashMap<String, Object> body) throws InterruptedException, ExecutionException {
+	public Map<String, Object> getPrivateChat(@PathVariable String id, @RequestBody HashMap<String, Object> body) throws Exception {
 		return service.getPrivateChat((String) body.get("user_id"), id);
 	}
 }
