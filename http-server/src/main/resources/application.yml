@@ -1,0 +1,3 @@
+spring:
+  rabbitmq:
+    channel-rpc-timeout: 10000
