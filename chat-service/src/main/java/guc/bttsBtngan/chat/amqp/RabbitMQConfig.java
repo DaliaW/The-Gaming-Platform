@@ -61,6 +61,7 @@ public class RabbitMQConfig {
 //        	try {
 //        		System.out.println("started processing task: " + payload.get("content"));
 //        		payload.put("user_id", headers.get("user_id"));
+//				payload.put("timestamp", headers.get("timestamp"));
 //    			Object res = commands.get((String)headers.get("command")).execute(payload);
 //    			map.put("data", res);
 //    		} catch (Exception e) {
@@ -80,8 +81,8 @@ public class RabbitMQConfig {
     public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
         	HashMap<String, Object> map = new HashMap<>();
         	try {
-        		System.out.println("started processing task: " + payload.get("content"));
         		payload.put("user_id", headers.get("user_id"));
+        		payload.put("timestamp", headers.get("timestamp").toString());
     			Object res = commands.get((String)headers.get("command")).execute(payload);
     			map.put("data", res);
     		} catch (Exception e) {
@@ -92,7 +93,6 @@ public class RabbitMQConfig {
     	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
     	        	return m;
     			});
-        		System.out.println("finished processing task: " + payload.get("content"));
     		}
     }
     

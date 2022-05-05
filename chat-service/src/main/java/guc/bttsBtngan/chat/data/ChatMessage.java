@@ -1,18 +1,14 @@
 package guc.bttsBtngan.chat.data;
 
-import com.google.cloud.firestore.annotation.ServerTimestamp;
-import com.google.cloud.Timestamp;
-
 public class ChatMessage {
 	
 	private String content;
 	private String sender_id;
-	@ServerTimestamp
-	private Timestamp timestamp;
+	private String timestamp;
 	
 	public ChatMessage() {}
 	
-	public ChatMessage(String content, String sender_id, Timestamp timestamp) {
+	public ChatMessage(String content, String sender_id, String timestamp) {
 		super();
 		this.content = content;
 		this.sender_id = sender_id;
@@ -31,10 +27,10 @@ public class ChatMessage {
 	public void setSender_id(String sender_id) {
 		this.sender_id = sender_id;
 	}
-	public Timestamp gettimestamp() {
+	public String gettimestamp() {
 		return timestamp;
 	}
-	public void settimestamp(Timestamp timestamp) {
+	public void settimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 

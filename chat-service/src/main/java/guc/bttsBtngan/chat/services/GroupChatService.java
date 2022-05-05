@@ -103,7 +103,7 @@ public class GroupChatService {
 		}
 	}
 	
-	public String sendGroupMessage(String user_id, String group_id, String content) throws Exception {
+	public String sendGroupMessage(String user_id, String group_id, String content, String timestamp) throws Exception {
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("group_chat").document(group_id);
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
@@ -115,7 +115,7 @@ public class GroupChatService {
 			HashMap<String , Object> map = new HashMap<>();
 			map.put("sender_id", user_id);
 			map.put("content", content);
-			map.put("timestamp", FieldValue.serverTimestamp());
+			map.put("timestamp", timestamp);
 			ApiFuture<DocumentReference> ref = db.collection("group_chat").document(group_id)
 					.collection("messages").add(map);
 			return "Added message with id: " + ref.get().getId();
