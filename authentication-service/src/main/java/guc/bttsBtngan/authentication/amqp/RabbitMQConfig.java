@@ -30,18 +30,12 @@ public class RabbitMQConfig {
     @Autowired
     private AmqpTemplate amqpTemplate;
     private static final String request_queue = "authentication_req";
-    private static final String reply_queue = "authentication_gateway";
     @Autowired
 	private ExecutorService threadPool;
 
     @Bean(name = {request_queue})
     public Queue request_queue() {
         return new Queue(request_queue);
-    }
-
-    @Bean(name = {reply_queue})
-    public Queue reply_queue() {
-        return new Queue(reply_queue);
     }
 
     @Bean
@@ -57,56 +51,64 @@ public class RabbitMQConfig {
 		return new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
 	}
 
-    @RabbitListener(queues = request_queue)
-    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
-    	threadPool.submit(() -> {
-        	HashMap<String, Object> map = new HashMap<>();
-        	try {
-        		System.out.println("started processing task: " + payload.get("content"));
-    			Object res = commands.get((String)headers.get("command")).execute(payload);
-    			map.put("data", res);
-    		} catch (Exception e) {
-    			map.put("error", e.getMessage());
-    		} finally {
-    			amqpTemplate.convertAndSend(reply_queue, map);
-        		System.out.println("finished processing task: " + payload.get("content"));
-    		}
-    	});
-    }
-
-    // dummy method for testing delete
-//    @Bean
-//    public ApplicationRunner runner(AmqpTemplate template) {
-//        return args -> {
-//            for(int i = 0 ; i < 20; i++) {
-//                Map<String, Object> map = new HashMap<>();
-//
-//                map.put("notificationID", "0VQssXEceOufv7hAUHqT");
-//                map.put("userID", "id12142");
-//
-//                template.convertAndSend(request_queue, map, m -> {
-//                    m.getMessageProperties().setHeader("command", "deleteNotificationCommand");
-//                    return m;
-//                });
-//            }
-//        };
+    //    @RabbitListener(queues = request_queue)
+//    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+//    	threadPool.submit(() -> {
+//        	HashMap<String, Object> map = new HashMap<>();
+//        	try {
+//        		System.out.println("started processing task: " + payload.get("content"));
+//        		payload.put("user_id", headers.get("user_id"));
+//				payload.put("timestamp", headers.get("timestamp"));
+//    			Object res = commands.get((String)headers.get("command")).execute(payload);
+//    			map.put("data", res);
+//    		} catch (Exception e) {
+//    			map.put("error", e.getMessage());
+//    		} finally {
+//    			amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+//    	        	m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+//    	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+//    	        	return m;
+//    			});
+//        		System.out.println("finished processing task: " + payload.get("content"));
+//    		}
+//    	});
 //    }
 
-    // dummy method for testing get
+    @RabbitListener(queues = request_queue)
+    public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+        HashMap<String, Object> map = new HashMap<>();
+        try {
+            payload.put("user_id", headers.get("user_id"));
+            payload.put("timestamp", headers.get("timestamp").toString());
+            Object res = commands.get((String)headers.get("command")).execute(payload);
+            map.put("data", res);
+        } catch (Exception e) {
+            map.put("error", e.getMessage());
+        } finally {
+            amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+                m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+                m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+                return m;
+            });
+        }
+    }
+
+    // dummy method for testing
 //    @Bean
 //    public ApplicationRunner runner(AmqpTemplate template) {
 //        return args -> {
-//            for(int i = 0 ; i < 5; i++) {
-//                Map<String, Object> map = new HashMap<>();
-//
-//                //    map.put("notificationID", "0VQssXEceOufv7hAUHqT");
-//                map.put("userID", "id1015");
-//
-//                template.convertAndSend(request_queue, map, m -> {
-//                    m.getMessageProperties().setHeader("command", "getNotificationCommand");
-//                    return m;
+//        	for(int i = 0 ; i < 20; i++) {
+//            	Map<String, Object> map = new HashMap<>();
+//            	map.put("user_id", "user_1");
+//            	map.put("group_id", "qNjVI5EPodNC5UHQnbF2");
+//            	map.put("content", "message " + i);
+//            	template.convertAndSend(request_queue, map, m -> {
+//                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
+//                	m.getMessageProperties().setReplyTo(reply_queue);
+//                	m.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
+//                	return m;
 //                });
-//            }
+//        	}
 //        };
 //    }
 
