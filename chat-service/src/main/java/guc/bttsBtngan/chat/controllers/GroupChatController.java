@@ -40,7 +40,8 @@ public class GroupChatController {
 	
 	@PostMapping("/groups/message")
 	public String sendGroupMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.sendGroupMessage((String) body.get("user_id"), (String) body.get("group_id"), (String) body.get("content"));
+		return service.sendGroupMessage((String) body.get("user_id"), (String) body.get("group_id"),
+				(String) body.get("content"), (String) body.get("timestamp"));
 	}
 	
 	@PostMapping("/groups/name")

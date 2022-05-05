@@ -30,7 +30,7 @@ public class PrivateChatService {
 		return "Added private chat with ID: " + doc_ref.get().getId();
 	}
 	
-	public String sendPrivateMessage(String user_id, String private_id, String content) throws Exception {
+	public String sendPrivateMessage(String user_id, String private_id, String content, String timestamp) throws Exception {
 		
 		Firestore db = FirestoreClient.getFirestore();
 		DocumentReference doc_ref = db.collection("private_chat").document(private_id);
@@ -43,7 +43,7 @@ public class PrivateChatService {
 			HashMap<String , Object> map = new HashMap<>();
 			map.put("sender_id", user_id);
 			map.put("content", content);
-			map.put("timestamp", FieldValue.serverTimestamp());
+			map.put("timestamp", timestamp);
 			ApiFuture<DocumentReference> ref = db.collection("private_chat").document(private_id)
 					.collection("messages").add(map);
 			return "Added message with id: " + ref.get().getId();
