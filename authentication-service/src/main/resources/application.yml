@@ -18,3 +18,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: Trace

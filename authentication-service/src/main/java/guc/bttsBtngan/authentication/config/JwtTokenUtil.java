@@ -1,13 +1,20 @@
 package guc.bttsBtngan.authentication.config;
 
+import guc.bttsBtngan.authentication.model.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +27,11 @@ public class JwtTokenUtil implements Serializable {
 
     @Value("${jwt.secret}")
     String secretKey;
+
+    @Bean
+    public CacheManager cacheManager(){
+        return new ConcurrentMapCacheManager("token");
+    }
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token){
@@ -43,6 +55,7 @@ public class JwtTokenUtil implements Serializable {
         final Date expirationDate = getExpirationDate(token);
         return expirationDate.before(new Date());
     }
+    @CachePut(cacheNames = "token", key = "#userDetails.getUsername")
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims =new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
