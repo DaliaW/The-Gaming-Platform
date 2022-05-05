@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("Http configure");
         httpSecurity.csrf().disable()
                 //Don't authenticate these requests
-                .authorizeRequests().antMatchers("/authenticate", "/register").permitAll()
+                .authorizeRequests().antMatchers("/login", "/register").permitAll()
                 //authenticate all other requests
                 .anyRequest().authenticated().and()
                 // make sure we use stateless session; session won't be used to
