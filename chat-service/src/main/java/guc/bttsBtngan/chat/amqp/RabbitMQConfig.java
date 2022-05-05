@@ -2,6 +2,7 @@ package guc.bttsBtngan.chat.amqp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -28,20 +29,20 @@ public class RabbitMQConfig {
 	private Map<String, Command> commands;
 	@Autowired
 	private AmqpTemplate amqpTemplate;
-	@Autowired
+//	@Autowired
 //	private ExecutorService threadPool;
 	private static final String request_queue = "messaging_req";
-	private static final String reply_queue = "gateway";
+//	private static final String reply_queue = "gateway";
 	
 	@Bean(name = {request_queue})
 	public Queue request_queue() {
 		return new Queue(request_queue);
 	}
 	
-	@Bean(name = {reply_queue})
-	public Queue reply_queue() {
-		return new Queue(reply_queue);
-	}
+//	@Bean(name = {reply_queue})
+//	public Queue reply_queue() {
+//		return new Queue(reply_queue);
+//	}
 	
 	@Bean
 	public MessageConverter converter() {
@@ -59,12 +60,17 @@ public class RabbitMQConfig {
 //        	HashMap<String, Object> map = new HashMap<>();
 //        	try {
 //        		System.out.println("started processing task: " + payload.get("content"));
+//        		payload.put("user_id", headers.get("user_id"));
 //    			Object res = commands.get((String)headers.get("command")).execute(payload);
 //    			map.put("data", res);
 //    		} catch (Exception e) {
 //    			map.put("error", e.getMessage());
 //    		} finally {
-//    			amqpTemplate.convertAndSend(reply_queue, map);
+//    			amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+//    	        	m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+//    	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+//    	        	return m;
+//    			});
 //        		System.out.println("finished processing task: " + payload.get("content"));
 //    		}
 //    	});
@@ -75,12 +81,17 @@ public class RabbitMQConfig {
         	HashMap<String, Object> map = new HashMap<>();
         	try {
         		System.out.println("started processing task: " + payload.get("content"));
+        		payload.put("user_id", headers.get("user_id"));
     			Object res = commands.get((String)headers.get("command")).execute(payload);
     			map.put("data", res);
     		} catch (Exception e) {
     			map.put("error", e.getMessage());
     		} finally {
-    			amqpTemplate.convertAndSend(reply_queue, map);
+    			amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+    	        	m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+    	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+    	        	return m;
+    			});
         		System.out.println("finished processing task: " + payload.get("content"));
     		}
     }
@@ -96,6 +107,8 @@ public class RabbitMQConfig {
 //            	map.put("content", "message " + i);
 //            	template.convertAndSend(request_queue, map, m -> {
 //                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
+//                	m.getMessageProperties().setReplyTo(reply_queue);
+//                	m.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
 //                	return m;
 //                });
 //        	}
