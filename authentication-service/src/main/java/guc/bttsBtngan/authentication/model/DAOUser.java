@@ -18,6 +18,55 @@ public class DAOUser {
     @JsonIgnore
     private String password;
 
+    @Column
+    private String email;
+
+    @Column
+    private String photo_ref;
+
+    @Column
+    private boolean isModerator;
+
+    @Column
+    private boolean isBanned;
+
+
+
+    public long getId(){
+        return id;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoto_ref() {
+        return photo_ref;
+    }
+
+    public void setPhoto_ref(String photo_ref) {
+        this.photo_ref = photo_ref;
+    }
+
+    public boolean isModerator() {
+        return isModerator;
+    }
+
+    public void setModerator(boolean moderator) {
+        isModerator = moderator;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -33,4 +82,5 @@ public class DAOUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
