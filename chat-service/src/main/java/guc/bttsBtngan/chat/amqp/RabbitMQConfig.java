@@ -2,6 +2,10 @@ package guc.bttsBtngan.chat.amqp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
@@ -24,14 +28,13 @@ public class RabbitMQConfig {
 	private Map<String, Command> commands;
 	@Autowired
 	private AmqpTemplate amqpTemplate;
+	@Autowired
+//	private ExecutorService threadPool;
 	private static final String request_queue = "messaging_req";
 	private static final String reply_queue = "gateway";
 	
 	@Bean(name = {request_queue})
 	public Queue request_queue() {
-//		Map<String, Object> arguments = new HashMap<String, Object>();
-//	    arguments.put("x-single-active-consumer", true);
-//	    return new Queue(request_queue, true, false, false, arguments);
 		return new Queue(request_queue);
 	}
 	
@@ -45,34 +48,61 @@ public class RabbitMQConfig {
 		return new Jackson2JsonMessageConverter();
 	}
 	
+//	@Bean
+//	public ExecutorService executor() {
+//		return new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
+//	}
+	
+//    @RabbitListener(queues = request_queue)
+//    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+//    	threadPool.submit(() -> {
+//        	HashMap<String, Object> map = new HashMap<>();
+//        	try {
+//        		System.out.println("started processing task: " + payload.get("content"));
+//    			Object res = commands.get((String)headers.get("command")).execute(payload);
+//    			map.put("data", res);
+//    		} catch (Exception e) {
+//    			map.put("error", e.getMessage());
+//    		} finally {
+//    			amqpTemplate.convertAndSend(reply_queue, map);
+//        		System.out.println("finished processing task: " + payload.get("content"));
+//    		}
+//    	});
+//    }
+    
     @RabbitListener(queues = request_queue)
-    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
-    	HashMap<String, Object> map = new HashMap<>();
-    	try {
-			Object res = commands.get((String)headers.get("command")).execute(payload);
-			map.put("data", res);
-		} catch (Exception e) {
-			map.put("error", e.getMessage());
-		} finally {
-			amqpTemplate.convertAndSend(reply_queue, map);
-		}
+    public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+        	HashMap<String, Object> map = new HashMap<>();
+        	try {
+        		System.out.println("started processing task: " + payload.get("content"));
+    			Object res = commands.get((String)headers.get("command")).execute(payload);
+    			map.put("data", res);
+    		} catch (Exception e) {
+    			map.put("error", e.getMessage());
+    		} finally {
+    			amqpTemplate.convertAndSend(reply_queue, map);
+        		System.out.println("finished processing task: " + payload.get("content"));
+    		}
     }
     
     // dummy method for testing
-    @Bean
-    public ApplicationRunner runner(AmqpTemplate template) {
-        return args -> {
-        	for(int i = 0 ; i < 10; i++) {
-            	Map<String, Object> map = new HashMap<>();
-            	map.put("user_id", "user_1");
-            	map.put("group_id", "qNjVI5EPodNC5UHQnbF2");
-            	map.put("content", "message " + i);
-            	template.convertAndSend(request_queue, map, m -> {
-                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
-                	return m;
-                });
-        	}
-        };
-    }
+//    @Bean
+//    public ApplicationRunner runner(AmqpTemplate template) {
+//        return args -> {
+//        	for(int i = 0 ; i < 20; i++) {
+//            	Map<String, Object> map = new HashMap<>();
+//            	map.put("user_id", "user_1");
+//            	map.put("group_id", "qNjVI5EPodNC5UHQnbF2");
+//            	map.put("content", "message " + i);
+//            	template.convertAndSend(request_queue, map, m -> {
+//                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
+//                	return m;
+//                });
+//        	}
+//        };
+//    }
+    
+
+    
 	
 }
