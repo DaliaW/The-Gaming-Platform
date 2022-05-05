@@ -6,15 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UpdateNotificationCommand extends NotificationCommand{
-    public void execute(HashMap<String, Object> map) {
+    public Object execute(HashMap<String, Object> map) throws Exception{
         Notifications notifications = new Notifications();
         notifications.setType((String) map.get("type"));
         notifications.setUserIDs((List<String>) map.get("userIDs"));
-        try {
-            String res = getService().updateNotification((String) map.get("notificationID"),notifications);
-            //TODO: message queues
-        } catch (Exception  e) {
-            //TODO:
-        }
+        return getService().updateNotification((String) map.get("notificationID"),notifications);
     }
 }

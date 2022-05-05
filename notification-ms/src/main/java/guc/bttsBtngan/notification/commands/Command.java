@@ -4,6 +4,6 @@ import java.util.HashMap;
 
 public abstract  class Command {
 
-        public abstract void execute(HashMap<String, Object> map);
+        public abstract Object execute(HashMap<String, Object> map)throws Exception;
 
 }

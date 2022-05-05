@@ -14,41 +14,34 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class NotificationService<retun> {
-    public String createNotification(Notifications notification){
+    public String createNotification(Notifications notification) throws ExecutionException, InterruptedException {
 
         Firestore firestoredb= FirestoreClient.getFirestore();
 
-     //   ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(notification.getType()).set(notification);
         ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document().create(notification);
 
-        try {
-            return collectionApi.get().getUpdateTime().toString();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return "Notification Created, "+collectionApi.get().getUpdateTime().toString();
+
     }
 
 
-    public String updateNotification(String notificationID,Notifications notification){
+    public String updateNotification(String notificationID,Notifications notification) throws Exception {
 
         Firestore firestoredb= FirestoreClient.getFirestore();
 
-        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(notificationID).set(notification);
-
-        try {
-            return collectionApi.get().getUpdateTime().toString();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        DocumentReference documentReference=firestoredb.collection("notification").document(notificationID);
+        ApiFuture<DocumentSnapshot> future=documentReference.get();
+        DocumentSnapshot document=future.get();
+        if(document.exists()){
+            ApiFuture<WriteResult> collectionApi= documentReference.set(notification);
+            return "Notification Updated, "+collectionApi.get().getUpdateTime().toString();
+        }else{
+            throw new Exception("No notification exists with id: " + notificationID);
         }
-        return null;
+
     }
 
-    public String deleteNotification(String notificationID,String userID) throws ExecutionException, InterruptedException {
+    public String deleteNotification(String notificationID,String userID) throws Exception {
         Firestore firestoredb= FirestoreClient.getFirestore();
         DocumentReference documentReference=firestoredb.collection("notification").document(notificationID);
         ApiFuture<DocumentSnapshot> future=documentReference.get();
@@ -57,67 +50,40 @@ public class NotificationService<retun> {
         if(document.exists()){
             notifications=document.toObject(Notifications.class);
             List<String> oldList=notifications.getUserIDs();
-            oldList.remove(userID);
-            notifications.setUserIDs(oldList);
-        }
-        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(notificationID).set(notifications);
+            boolean flag=oldList.remove(userID);
+            if(flag) {
+                notifications.setUserIDs(oldList);
+                ApiFuture<WriteResult> collectionApi = documentReference.set(notifications);
 
-        try {
-            return collectionApi.get().getUpdateTime().toString();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+                return "Notification Deleted for userID " + userID + ", at: " + collectionApi.get().getUpdateTime().toString();
+            }else{
+                throw new Exception("No user: "+userID+" exists in this notification: " + notificationID);
+            }
+        }else{
+            throw new Exception("No notification exists with id: " + notificationID);
         }
-        return null;
+
     }
 
-//    public Notifications getNotification(String name) throws ExecutionException, InterruptedException {
-//        Firestore firestoredb= FirestoreClient.getFirestore();
-//
-//        DocumentReference documentReference= firestoredb.collection("notification").document(name);
-//
-//        ApiFuture<DocumentSnapshot> future=documentReference.get();
-//
-//        DocumentSnapshot document=future.get();
-//
-//        Notifications notifications=null;
-//        if(document.exists()){
-//            notifications=document.toObject(Notifications.class);
-//            return notifications;
-//        }else{
-//            return null;
-//        }
-//    }
 
-        public ArrayList<String> getNotification(String userID) throws ExecutionException, InterruptedException {
-            Firestore firestoredb = FirestoreClient.getFirestore();
-            ArrayList<String>notificationTypes=new ArrayList<String>();
-            Iterable<DocumentReference> documentReference = firestoredb.collection("notification").listDocuments();
-            Iterator<DocumentReference> iterator=documentReference.iterator();
-            while (iterator.hasNext()) {
-                ApiFuture<DocumentSnapshot> future = iterator.next().get();
-                DocumentSnapshot document = future.get();
+    public ArrayList<String> getNotification(String userID) throws ExecutionException, InterruptedException {
+        Firestore firestoredb = FirestoreClient.getFirestore();
+        ArrayList<String>notificationTypes=new ArrayList<String>();
+        Iterable<DocumentReference> documentReference = firestoredb.collection("notification").listDocuments();
+        Iterator<DocumentReference> iterator=documentReference.iterator();
+        while (iterator.hasNext()) {
+            ApiFuture<DocumentSnapshot> future = iterator.next().get();
+            DocumentSnapshot document = future.get();
 
-                Notifications notifications = null;
-                if (document.exists()) {
-                    notifications = document.toObject(Notifications.class);
-                    if(notifications.getUserIDs()!=null&&contains(notifications.getUserIDs(),userID)){
-                        System.out.println(notifications.getUserIDs().get(0));
-                        notificationTypes.add(notifications.getType());
-                    }
+            Notifications notifications = null;
+            if (document.exists()) {
+                notifications = document.toObject(Notifications.class);
+                if(notifications.getUserIDs()!=null&&notifications.getUserIDs().contains(userID)){
+                    notificationTypes.add(notifications.getType());
                 }
             }
-            return notificationTypes;
         }
-
-    private boolean contains(List<String> userIDs, String userID) {
-        System.out.println(userID);
-        for (int i=0;i<userIDs.size();i++){
-            if(userID.equals(userIDs.get(i).toString())){
-                return true;
-            }
-        }
-        return false;
+        return notificationTypes;
     }
+
 }
