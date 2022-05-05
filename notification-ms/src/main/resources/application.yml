@@ -9,6 +9,6 @@ spring:
     password: "guest"
     listener:
       simple:
-        concurrency: 1
-        max-concurrency: 1
+        concurrency: 10
+        max-concurrency: 20
         prefetch: 1
