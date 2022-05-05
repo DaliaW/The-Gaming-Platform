@@ -39,7 +39,7 @@ public class PrivateChatService {
 		if(document.exists()) {
 			PrivateChat chat = document.toObject(PrivateChat.class);
 			if(!chat.getUser_1().equals(user_id) && !chat.getUser_2().equals(user_id)) 
-				return "You are not a member of the private chat with id: " + private_id;
+				throw new Exception("You are not a member of the private chat with id: " + private_id);
 			HashMap<String , Object> map = new HashMap<>();
 			map.put("sender_id", user_id);
 			map.put("content", content);
@@ -64,7 +64,7 @@ public class PrivateChatService {
 		if(document.exists()) {
 			PrivateChat chat = document.toObject(PrivateChat.class);
 			if(!chat.getUser_1().equals(user_id) && !chat.getUser_2().equals(user_id)) 
-				return "You are not a member of the private chat with id: " + private_id;
+				throw new Exception("You are not a member of the private chat with id: " + private_id);
 			ApiFuture<WriteResult> writeResult = doc_ref.delete();
 			return "Update time : " + writeResult.get().getUpdateTime();
 		} else {
@@ -84,7 +84,7 @@ public class PrivateChatService {
 		if(document.exists()) {
 			ChatMessage message = document.toObject(ChatMessage.class);
 			if(!message.getSender_id().equals(user_id)) 
-				return "You didn't send this message: " + message_id;
+				throw new Exception("You didn't send this message: " + message_id);
 			ApiFuture<WriteResult> writeResult = doc_ref.delete();
 			return "Update time : " + writeResult.get().getUpdateTime();
 		} else {
@@ -101,13 +101,13 @@ public class PrivateChatService {
 		if(document.exists()) {
 			ChatMessage msg = document.toObject(ChatMessage.class);
 			if(!msg.getSender_id().equals(user_id)) {
-				return "user " + user_id + " is not allowed to update this message"; 
+				throw new Exception("user " + user_id + " is not allowed to update this message"); 
 			}
 			try {
 				ApiFuture<WriteResult> writeResult = doc_ref.update("content", content);
 				return "Update time : " + writeResult.get().getUpdateTime();
-			} catch(Error e) {
-				return "Error while updating message: " + e.getMessage();
+			} catch(Exception e) {
+				throw new Exception("Error while updating message: " + e.getMessage());
 			}
 
 		} else {
@@ -125,8 +125,7 @@ public class PrivateChatService {
 			Map<String, Object> gp = document.getData();
 			
 			if(!gp.get("user_1").equals(user_id) && !gp.get("user_2").equals(user_id)) {
-//				return "You are not authorized to view this chat: " + private_id;
-				return null;
+				throw new Exception("You are not authorized to view this chat: " + private_id);
 			}
 			
 			List<ChatMessage> msgs = new ArrayList<>();
