@@ -41,11 +41,6 @@ public class AuthService {
     @Autowired
     private CacheManager cacheManager;
 
-
-    @Bean
-    public AuthService authServiceBean(){
-        return new AuthService();
-    }
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
