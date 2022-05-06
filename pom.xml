@@ -12,9 +12,9 @@
    	<module>notification-ms</module>
    	<module>authentication-service</module>
     </modules>
-  <properties>
-  <java.version>1.8</java.version>
-  </properties>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
