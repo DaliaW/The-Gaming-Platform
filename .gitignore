@@ -236,3 +236,6 @@ config.json
 
 # Exception for class files as resources
 !**/resources/**/*.class
+
+#intellij
+.idea
