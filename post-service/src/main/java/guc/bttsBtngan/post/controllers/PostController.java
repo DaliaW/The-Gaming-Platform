@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @PostMapping("/post/content")
-    public String searchPost(@RequestBody searchReques req) throws InterruptedException, ExecutionException {
+    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
         return service.searchPosts(req.content);
     }
 
@@ -61,16 +61,16 @@ public class PostController {
 
 
     static public class tagRequest{
-        String postId;
+        public String postId;
         String[]userIds;
     }
     static public class commentTagRequest{
-        String postId;
-        String commentId;
-        String[]userIds;
+        public String postId;
+        public String commentId;
+        public String[]userIds;
     }
-    static public class searchReques{
-        String content;
+    static public class searchRequest{
+        public String content;
     }
 
 }

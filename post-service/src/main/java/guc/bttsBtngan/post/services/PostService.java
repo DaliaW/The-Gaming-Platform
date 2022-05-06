@@ -121,10 +121,26 @@ public class PostService {
 		return "DONE, Potatoes tag in post : "+(post).toString();
 
 	}
-
+	static char getAnother(char c){
+		if(c>='a' && c<='z'){
+			int x=c-'a';
+			return (char)('A'+x);
+		}
+		if(c>='A' && c<='Z'){
+			int x=c-'A';
+			return (char)('a'+x);
+		}
+		return c;
+	}
 	public String searchPosts(String subContent)throws InterruptedException, ExecutionException {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("content").is(subContent));
+		StringBuilder pattern= new StringBuilder(".*");//starts with anything
+		String[]tokens=subContent.split(" ");
+		for(String s:tokens){
+			pattern.append("(?i)").append(s);//case-insensitive
+			pattern.append(".*");//followed by anything
+		}
+		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
 
 		return "DONE, Potatoes report post : "+(post);
