@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 
@@ -144,6 +146,32 @@ public class PostService {
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
 
 		return "DONE, Potatoes report post : "+(post);
+
+	}
+	
+	
+	public String assignModerator(String postId, String userId)throws InterruptedException, ExecutionException {
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(postId));
+		Post post = mongoOperations.findById(query, Post.class, "post");
+		
+		post.setModeratorId(userId);
+
+		return "DONE, Potatoes report post : "+(post);
+
+	}
+	
+	public String checkPostReports(String postId, String userId)throws InterruptedException, ExecutionException, ResponseStatusException {
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(postId));
+		Post post = mongoOperations.findById(query, Post.class, "post");
+		
+		if(!post.getModeratorId().equals(userId)) 
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
+
+		return "DONE, Potatoes report post : "+(post.getPostReports());
 
 	}
 }

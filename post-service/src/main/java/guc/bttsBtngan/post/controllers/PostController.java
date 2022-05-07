@@ -7,6 +7,7 @@ import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -57,6 +58,16 @@ public class PostController {
     @DeleteMapping("/post/comment/tag")
     public String delTagInCommentPost(@RequestBody commentTagRequest req) throws InterruptedException, ExecutionException {
         return service.delCommentTagInPost(req.postId,req.commentId,req.userIds);
+    }
+    
+    @PostMapping("/post/assignmod")
+    public String assignModerator(@RequestBody String postId,@RequestBody String userId) throws InterruptedException, ExecutionException {
+        return service.assignModerator(postId,userId);
+    }
+    
+    @PostMapping("/post/modcheckrep")
+    public String checkPostReports(@RequestBody String postId,@RequestBody String userId) throws InterruptedException, ExecutionException, ResponseStatusException {
+        return service.checkPostReports(userId,postId);
     }
 
 
