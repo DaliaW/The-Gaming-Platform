@@ -151,14 +151,15 @@ public class PostService {
 	
 	
 	public String assignModerator(String postId, String userId)throws InterruptedException, ExecutionException {
-		
+		System.out.println("hi");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.find(query, Post.class, "post").get(0);
 		
 		post.setModeratorId(userId);
 		mongoOperations.save(post);
-
+		System.out.println("bye");
+		
 		return "DONE, Potatoes report post : "+(post);
 
 	}
@@ -167,7 +168,7 @@ public class PostService {
 		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.find(query, Post.class, "post").get(0);
 		
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
