@@ -1,5 +1,4 @@
 package guc.bttsBtngan.post.data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
@@ -50,14 +49,6 @@ public class Post {
 
 	public void setPostVotes(ArrayList<PostVote> postVotes) {
 		this.postVotes = postVotes;
-	}
-
-	public ArrayList<PostReport> getPostReports() {
-		return postReports;
-	}
-
-	public void setPostReports(ArrayList<PostReport> postReports) {
-		this.postReports = postReports;
 	}
 
 	public String getUserId() {
@@ -119,11 +110,27 @@ public class Post {
 	public ArrayList<String> getPostFollowers() {
 		return postFollowers;
 	}
-
+	
 	public void setPostFollowers(ArrayList<String> postFollowers) {
 		this.postFollowers = postFollowers;
 	}
+	
+	public void addPostFollower(String userId) {
+		this.postFollowers.add(userId);
+	}
 
+	public ArrayList<PostReport> getPostReports() {
+		return postReports;
+	}
+
+	public void setPostReports(ArrayList<PostReport> postReports) {
+		this.postReports = postReports;
+	}
+	
+	public void addPostReport(PostReport report) {
+		this.postReports.add(report);
+	}
+	
 	public static class PostVote{
 		private String voterId;
 		private boolean upVote;
@@ -171,6 +178,9 @@ public class Post {
 			this.comment = comment;
 		}
 		
+		public String toString() {
+			return "reporter: "+userId+" ---- content: "+comment;
+		}
 		
 		
 	}
@@ -178,7 +188,9 @@ public class Post {
 	@Override
 	public String toString() {
 		return "Post [userId=" + userId + ", content=" + content + ", photoRef=" + photoRef + ", date=" + date
-				+ ", moderatorId=" + moderatorId + "]";
+				+ ", moderatorId=" + moderatorId + "]"+
+				"post followers: "+postFollowers+
+				"reports: "+postReports;
 	}
 		
 }

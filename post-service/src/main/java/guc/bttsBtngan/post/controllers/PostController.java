@@ -1,6 +1,6 @@
 package guc.bttsBtngan.post.controllers;
 
-import java.util.HashMap;
+
 import java.util.concurrent.ExecutionException;
 
 import guc.bttsBtngan.post.data.Post;
@@ -21,7 +21,6 @@ public class PostController {
 
     @PostMapping("/post")
     public String createPost(@RequestBody Post post) throws InterruptedException, ExecutionException {
-        post.setModeratorId("3amo moderator");
         return service.createPost(post);
     }
 
@@ -31,13 +30,13 @@ public class PostController {
     }
 
     @PostMapping("/post/follow")
-    public String followPost(@RequestBody String userId,@RequestBody String postId) throws InterruptedException, ExecutionException {
-        return service.followPost(userId,postId);
+    public String followPost(@RequestBody followPostRequest req) throws InterruptedException, ExecutionException {
+        return service.followPost(req.userId,req.postId);
     }
 
     @PostMapping("/post/report")
-    public String reportPost(@RequestBody String userId,@RequestBody String postId, @RequestBody String reportComment) throws InterruptedException, ExecutionException {
-        return service.reportPost(userId,postId,reportComment);
+    public String reportPost(@RequestBody reportPostRequest req) throws InterruptedException, ExecutionException {
+        return service.reportPost(req.userId,req.postId,req.reportComment);
     }
 
     @PutMapping("/post/tag")
@@ -83,5 +82,14 @@ public class PostController {
     static public class searchRequest{
         public String content;
     }
-
+    static public class followPostRequest{
+        public String userId;
+        public String postId;
+    }
+    
+    static public class reportPostRequest{
+        public String userId;
+        public String postId;
+        public String reportComment;
+    }
 }

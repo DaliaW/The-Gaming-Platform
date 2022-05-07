@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,33 +25,42 @@ public class PostService {
     MongoOperations mongoOperations;
 
     public String createPost(Post post) throws InterruptedException, ExecutionException {
+    	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
         return "DONE, created post is: "+(post).toString();
     }
     
     public String followPost(String userId, String postId)throws InterruptedException, ExecutionException {
-    	Query query = new Query();
-    	query.addCriteria(Criteria.where("_id").is(postId));
-    	Post post = mongoOperations.findById(query, Post.class, "post");  	
-    			
-    	post.getPostFollowers().add(userId);
+    	Query query = new Query(Criteria.where("_id").is(postId));
+    	Post post = mongoOperations.findOne(query, Post.class, "post");  	
     	
-    	mongoOperations.save(post);
+    	if(post.getPostFollowers() == null)
+    	{
+    		post.setPostFollowers(new ArrayList<String>());
+    	}
+    	post.addPostFollower(userId);
+    	
+    	Update update = new Update().set("postFollowers", post.getPostFollowers());
+        mongoOperations.updateFirst(query, update, Post.class);
     	
     	return "DONE, Potatoes follow post : "+(post).toString();
     	
     }
 
     public String reportPost(String userId, String postId, String reportComment)throws InterruptedException, ExecutionException {
-    	Query query = new Query();
-    	query.addCriteria(Criteria.where("_id").is(postId));
-    	Post post = mongoOperations.findById(query, Post.class, "post");
+    	Query query = new Query(Criteria.where("_id").is(postId));
+    	Post post = mongoOperations.findOne(query, Post.class, "post");
 
     	Post.PostReport postReport = new Post.PostReport(userId, reportComment);
 
-    	post.getPostReports().add(postReport);
-
-    	mongoOperations.save(post);
+    	if(post.getPostReports() == null)
+    	{
+    		post.setPostReports(new ArrayList<Post.PostReport>());
+    	}
+    	post.addPostReport(postReport);
+    	
+    	Update update = new Update().set("postReports", post.getPostReports());
+        mongoOperations.updateFirst(query, update, Post.class);
 
     	return "DONE, Potatoes report post : "+(post).toString();
 
