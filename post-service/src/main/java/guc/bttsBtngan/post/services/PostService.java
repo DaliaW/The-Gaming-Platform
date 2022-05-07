@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -154,11 +155,10 @@ public class PostService {
 		System.out.println("hi");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.find(query, Post.class, "post").get(0);
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		
-		post.setModeratorId(userId);
-		mongoOperations.save(post);
-		System.out.println("bye");
+		Update update = new Update().set("moderatorId", userId);
+		mongoOperations.updateFirst(query, update, Post.class);
 		
 		return "DONE, Potatoes report post : "+(post);
 
@@ -168,7 +168,7 @@ public class PostService {
 		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.find(query, Post.class, "post").get(0);
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
