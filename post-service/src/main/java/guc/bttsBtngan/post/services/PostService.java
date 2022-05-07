@@ -157,6 +157,7 @@ public class PostService {
 		Post post = mongoOperations.findById(query, Post.class, "post");
 		
 		post.setModeratorId(userId);
+		mongoOperations.save(post);
 
 		return "DONE, Potatoes report post : "+(post);
 
