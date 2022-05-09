@@ -24,6 +24,7 @@ public class UserPostInteraction {
         this.blockedBy = blockedBy;
     }
 
+
     public String getUserId() {
         return userId;
     }

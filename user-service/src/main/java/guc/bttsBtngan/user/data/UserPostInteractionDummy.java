@@ -10,7 +10,7 @@ import java.util.List;
 @EnableMongoRepositories
 @Configuration
 public class UserPostInteractionDummy {
-//    @Autowired
+////    @Autowired
 //    UserPostRepository userPostRepository;
 //
 //    void createDummyData() {

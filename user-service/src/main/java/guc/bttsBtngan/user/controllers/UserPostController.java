@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "user/user-post")
+//@RequestMapping(path = "user/user-post")
 public class UserPostController {
 
     @Autowired
@@ -25,6 +25,11 @@ public class UserPostController {
         return userPostService.getAllReports();
     }
 
+
+    @PostMapping("users/repor")
+    public void testMD() {
+         userPostService.testMD();
+    }
     // moderator can ban users
 //    @PostMapping("/ban")
 

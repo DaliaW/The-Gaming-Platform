@@ -1,5 +1,6 @@
 package guc.bttsBtngan.user.services;
 
+import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,4 +25,25 @@ public class UserPostService {
         List<UserReports> userReports = mongoOperations.findAll(UserReports.class);
         return userReports.toString();
     }
+    public void testMD(){
+        System.out.println("Data creation started...");
+        List<String> followers = new java.util.ArrayList<>();
+        List<String> following = new java.util.ArrayList<>();
+        List<String> blockedBy = new java.util.ArrayList<>();
+        followers.add("user1");
+        followers.add("user2");
+        following.add("user3");
+        following.add("user4");
+        blockedBy.add("user5");
+        blockedBy.add("user6");
+        System.out.println("f= "+followers.toString());
+        System.out.println("f2= "+following.toString());
+        System.out.println("f3= "+blockedBy.toString());
+        UserPostInteraction x= new UserPostInteraction("user1", followers, following, blockedBy);
+        System.out.println("created");
+        mongoOperations.save(x);
+        System.out.println("Data creation finished.");
+    }
+
+
 }

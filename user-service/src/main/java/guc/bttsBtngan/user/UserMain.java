@@ -14,17 +14,24 @@ import java.util.List;
 @EnableMongoRepositories
 @SpringBootApplication
 public class UserMain {
-	public static void main(String[] args) {
-		SpringApplication.run(UserMain.class, args);
-	}
-
-
 	//CREATE
 	@Autowired
 	UserPostRepository userPostRepository;
+	@Autowired
 	MongoOperations mongoOperations;
+	public static void main(String[] args) {
+		SpringApplication.run(UserMain.class, args);
+		System.out.println("-------------CREATE Dummy-------------------------------\n");
+		UserMain x=new UserMain();
+		x.createDummyData();
 
-	void createDummyData() {
+		System.out.println("\n-------------------THANK YOU---------------------------");
+	}
+
+
+
+
+	 void createDummyData() {
 		System.out.println("Data creation started...");
 		List<String> followers = new java.util.ArrayList<>();
 		List<String> following = new java.util.ArrayList<>();
@@ -35,7 +42,12 @@ public class UserMain {
 		following.add("user4");
 		blockedBy.add("user5");
 		blockedBy.add("user6");
-		mongoOperations.save(new UserPostInteraction("user1", followers, following, blockedBy));
+		 System.out.println("f= "+followers.toString());
+		 System.out.println("f2= "+following.toString());
+		 System.out.println("f3= "+blockedBy.toString());
+		 UserPostInteraction x= new UserPostInteraction("user1", followers, following, blockedBy);
+		 System.out.println("created");
+		 mongoOperations.save(x);
 		System.out.println("Data creation finished.");
 	}
 
