@@ -98,6 +98,12 @@ public class UserUserService {
 
     // moderator ban user by id
     public String banUser(String userId, String moderatorId) {
+        // TODO: get the moderator id from the current loggedIn user session
+        // check if the user is already banned
+        if (userRepository.findById(userId).get().isBanned()) {
+            // if the user is already banned
+            throw new IllegalStateException("User is already banned");
+        }
         // check if the current user is a moderator
         Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
         if (!moderator.isPresent()) {
@@ -121,6 +127,12 @@ public class UserUserService {
     }
 
     public String unbanUser(String userId, String moderatorId) {
+        // TODO: get the moderator id from the current loggedIn user session
+        // check if the user is already unbanned
+        if (!userRepository.findById(userId).get().isBanned()) {
+            // if the user is already unbanned
+            throw new IllegalStateException("User is already unbanned");
+        }
         // check if the current user is a moderator
         Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
         if (!moderator.isPresent()) {
