@@ -1,8 +1,13 @@
 package guc.bttsBtngan.user.data;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
 import java.util.List;
 
+@Document
 public class UserPostInteraction {
+    @Id
     private String userId;
     private List<String> followers;
     private List<String> following;

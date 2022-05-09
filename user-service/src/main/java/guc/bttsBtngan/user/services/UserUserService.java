@@ -28,6 +28,11 @@ public class UserUserService {
         return userRepository.findAll().toString();
     }
 
+    public String getUser(Long id) {
+        Optional<UserUserInteraction> userId = userRepository.findById(id);
+        return userId.toString();
+    }
+
     public void registerUser(UserUserInteraction user) {
         // register a user
         Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
@@ -85,8 +90,9 @@ public class UserUserService {
 
     public String getAllphotoRef(String photoRef) {
         Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
-//        userRepository.findByphotoRef(photoRef);
-        System.out.println(userRepository.findByphotoRef(photoRef).toString());
-        return "hello";
+        return userRepository.findByphotoRef(photoRef).toString();
+//        System.out.println(userRepository.findByphotoRef(photoRef).toString());
+//        return "hello";
     }
+
 }
