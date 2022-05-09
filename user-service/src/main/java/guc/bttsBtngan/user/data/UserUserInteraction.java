@@ -111,4 +111,5 @@ public class UserUserInteraction {
                 ", isBanned=" + isBanned +
                 '}';
     }
+
 }

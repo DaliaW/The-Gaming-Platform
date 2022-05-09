@@ -16,11 +16,15 @@ public class UserPostService {
     @Autowired
     MongoOperations mongoOperations; // this variable contains the mongoDB operations including CRUD operations
 
+    @Autowired
+    UserPostRepository userPostRepository; // this variable contains the user-post interaction repository
+
     public String getAllFollowers() {
         //TODO: this method will return all followers of the current user
         return "";
     }
 
+    // moderator see reports being made by users
     public String getAllReports() {
         List<UserReports> userReports = mongoOperations.findAll(UserReports.class);
         return userReports.toString();
@@ -48,4 +52,5 @@ public class UserPostService {
         mongoOperations.save(userReports);
         System.out.println("Data creation finished.");
     }
+
 }

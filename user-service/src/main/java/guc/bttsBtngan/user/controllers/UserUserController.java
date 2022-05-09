@@ -48,4 +48,16 @@ public class UserUserController {
         return userUserService.getAllphotoRef(photoRef);
     }
 
+    // moderator can ban users
+    @PostMapping(path = "users/ban/{userId}")
+    public String banUser(@PathVariable("userId") String userId, String moderatorId) {
+        return userUserService.banUser(userId, moderatorId);
+    }
+
+    // moderator can unban users
+    @PostMapping(path = "users/ban/{userId}")
+    public String unbanUser(@PathVariable("userId") String userId, String moderatorId) {
+        return userUserService.unbanUser(userId, moderatorId);
+    }
+
 }

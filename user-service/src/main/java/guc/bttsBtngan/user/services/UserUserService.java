@@ -1,5 +1,6 @@
 package guc.bttsBtngan.user.services;
 
+import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,5 +96,45 @@ public class UserUserService {
 //        return "hello";
     }
 
+    // moderator ban user by id
+    public String banUser(String userId, String moderatorId) {
+        // check if the current user is a moderator
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.isPresent()) {
+            // if the user does not exist
+            throw new IllegalStateException("User does not exist");
+        }
+        // check if the user is a moderator
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("User is not a moderator");
+        }
+        // check if the user exists
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            throw new IllegalStateException("User does not exist");
+        }
+        // if the user exists then ban the user
+        user.get().setBanned(true);
+        return "User banned";
+    }
 
+    public String unbanUser(String userId, String moderatorId) {
+        // check if the current user is a moderator
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.isPresent()) {
+            // if the user does not exist
+            throw new IllegalStateException("User does not exist");
+        }
+        // check if the user exists
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            throw new IllegalStateException("User does not exist");
+        }
+        // if the user exists then unban the user
+        user.get().setBanned(false);
+        return "User unbanned";
+    }
 }
