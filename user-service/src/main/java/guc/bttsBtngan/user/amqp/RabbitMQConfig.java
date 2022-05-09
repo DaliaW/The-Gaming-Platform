@@ -1,7 +1,7 @@
 package guc.bttsBtngan.user.amqp;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
+//import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;

@@ -10,7 +10,7 @@ public class UserUserInteraction {
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
 
-    private Long userId;
+    private String userId;
     private String userName;
     private String Password;
     private String email;
@@ -21,7 +21,7 @@ public class UserUserInteraction {
     public UserUserInteraction() {
     }
 
-    public UserUserInteraction(Long userId, String userName, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
+    public UserUserInteraction(String userId, String userName, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
         super();
         this.userId = userId;
         this.userName = userName;
@@ -42,11 +42,11 @@ public class UserUserInteraction {
         this.isBanned = isBanned;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

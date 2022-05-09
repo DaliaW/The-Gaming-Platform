@@ -56,7 +56,7 @@ public class UserUserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         // delete a user
         boolean exists = userRepository.existsById(id);
         // check if the user exists
@@ -69,7 +69,7 @@ public class UserUserService {
     }
 
     @Transactional
-    public void updateUser(Long id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
+    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
@@ -118,6 +118,7 @@ public class UserUserService {
         }
 
 
+        return "User updated successfully";
 
     }
 
