@@ -1,15 +1,16 @@
 package guc.bttsBtngan.user.data;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 // For postgresql
 @Entity
 @Table
 public class UserUserInteraction {
-    @Id
-    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
 
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String userId;
     private String userName;
     private String Password;
