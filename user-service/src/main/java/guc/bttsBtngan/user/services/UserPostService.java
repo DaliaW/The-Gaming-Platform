@@ -2,6 +2,7 @@ package guc.bttsBtngan.user.services;
 
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
+import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -19,15 +20,25 @@ public class UserPostService {
     @Autowired
     UserPostRepository userPostRepository; // this variable contains the user-post interaction repository
 
+    @Autowired
+    UserRepository userRepository;
+
     public String getAllFollowers() {
         //TODO: this method will return all followers of the current user
         return "";
     }
 
     // moderator see reports being made by users
-    public String getAllReports() {
-        List<UserReports> userReports = mongoOperations.findAll(UserReports.class);
-        return userReports.toString();
+    public String getAllReports(String moderatorId) {
+        // TODO: check that the current loggedIn user is a moderator by checking the moderatorId from the logIn session
+        // check if current user is moderator
+        Optional<UserUserInteraction> isModerator = userRepository.findById(moderatorId);
+        if (isModerator.isPresent()) {
+            // if current user is moderator, return all reports
+            List<UserReports> reports = mongoOperations.findAll(UserReports.class);
+            return reports.toString();
+        }
+        return "";
     }
 
     public void testMD(){

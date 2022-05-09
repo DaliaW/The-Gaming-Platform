@@ -21,8 +21,8 @@ public class UserPostController {
 
     // moderator can see reports being made by users
     @GetMapping("users/reports")
-    public String getAllReports() {
-        return userPostService.getAllReports();
+    public String getAllReports(String moderatorId) {
+        return userPostService.getAllReports(moderatorId);
     }
 
 
