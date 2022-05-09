@@ -25,6 +25,7 @@ public class UserPostService {
         List<UserReports> userReports = mongoOperations.findAll(UserReports.class);
         return userReports.toString();
     }
+
     public void testMD(){
         System.out.println("Data creation started...");
         List<String> followers = new java.util.ArrayList<>();
@@ -36,14 +37,15 @@ public class UserPostService {
         following.add("user4");
         blockedBy.add("user5");
         blockedBy.add("user6");
+        UserPostInteraction.UserReports userReports = new UserPostInteraction.UserReports("user1","because?");
         System.out.println("f= "+followers.toString());
         System.out.println("f2= "+following.toString());
         System.out.println("f3= "+blockedBy.toString());
         UserPostInteraction x= new UserPostInteraction("user1", followers, following, blockedBy);
         System.out.println("created");
         mongoOperations.save(x);
+        System.out.println("saved"+userReports.toString());
+        mongoOperations.save(userReports);
         System.out.println("Data creation finished.");
     }
-
-
 }

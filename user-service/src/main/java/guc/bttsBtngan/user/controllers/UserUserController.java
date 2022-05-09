@@ -21,7 +21,7 @@ public class UserUserController {
     }
 
     @GetMapping("/users/{id}")
-    public String getUser(@PathVariable Long id) {
+    public String getUser(@PathVariable String id) {
         return userUserService.getUser(id);
     }
 
@@ -31,12 +31,12 @@ public class UserUserController {
     }
 
     @DeleteMapping(path = "/users/user-profile/{userId}")
-    public void deleteUser(@PathVariable("userId") Long id) {
+    public void deleteUser(@PathVariable("userId") String id) {
         userUserService.deleteUser(id);
     }
 
     @PutMapping(path = "/users/user-profile/{userId}")
-    public void updateUser(@PathVariable("userId") Long id,
+    public void updateUser(@PathVariable("userId") String id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String password) {

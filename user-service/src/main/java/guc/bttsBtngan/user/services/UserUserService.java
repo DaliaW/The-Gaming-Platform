@@ -28,7 +28,7 @@ public class UserUserService {
         return userRepository.findAll().toString();
     }
 
-    public String getUser(Long id) {
+    public String getUser(String id) {
         Optional<UserUserInteraction> userId = userRepository.findById(id);
         return userId.toString();
     }
@@ -47,7 +47,7 @@ public class UserUserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         // delete a user
         boolean exists = userRepository.existsById(id);
         // check if the user exists
@@ -60,7 +60,7 @@ public class UserUserService {
     }
 
     @Transactional
-    public void updateUser(Long id, String username, String email, String password) {
+    public void updateUser(String id, String username, String email, String password) {
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
