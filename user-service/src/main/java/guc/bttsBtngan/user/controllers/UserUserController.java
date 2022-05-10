@@ -1,10 +1,16 @@
 package guc.bttsBtngan.user.controllers;
 
+import com.jlefebure.spring.boot.minio.MinioException;
+import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
+import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,8 +45,11 @@ public class UserUserController {
     public void updateUser(@PathVariable("userId") String id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String email,
-                           @RequestParam(required = false) String password) {
-        userUserService.updateUser(id, username, email, password);
+                           @RequestParam(required = false) String oldPassword,
+                           @RequestParam(required = false) String newPassword
+                        ,@RequestParam(name="photo",required = false) MultipartFile photo
+    ) throws MinioException, IOException {
+        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
     }
 
     @GetMapping(path = "users/photo/{photoRef}")

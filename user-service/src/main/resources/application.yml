@@ -5,4 +5,18 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://dalia:hgdw-09123@user.taiu3.mongodb.net/userPostInteraction?retryWrites=true&w=majority
-#      uri:mongosh mongodb+srv://monica:1234@cluster0.wkqac.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+#
+#server:
+#  port: 2000
+#
+#spring:
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+#    listener:
+#      simple:
+#        concurrency: 1
+#        max-concurrency: 1
+#        prefetch: 1
