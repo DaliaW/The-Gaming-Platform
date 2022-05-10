@@ -55,7 +55,7 @@ public class UserUserController {
     }
 
     // moderator can unban users
-    @PostMapping(path = "users/ban/{userId}")
+    @PostMapping(path = "users/unban/{userId}")
     public String unbanUser(@PathVariable("userId") String userId, String moderatorId) {
         return userUserService.unbanUser(userId, moderatorId);
     }
