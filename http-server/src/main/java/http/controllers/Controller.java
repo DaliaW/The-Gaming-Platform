@@ -30,7 +30,7 @@ public class Controller {
         serviceToCommand.put("post", "messaging_req");
         this.serviceToCommand = serviceToCommand;
     }
-
+//
 //    @PostMapping("/test")
 //    public void test(){
 //        System.out.println("hereeeeeeeeeeee");

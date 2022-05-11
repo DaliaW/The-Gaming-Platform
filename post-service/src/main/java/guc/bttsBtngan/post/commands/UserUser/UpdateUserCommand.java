@@ -1,4 +1,4 @@
-package guc.bttsBtngan.user.commands.UserUser;
+package guc.bttsBtngan.post.commands.UserUser;
 
 import org.springframework.web.multipart.MultipartFile;
 

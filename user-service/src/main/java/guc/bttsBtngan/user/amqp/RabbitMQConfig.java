@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -25,7 +26,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 @Configuration
 public class RabbitMQConfig {
 
-    @Autowired
+//    @Autowired
     private Map<String, Command> commands;
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -43,7 +44,14 @@ public class RabbitMQConfig {
         return new Jackson2JsonMessageConverter();
     }
 
+    @Bean
+    public void fillMap() {
 
+        Map<String,Command> map=new HashMap<>();
+        map.put("UpdateUserCommand",new UpdateUserCommand());
+        this.commands=map;
+
+    }
 
     @Bean
     public ExecutorService executor() {
@@ -76,6 +84,7 @@ public class RabbitMQConfig {
 
     @RabbitListener(queues = request_queue)
     public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+        System.out.println("CHECKKKKKKKKKKKKKKKK= "+commands.containsKey("UpdateUserCommand"));
         HashMap<String, Object> map = new HashMap<>();
         try {
             payload.put("user_id", headers.get("user_id"));

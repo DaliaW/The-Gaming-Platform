@@ -1,14 +1,5 @@
 #server:
-#  port: 5000
-#
-#spring:
-#  data:
-#    mongodb:
-#      uri: mongodb+srv://Dalia:hgdw-09123@cluster0.wtjb5.mongodb.net/userMS?retryWrites=true&w=majority
-
-#
-server:
-  port: 2000
+#  port: 2000
 
 spring:
   rabbitmq:
@@ -21,3 +12,13 @@ spring:
         concurrency: 1
         max-concurrency: 1
         prefetch: 1
+
+#server:
+#  port: 5000
+#
+#spring:
+#  data:
+#    mongodb:
+#      uri: mongodb+srv://Dalia:hgdw-09123@cluster0.wtjb5.mongodb.net/userMS?retryWrites=true&w=majority
+
+#
