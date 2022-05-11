@@ -59,14 +59,14 @@ public class UserUserController {
 
     // moderator can ban users
     @PostMapping(path = "users/ban/{userId}")
-    public String banUser(@PathVariable("userId") String userId, String moderatorId) {
-        return userUserService.banUser(userId, moderatorId);
+    public String banUser(@PathVariable("userId") String userId) {
+        return userUserService.banUser(userId);
     }
 
     // moderator can unban users
     @PostMapping(path = "users/unban/{userId}")
-    public String unbanUser(@PathVariable("userId") String userId, String moderatorId) {
-        return userUserService.unbanUser(userId, moderatorId);
+    public String unbanUser(@PathVariable("userId") String userId) {
+        return userUserService.unbanUser(userId);
     }
 
 }
