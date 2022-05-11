@@ -36,7 +36,7 @@ public class UserUserService {
 
     private final UserRepository userRepository;
     // the repository for the user table in postgres to deal with database operations including CRUD operations
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -82,7 +82,7 @@ public class UserUserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(String id) {
+    public void deleteUser(long id) {
         // delete a user
         boolean exists = userRepository.existsById(id);
         // check if the user exists
@@ -95,14 +95,14 @@ public class UserUserService {
     }
 
     @Transactional
-    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
+    public String updateUser(long id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
         // if the name not equal to null, not empty & not the same as the current name
-        if(username != null && username.length() > 0 && !Objects.equals(username, user.getUserName())) {
+        if(username != null && username.length() > 0 && !Objects.equals(username, user.getusername())) {
             // update the name
-            user.setUserName(username);
+            user.setusername(username);
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){

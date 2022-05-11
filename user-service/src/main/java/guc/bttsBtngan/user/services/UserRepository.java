@@ -11,7 +11,7 @@ import java.util.Optional;
 // this interface is responsible for data access layer in postgresql
 // to perform CRUD operations on user entity
 @Repository
-public interface UserRepository extends JpaRepository<UserUserInteraction, String> {
+public interface UserRepository extends JpaRepository<UserUserInteraction, Long> {
     @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.email = ?1")
     Optional<UserUserInteraction> findByEmail(String email);
 

@@ -40,12 +40,12 @@ public class UserUserController {
 //    }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") String id) {
+    public void deleteUser(@PathVariable("userId") long id) {
         userUserService.deleteUser(id);
     }
 
     @PutMapping(path = "{userId}")
-    public void updateUser(@PathVariable("userId") String id,
+    public void updateUser(@PathVariable("userId") long id,
                            @RequestParam(required = false) String username,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String oldPassword,

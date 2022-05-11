@@ -11,9 +11,7 @@
    	<module>post-service</module>
    	<module>notification-ms</module>
    	<module>authentication-service</module>
-        <module>test</module>
         <module>http-server</module>
-        <module>test</module>
         <module>http-server</module>
     </modules>
     <properties>
