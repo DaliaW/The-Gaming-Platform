@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table
 public class UserUserInteraction {
+//<<<<<<< HEAD
     @Id
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -16,6 +17,13 @@ public class UserUserInteraction {
 
     private long id;
     private String username;
+//=======
+
+//    @Id @GeneratedValue(generator="system-uuid")
+//    @GenericGenerator(name="system-uuid", strategy = "uuid")
+//    private String userId;
+    private String userName;
+//>>>>>>> 8c2dcd3707951b354862a0423c04062311f92e86
     private String Password;
     private String email;
     private String photoRef;
@@ -114,4 +122,5 @@ public class UserUserInteraction {
                 ", isBanned=" + isBanned +
                 '}';
     }
+
 }
