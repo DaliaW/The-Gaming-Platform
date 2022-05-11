@@ -7,12 +7,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.Headers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class RabbitMQConfig {
 
     //  map between command name and object command
-//    @Autowired
+    @Autowired
     private Map<String, Command> commands;
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -104,9 +106,9 @@ public class RabbitMQConfig {
 //    }
 
     // dummy method for testing
-//    @Bean
-//    public ApplicationRunner runner(AmqpTemplate template) {
-//        return args -> {
+    @Bean
+    public ApplicationRunner runner(AmqpTemplate template) {
+        return args -> {
 //        	for(int i = 0 ; i < 20; i++) {
 //            	Map<String, Object> map = new HashMap<>();
 //            	map.put("user_id", "user_1");
@@ -119,8 +121,9 @@ public class RabbitMQConfig {
 //                	return m;
 //                });
 //        	}
-//        };
-//    }
+			System.out.println(commands.size());
+        };
+    }
 
 
 }

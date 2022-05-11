@@ -6,7 +6,9 @@ import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserUserInteraction;
+import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,9 @@ public class UserUserService {
     // the repository for the user table in postgres to deal with database operations including CRUD operations
 
     @Autowired
+    MongoOperations mongoOperations;
+
+    @Autowired
     public UserUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -48,7 +53,7 @@ public class UserUserService {
         return userId.toString();
     }
 
-    public void registerUser(UserUserInteraction user) {
+    public String registerUser(UserUserInteraction user) {
         // register a user
         Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
         // check if the email is already registered
@@ -56,10 +61,23 @@ public class UserUserService {
             // if the user email already exists
             throw new IllegalStateException("Email already exists");
         }
+        // check if the username already exists
+        Optional<UserUserInteraction> username = userRepository.findByUsername(user.getUserName());
+        if (username.isPresent()) {
+            // if the user username already exists
+            throw new IllegalStateException("Username already exists");
+        }
         // TODO: password hashing
-        // TODO: email verification
         // if the email is not registered yet then save the user
         userRepository.save(user);
+        // create user from class UserPostInteraction without using the word new
+        UserPostInteraction userMongo = new UserPostInteraction(); // enhance this  <==
+        // set the id of the user to mongo
+        Optional<UserUserInteraction> userId = userRepository.findById(user.getUserId());
+        System.out.println(userId.get().getUserId() + "here");
+        userMongo.setUserId(userId.get().getUserId());
+        mongoOperations.save(userMongo);
+        return "User registered successfully";
     }
 
     public void deleteUser(String id) {
