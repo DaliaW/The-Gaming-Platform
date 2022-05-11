@@ -17,13 +17,6 @@ public class UserUserInteraction {
 
     private long id;
     private String username;
-//=======
-
-//    @Id @GeneratedValue(generator="system-uuid")
-//    @GenericGenerator(name="system-uuid", strategy = "uuid")
-//    private String userId;
-    private String userName;
-//>>>>>>> 8c2dcd3707951b354862a0423c04062311f92e86
     private String Password;
     private String email;
     private String photoRef;

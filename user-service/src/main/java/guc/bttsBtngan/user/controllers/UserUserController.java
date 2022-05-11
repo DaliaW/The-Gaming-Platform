@@ -26,22 +26,12 @@ public class UserUserController {
         return userUserService.getAllUsers();
     }
 
-    @GetMapping("/users/{id}")
-    public String getUser(@PathVariable String id) {
-        return userUserService.getUser(id);
-    }
 
     @PostMapping("/users/register")
     public void registerUser(@RequestBody UserUserInteraction user) {
         userUserService.registerUser(user);
     }
 
-//<<<<<<< HEAD
-//    @PostMapping
-//    public void login(@RequestParam String email,
-//                      @RequestParam String password) {
-//        userUserService.login(email,password);
-//    }
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") long id) {

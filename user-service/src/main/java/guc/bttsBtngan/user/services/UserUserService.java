@@ -50,31 +50,9 @@ public class UserUserService {
     public String getAllUsers() {
         return userRepository.findAll().toString();
     }
-//<<<<<<< HEAD
-//    @PostMapping
-//    public void login( String email,String password) {
-////        Optional<UserUserInteraction> userExists = userRepository.findByEmail(email);
-//        UserUserInteraction user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Please enter correct email"));
-//
-////        // check if the email is already registered
-////        if (!userExists.isPresent()) {
-////            // if the user email already exists
-////            throw new IllegalStateException("Please enter correct email");
-////        }
-//        String encryptedPassword= passwordEncoder.encode(password);
-//        if(encryptedPassword!=user.getPassword()){
-//            throw new IllegalStateException("Please enter correct password");
-//        }
-//
-//    }
-//=======
 
-    public String getUser(String id) {
-        Optional<UserUserInteraction> userId = userRepository.findById(id);
-        return userId.toString();
-    }
 
-//>>>>>>> 8c2dcd3707951b354862a0423c04062311f92e86
+
     public void registerUser(UserUserInteraction user) {
         // register a user
         Optional<UserUserInteraction> email = userRepository.findByEmail(user.getEmail());
@@ -107,10 +85,7 @@ public class UserUserService {
     @Transactional
 //<<<<<<< HEAD
     public String updateUser(long id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
-//=======
-//    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
-//
-//>>>>>>> 8c2dcd3707951b354862a0423c04062311f92e86
+
         // update a user
         System.out.println("IN UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
