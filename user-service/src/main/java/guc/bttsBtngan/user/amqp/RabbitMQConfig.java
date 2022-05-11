@@ -1,22 +1,25 @@
 package guc.bttsBtngan.user.amqp;
 
 import guc.bttsBtngan.user.commands.Command;
+
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.Headers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
 
 
 @Configuration
@@ -28,7 +31,7 @@ public class RabbitMQConfig {
     private AmqpTemplate amqpTemplate;
     private static final String request_queue = "user_req";
     @Autowired
-	private ExecutorService threadPool;
+    private ExecutorService threadPool;
 
     @Bean(name = {request_queue})
     public Queue request_queue() {
@@ -42,11 +45,11 @@ public class RabbitMQConfig {
 
 
 
-	@Bean
-	public ExecutorService executor() {
+    @Bean
+    public ExecutorService executor() {
 
-		return new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
-	}
+        return new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
+    }
 
     //    @RabbitListener(queues = request_queue)
 //    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
