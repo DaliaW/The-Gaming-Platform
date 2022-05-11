@@ -6,9 +6,14 @@ import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -31,20 +36,39 @@ public class UserUserService {
 
     private final UserRepository userRepository;
     // the repository for the user table in postgres to deal with database operations including CRUD operations
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder=new BCryptPasswordEncoder();
     }
 
     @GetMapping
     public String getAllUsers() {
         return userRepository.findAll().toString();
     }
-
+//    @PostMapping
+//    public void login( String email,String password) {
+////        Optional<UserUserInteraction> userExists = userRepository.findByEmail(email);
+//        UserUserInteraction user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Please enter correct email"));
+//
+////        // check if the email is already registered
+////        if (!userExists.isPresent()) {
+////            // if the user email already exists
+////            throw new IllegalStateException("Please enter correct email");
+////        }
+//        String encryptedPassword= passwordEncoder.encode(password);
+//        if(encryptedPassword!=user.getPassword()){
+//            throw new IllegalStateException("Please enter correct password");
+//        }
+//
+//    }
     public void registerUser(UserUserInteraction user) {
         // register a user
-        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
+        Optional<UserUserInteraction> email = userRepository.findByEmail(user.getEmail());
+
         // check if the email is already registered
         if (email.isPresent()) {
             // if the user email already exists
@@ -53,6 +77,8 @@ public class UserUserService {
         // TODO: password hashing
         // TODO: email verification
         // if the email is not registered yet then save the user
+        String encryptedPassword= passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         userRepository.save(user);
     }
 
@@ -80,7 +106,7 @@ public class UserUserService {
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){
-            Optional<UserUserInteraction> emailExists = userRepository.findByEmail2(email);
+            Optional<UserUserInteraction> emailExists = userRepository.findByEmail(email);
             // check if the email is already registered
             if (emailExists.isPresent()) {
                 // if the user email already exists

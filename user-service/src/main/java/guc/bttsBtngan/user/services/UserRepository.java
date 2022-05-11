@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserUserInteraction, String> {
     @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.email = ?1")
-    Optional<UserUserInteraction> findByEmail2(String email);
+    Optional<UserUserInteraction> findByEmail(String email);
 
     @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.photoRef = ?1")
     Optional<UserUserInteraction> findByphotoRef(String photoRef);

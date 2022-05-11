@@ -32,10 +32,10 @@ public class Controller {
         this.serviceToCommand = serviceToCommand;
     }
 
-    @PostMapping("/test")
-    public void test(){
-        System.out.println("hereeeeeeeeeeee");
-    }
+//    @PostMapping("/test")
+//    public void test(){
+//        System.out.println("hereeeeeeeeeeee");
+//    }
     @SuppressWarnings("unchecked")
     @PostMapping("/")
     public Map<String, Object> handler(@RequestBody Map<String, Object> body,
@@ -43,6 +43,7 @@ public class Controller {
 
         String[] route = headers.get("routing-key").split("\\.");
         String service = route[0], command = route[1];
+        System.out.println("serviceeeeeeeeeee= "+service+" command= "+command);
         Map<String, Object> res = null;
         //TODO: get signup command name from girls team
         if(!("loginCommand".equals(command) || "signup".equals(command))) {
@@ -55,13 +56,17 @@ public class Controller {
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
                         return m;
                     });
+            System.out.println("auth_res"+auth_res);
             if(auth_res.get("error") != null) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return auth_res;
             }
+            System.out.println("ressssssss= ");
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
+//                        m.getMessageProperties().setHeader("user_id","1");
+
                         m.getMessageProperties().setHeader("user_id", auth_res.get("data").toString());
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
 
@@ -69,6 +74,7 @@ public class Controller {
                     });
         }
         else {
+            System.out.println("hereeeeeeeee else");
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);

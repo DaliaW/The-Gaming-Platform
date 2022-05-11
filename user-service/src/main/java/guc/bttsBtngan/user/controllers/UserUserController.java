@@ -33,6 +33,12 @@ public class UserUserController {
         userUserService.registerUser(user);
     }
 
+//    @PostMapping
+//    public void login(@RequestParam String email,
+//                      @RequestParam String password) {
+//        userUserService.login(email,password);
+//    }
+
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") String id) {
         userUserService.deleteUser(id);
