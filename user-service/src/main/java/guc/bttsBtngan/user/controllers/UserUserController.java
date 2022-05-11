@@ -57,6 +57,7 @@ public class UserUserController {
         return userUserService.getAllphotoRef(photoRef);
     }
 
+
     // moderator can ban users
     @PostMapping(path = "users/ban/{userId}")
     public String banUser(@PathVariable("userId") String userId) {
@@ -68,5 +69,23 @@ public class UserUserController {
     public String unbanUser(@PathVariable("userId") String userId) {
         return userUserService.unbanUser(userId);
     }
+
+    @DeleteMapping(path = "block/{userId}")
+    public void blockuser(@PathVariable("userId") Long id) {
+        // TODO: implement
+        //userUserService.deleteUser(id);
+    }
+    @DeleteMapping(path = "unblock/{userId}")
+    public void unblockuser(@PathVariable("userId") Long id) {
+        // TODO: implement
+        //userUserService.deleteUser(id);
+    }
+
+//    @GetMapping("/api/employeeswithvariable/{id}")
+//    @ResponseBody
+//    public String getEmployeesByIdWithVariableName(@PathVariable("id") String employeeId) {
+//        return "ID: " + employeeId;
+//    }
+
 
 }
