@@ -76,7 +76,6 @@ public class RabbitMQConfig {
 
     @RabbitListener(queues = request_queue)
     public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
-        System.out.println("rabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbit");
         HashMap<String, Object> map = new HashMap<>();
         try {
             payload.put("user_id", headers.get("user_id"));

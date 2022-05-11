@@ -5,14 +5,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import http.amqp.RabbitMQConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import http.amqp.RabbitMQConfig;
 
 @RestController
 public class Controller {
@@ -61,7 +60,7 @@ public class Controller {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return auth_res;
             }
-            System.out.println("ressssssss= ");
+            System.out.println("ressssssss= "+auth_res.get("data").toString());
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
@@ -79,7 +78,6 @@ public class Controller {
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
-
                         return m;
                     });
             System.out.println("ressssssssss= "+res);

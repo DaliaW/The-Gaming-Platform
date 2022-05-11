@@ -97,6 +97,7 @@ public class UserUserService {
     @Transactional
     public String updateUser(long id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
         // update a user
+        System.out.println("IN UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
         // if the name not equal to null, not empty & not the same as the current name
