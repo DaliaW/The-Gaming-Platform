@@ -1,5 +1,6 @@
 package guc.bttsBtngan.user.data;
 
+
 public class UserReports {
     private String issuerId;
     private String comment;

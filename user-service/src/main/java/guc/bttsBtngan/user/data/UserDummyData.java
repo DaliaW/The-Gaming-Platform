@@ -9,6 +9,7 @@
 //
 //
 //@Configuration
+// // to be used once then comment it out
 //public class UserDummyData {
 //    // inserted to postgres
 //    @Bean
