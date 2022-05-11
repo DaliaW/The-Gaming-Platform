@@ -26,10 +26,10 @@ public class UserPostController {
     }
 
 
-    @PostMapping("users/repor")
-    public void testMD() {
-         userPostService.testMD();
-    }
+//    @PostMapping("users/repor")
+//    public void testMD() {
+//         userPostService.testMD();
+//    }
     // moderator can ban users
 //    @PostMapping("/ban")
 

@@ -41,27 +41,27 @@ public class UserPostService {
         return "";
     }
 
-    public void testMD(){
-        System.out.println("Data creation started...");
-        List<String> followers = new java.util.ArrayList<>();
-        List<String> following = new java.util.ArrayList<>();
-        List<String> blockedBy = new java.util.ArrayList<>();
-        followers.add("user1");
-        followers.add("user2");
-        following.add("user3");
-        following.add("user4");
-        blockedBy.add("user5");
-        blockedBy.add("user6");
-        UserPostInteraction.UserReports userReports = new UserPostInteraction.UserReports("user1","because?");
-        System.out.println("f= "+followers.toString());
-        System.out.println("f2= "+following.toString());
-        System.out.println("f3= "+blockedBy.toString());
-        UserPostInteraction x= new UserPostInteraction("user1", followers, following, blockedBy);
-        System.out.println("created");
-        mongoOperations.save(x);
-        System.out.println("saved"+userReports.toString());
-        mongoOperations.save(userReports);
-        System.out.println("Data creation finished.");
-    }
+//    public void testMD(){
+//        System.out.println("Data creation started...");
+//        List<String> followers = new java.util.ArrayList<>();
+//        List<String> following = new java.util.ArrayList<>();
+//        List<String> blockedBy = new java.util.ArrayList<>();
+//        followers.add("user1");
+//        followers.add("user2");
+//        following.add("user3");
+//        following.add("user4");
+//        blockedBy.add("user5");
+//        blockedBy.add("user6");
+//        UserPostInteraction.UserReports userReports = new UserPostInteraction.UserReports("user1","because?");
+//        System.out.println("f= "+followers.toString());
+//        System.out.println("f2= "+following.toString());
+//        System.out.println("f3= "+blockedBy.toString());
+//        UserPostInteraction x= new UserPostInteraction("user1", followers, following, blockedBy);
+//        System.out.println("created");
+//        mongoOperations.save(x);
+//        System.out.println("saved"+userReports.toString());
+//        mongoOperations.save(userReports);
+//        System.out.println("Data creation finished.");
+//    }
 
 }
