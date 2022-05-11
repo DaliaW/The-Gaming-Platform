@@ -1,6 +1,5 @@
 package guc.bttsBtngan.user.amqp;
 
-//import com.rabbitmq.client.Command;
 import guc.bttsBtngan.user.commands.Command;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
@@ -27,7 +26,7 @@ public class RabbitMQConfig {
     private Map<String, Command> commands;
     @Autowired
     private AmqpTemplate amqpTemplate;
-    private static final String request_queue = "authentication_req";
+    private static final String request_queue = "user_req";
     @Autowired
 	private ExecutorService threadPool;
 
