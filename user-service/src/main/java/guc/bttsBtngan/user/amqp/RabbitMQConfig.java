@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class RabbitMQConfig {
 
     //  map between command name and object command
-//    @Autowired
+    @Autowired
     private Map<String, Command> commands;
     @Autowired
     private AmqpTemplate amqpTemplate;
