@@ -179,26 +179,22 @@ public class UserUserService {
     public String getAllphotoRef(String photoRef) {
         Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
         return userRepository.findByphotoRef(photoRef).toString();
-//        System.out.println(userRepository.findByphotoRef(photoRef).toString());
-//        return "hello";
     }
 
-    // moderator ban user by id
-    public String banUser(String userId) {
-        // TODO: get the moderator id from the current loggedIn user session
+    // moderator ban user
+    public String banUser(String moderatorId ,String userId) {
         // check if the user is already banned
         if (userRepository.findById(userId).get().isBanned()) {
             // if the user is already banned
             throw new IllegalStateException("User is already banned");
         }
         // check if the current user is a moderator
-//        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
-        // check if the user is a moderator
-//        if (!moderator.get().isModerator()) {
-//            // if the user is not a moderator
-//            throw new IllegalStateException("User is not a moderator");
-//        }
-        // check if the user exists
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("Unauthorized, you are not a moderator!");
+        }
+        // check if the user to be banned exists
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             // if the user does not exist
@@ -209,19 +205,19 @@ public class UserUserService {
         return "User banned";
     }
 
-    public String unbanUser(String userId) {
-        // TODO: get the moderator id from the current loggedIn user session
+    // moderator unban user
+    public String unbanUser(String moderatorId, String userId) {
         // check if the user is already unbanned
         if (!userRepository.findById(userId).get().isBanned()) {
             // if the user is already unbanned
             throw new IllegalStateException("User is already unbanned");
         }
         // check if the current user is a moderator
-//        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
-//        if (!moderator.get().isModerator()) {
-//            // if the user is not a moderator
-//            throw new IllegalStateException("User is not a moderator");
-//        }
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("Unauthorized, you are not a moderator!");
+        }
         // check if the user exists
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {

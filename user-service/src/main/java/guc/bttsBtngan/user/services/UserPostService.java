@@ -4,8 +4,8 @@ import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -28,16 +28,16 @@ public class UserPostService {
     }
 
     // moderator see reports being made by users
-    public String getAllReports(String moderatorId) {
-        // TODO: check that the current loggedIn user is a moderator by checking the moderatorId from the logIn session
-        // check if current user is moderator
-        Optional<UserUserInteraction> isModerator = userRepository.findById(moderatorId);
-        if (isModerator.isPresent()) {
-            // if current user is moderator, return all reports
-            List<UserReports> reports = mongoOperations.findAll(UserReports.class);
-            return reports.toString();
+    public String getAllReports(String moderatorId) throws Exception {
+        // check if the current user is a moderator
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("Unauthorized, you are not a moderator!");
         }
-        return "";
+        // if current user is moderator, return all reports
+        List<UserReports> reports = mongoOperations.findAll(UserReports.class);
+        return reports.toString();
     }
 
     public String blockUser(String currentId, String userId) throws Exception {
@@ -67,7 +67,7 @@ public class UserPostService {
         otherUser.setFollowers(otherFollowers);
         otherUser.setFollowing(otherFollowing);
         List<String> otherBlockedBy = otherUser.getBlockedBy();
-        if(otherBlockedBy.contains(currentId))
+        if (otherBlockedBy.contains(currentId))
             throw new Exception("User is already blocked");
         otherBlockedBy.add(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
@@ -91,7 +91,7 @@ public class UserPostService {
 
         //remove myself from other's blockedBy List.
         List<String> otherBlockedBy = otherUser.getBlockedBy();
-        if(!otherBlockedBy.contains(currentId))
+        if (!otherBlockedBy.contains(currentId))
             throw new Exception("User is not blocked already");
         otherBlockedBy.remove(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
@@ -110,18 +110,18 @@ public class UserPostService {
         HashSet<String> myfollowingSet = new HashSet<>();
         myfollowingSet.addAll(myfollowing);
         TreeMap<String, Integer> recommendedUsersMap = new TreeMap<>();
-        for(int  i=0; i<myfollowing.size(); i++){
+        for (int i = 0; i < myfollowing.size(); i++) {
             UserPostInteraction others = userPostRepository.findByUserId(myfollowing.get(i));
             List<String> followingFollowing = others.getFollowing();
-            for(int j=0; j<followingFollowing.size(); j++){
+            for (int j = 0; j < followingFollowing.size(); j++) {
                 String toBeRecommended = followingFollowing.get(j);
-                if(!myfollowingSet.contains(toBeRecommended)){
-                    int countOfMutualFollowers = recommendedUsersMap.getOrDefault(toBeRecommended,0);
-                    recommendedUsersMap.put(toBeRecommended,countOfMutualFollowers+1);
+                if (!myfollowingSet.contains(toBeRecommended)) {
+                    int countOfMutualFollowers = recommendedUsersMap.getOrDefault(toBeRecommended, 0);
+                    recommendedUsersMap.put(toBeRecommended, countOfMutualFollowers + 1);
                 }
             }
         }
-        for(String key : recommendedUsersMap.keySet()){
+        for (String key : recommendedUsersMap.keySet()) {
             recommendedUsers.add(key);
         }
         return recommendedUsers;

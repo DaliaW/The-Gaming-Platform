@@ -61,8 +61,8 @@ public class UserPostController {
 
     // moderator can see reports being made by users
     @GetMapping("users/reports")
-    public String getAllReports(String moderatorId) {
-        return userPostService.getAllReports(moderatorId);
+    public String getAllReports(@RequestBody HashMap<String, Object> body) throws Exception {
+        return userPostService.getAllReports((String)body.get("user_id"));
     }
 
     @DeleteMapping(path = "users/block")
