@@ -70,7 +70,7 @@ public class UserPostController {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
-        map.put("otherid",otherId);
+        map.put("otherId",otherId);
         return (String)blockUserCommand.execute(map);
 //        return userPostService.blockUser(myId, otherId);
         //userUserService.deleteUser(id);
@@ -80,7 +80,7 @@ public class UserPostController {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
-        map.put("otherid",otherId);
+        map.put("otherId",otherId);
         return (String)unblockUserCommand.execute(map);
 //        return userPostService.unblockUser(myId, otherId);
         //userUserService.deleteUser(id);
