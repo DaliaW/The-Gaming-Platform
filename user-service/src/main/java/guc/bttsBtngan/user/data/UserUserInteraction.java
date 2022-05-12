@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Table
 public class UserUserInteraction {
 //<<<<<<< HEAD
-    @Id
-    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-//    @Id @GeneratedValue(generator="system-uuid")
-//    @GenericGenerator(name="system-uuid", strategy = "uuid")
+//    @Id
+//    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
 
-    private long id;
+    private String id;
     private String username;
     private String Password;
     private String email;
@@ -26,7 +26,7 @@ public class UserUserInteraction {
     public UserUserInteraction() {
     }
 
-    public UserUserInteraction(long id, String username, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
+    public UserUserInteraction(String id, String username, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
         super();
         this.id = id;
         this.username = username;
@@ -47,11 +47,11 @@ public class UserUserInteraction {
         this.isBanned = isBanned;
     }
 
-    public long getid() {
+    public String getid() {
         return id;
     }
 
-    public void setid(long id) {
+    public void setid(String id) {
         this.id = id;
     }
 

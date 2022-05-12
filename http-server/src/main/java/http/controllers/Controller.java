@@ -64,8 +64,6 @@ public class Controller {
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
-//                        m.getMessageProperties().setHeader("user_id","1");
-
                         m.getMessageProperties().setHeader("user_id", auth_res.get("data").toString());
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
 

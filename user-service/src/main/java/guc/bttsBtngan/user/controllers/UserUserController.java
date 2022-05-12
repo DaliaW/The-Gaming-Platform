@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
+import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
@@ -34,36 +35,27 @@ public class UserUserController {
 
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") long id) {
+    public void deleteUser(@PathVariable("userId") String id) {
         userUserService.deleteUser(id);
     }
 
-    @PutMapping(path = "/users/user-profile/{userId}")
-    public void updateUser(@PathVariable("userId") long id,
-                           @RequestParam(required = false) String username,
-                           @RequestParam(required = false) String email,
-                           @RequestParam(required = false) String oldPassword,
-                           @RequestParam(required = false) String newPassword
+    @PutMapping(path = "/users/user-profile")
+    public void updateUser(@RequestParam(name="user_id") String id,
+                           @RequestParam(name="username",required = false) String username,
+                           @RequestParam(name="email",required = false) String email,
+                           @RequestParam(name="oldPassword",required = false) String oldPassword,
+                           @RequestParam(name="newPassword",required = false) String newPassword
                         ,@RequestParam(name="photo",required = false) MultipartFile photo
-    ) throws MinioException, IOException {
+    ) throws Exception {
+        System.out.println("IN UPDATEEEEE USERRRRRRRR CONTROLLER");
+        UpdateUserCommand x= new UpdateUserCommand();
+        HashMap<String,Object>map=new HashMap<>();
+        map.put("user_id",id);map.put("username",username);
+        System.out.println("XXXXXXXXXXXXXXXXXXX= "+x==null);
+        x.execute(map);
+        boolean h= x.getService()==null;
+        System.out.println("hhhhhhhhhhhhhhhhhhhhh= "+h);
         userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
     }
-
-//    @GetMapping(path = "users/photo/{photoRef}")
-//    public String getAllphotoRef(@PathVariable("photoRef") String photoRef) {
-//        return userUserService.getAllphotoRef(photoRef);
-//    }
-//
-//    // moderator can ban users
-//    @PostMapping(path = "users/ban/{userId}")
-//    public String banUser(@PathVariable("userId") String userId, String moderatorId) {
-//        return userUserService.banUser(userId, moderatorId);
-//    }
-//
-//    // moderator can unban users
-//    @PostMapping(path = "users/unban/{userId}")
-//    public String unbanUser(@PathVariable("userId") String userId, String moderatorId) {
-//        return userUserService.unbanUser(userId, moderatorId);
-//    }
 
 }
