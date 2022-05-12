@@ -2,10 +2,7 @@ package guc.bttsBtngan.user.controllers;
 
 import guc.bttsBtngan.user.services.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 //@RequestMapping(path = "user/user-post")
@@ -25,6 +22,20 @@ public class UserPostController {
         return userPostService.getAllReports(moderatorId);
     }
 
+    @DeleteMapping(path = "block/{userId}")
+    public String blockUser(@PathVariable("userId") String id) {
+        // TODO: change myId to be taken from login session
+        String myId = "1";
+        return userPostService.blockUser(myId, id);
+        //userUserService.deleteUser(id);
+    }
+    @DeleteMapping(path = "unblock/{userId}")
+    public String unblockUser(@PathVariable("userId") String id) {
+        // TODO: change myId to be taken from login session
+        String myId = "1";
+        return userPostService.unblockUser(myId, id);
+        //userUserService.deleteUser(id);
+    }
 
 //    @PostMapping("users/repor")
 //    public void testMD() {
