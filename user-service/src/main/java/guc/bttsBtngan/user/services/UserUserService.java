@@ -4,14 +4,20 @@ import com.jlefebure.spring.boot.minio.MinioConfiguration;
 import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import guc.bttsBtngan.user.data.UserPostInteraction;
+import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
-import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +39,8 @@ public class UserUserService {
     @Autowired
     private MinioConfigurationProperties minioConfigurationProperties;
     // this class will deal with all user-user interaction and database operations in postgres
+
+    private PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
     // the repository for the user table in postgres to deal with database operations including CRUD operations
@@ -61,18 +71,37 @@ public class UserUserService {
             // if the user email already exists
             throw new IllegalStateException("Email already exists");
         }
+
+        // verify email format
+        if (!user.getEmail().matches("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+")) {
+            // if the email is not in the correct format
+            throw new IllegalStateException("Email is not in the correct format");
+        }
+
         // check if the username already exists
         Optional<UserUserInteraction> username = userRepository.findByUsername(user.getUserName());
         if (username.isPresent()) {
             // if the user username already exists
             throw new IllegalStateException("Username already exists");
         }
-        // TODO: password hashing
+
+        // password hashing
+        System.out.println("password: " + user.getPassword());  // for testing
+        int strength = 10;
+        BCryptPasswordEncoder bCryptPasswordEncoder =
+                new BCryptPasswordEncoder(strength, new SecureRandom());
+        String encryptedPassword= bCryptPasswordEncoder.encode(user.getPassword());
+        System.out.println("encrypted password: " + encryptedPassword);  // for testing
+        user.setPassword(encryptedPassword);
+
         // if the email is not registered yet then save the user
         userRepository.save(user);
-        // create user from class UserPostInteraction without using the word new
-        UserPostInteraction userMongo = new UserPostInteraction(); // enhance this  <==
-        // set the id of the user to mongo
+
+        // initialize the user's followers, following & report with empty lists
+        List<String> EmptyList = Collections.<String>emptyList();
+        List<UserReports> EmptyReports = Collections.<UserReports>emptyList();
+        UserPostInteraction userMongo = new UserPostInteraction(null, EmptyList, EmptyList, EmptyList, EmptyReports); // enhance this  <==
+        // set the id of the user in sql to mongo
         Optional<UserUserInteraction> userId = userRepository.findById(user.getUserId());
         System.out.println(userId.get().getUserId() + "here");
         userMongo.setUserId(userId.get().getUserId());
