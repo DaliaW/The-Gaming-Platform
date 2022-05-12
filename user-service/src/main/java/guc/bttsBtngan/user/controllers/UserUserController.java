@@ -70,16 +70,7 @@ public class UserUserController {
         return userUserService.unbanUser(userId);
     }
 
-    @DeleteMapping(path = "block/{userId}")
-    public void blockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-    @DeleteMapping(path = "unblock/{userId}")
-    public void unblockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
+
 
 //    @GetMapping("/api/employeeswithvariable/{id}")
 //    @ResponseBody
