@@ -40,7 +40,7 @@ public class UserPostService {
         return "";
     }
 
-    public String blockUser(String currentId, String userId) {
+    public String blockUser(String currentId, String userId) throws Exception {
         // TODO: get the  current id from the current loggedIn user session
         //assuming current id in the parameters now
         UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
@@ -48,7 +48,7 @@ public class UserPostService {
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             // if the user does not exist
-            throw new IllegalStateException("User does not exist");
+            throw new Exception("User does not exist");
         }
         UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
         //remove the other from my following and follower list.
@@ -68,7 +68,7 @@ public class UserPostService {
         otherUser.setFollowing(otherFollowing);
         List<String> otherBlockedBy = otherUser.getBlockedBy();
         if(otherBlockedBy.contains(currentId))
-            return "User is already blocked";
+            throw new Exception("User is already blocked");
         otherBlockedBy.add(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
 
@@ -77,7 +77,7 @@ public class UserPostService {
         return "User is blocked";
     }
 
-    public String unblockUser(String currentId, String userId) {
+    public String unblockUser(String currentId, String userId) throws Exception {
         // TODO: get the  current id from the current loggedIn user session
         //assuming current id in the parameters now
 //        UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
@@ -85,14 +85,14 @@ public class UserPostService {
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             // if the user does not exist
-            throw new IllegalStateException("User does not exist");
+            throw new Exception("User does not exist");
         }
         UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
 
         //remove myself from other's blockedBy List.
         List<String> otherBlockedBy = otherUser.getBlockedBy();
         if(!otherBlockedBy.contains(currentId))
-            return "User is already blocked";
+            throw new Exception("User is not blocked already");
         otherBlockedBy.remove(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
 
