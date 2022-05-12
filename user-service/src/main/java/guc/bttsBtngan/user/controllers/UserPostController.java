@@ -10,6 +10,8 @@ import java.util.List;
 //@RequestMapping(path = "user/user-post")
 public class UserPostController {
 
+    //instance from userpostcommands
+
     @Autowired
     private UserPostService userPostService;
 
@@ -25,14 +27,14 @@ public class UserPostController {
     }
 
     @DeleteMapping(path = "users/block/{userId}")
-    public String blockUser(@PathVariable("userId") String id) {
+    public String blockUser(@PathVariable("userId") String id) throws Exception {
         // TODO: change myId to be taken from login session
         String myId = "1";
         return userPostService.blockUser(myId, id);
         //userUserService.deleteUser(id);
     }
     @DeleteMapping(path = "users/unblock/{userId}")
-    public String unblockUser(@PathVariable("userId") String id) {
+    public String unblockUser(@PathVariable("userId") String id) throws Exception {
         // TODO: change myId to be taken from login session
         String myId = "1";
         return userPostService.unblockUser(myId, id);

@@ -10,7 +10,7 @@ public class UnblockUserCommand extends UserPostCommand{
 
     @Override
     public Object execute(HashMap<String, Object> map) throws Exception {
-        getService().
-        return null;
+
+        return getService().unblockUser((String)map.get("user_id"), (String)map.get("otherId"));
     }
 }

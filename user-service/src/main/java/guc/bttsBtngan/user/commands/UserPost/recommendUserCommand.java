@@ -8,6 +8,6 @@ public class recommendUserCommand extends UserPostCommand{
 
     @Override
     public Object execute(HashMap<String, Object> map) throws Exception {
-        return null;
+        return getService().userRecommendations((String) map.get("user_id"));
     }
 }
