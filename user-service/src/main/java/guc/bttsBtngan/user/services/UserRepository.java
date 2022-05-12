@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<UserUserInteraction, Strin
 
     @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.photoRef = ?1")
     Optional<UserUserInteraction> findByphotoRef(String photoRef);
+
+    @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.userName = ?1")
+    Optional<UserUserInteraction> findByUsername(String username);
 }
