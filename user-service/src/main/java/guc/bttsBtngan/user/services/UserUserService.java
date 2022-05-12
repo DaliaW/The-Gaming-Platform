@@ -4,6 +4,7 @@ import com.jlefebure.spring.boot.minio.MinioConfiguration;
 import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,16 +93,18 @@ public class UserUserService {
         @Transactional
     public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
 
-        System.out.println("iddddddd"+id);
+        System.out.println("id= "+id);
+            System.out.println("username= "+username);
         // update a user
-        System.out.println("IN UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE SERVICEEEEEEE");
+        System.out.println("IN UPDATE SERVICEE");
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
-        System.out.println("IN AFTERRRRRRRRRR UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        System.out.println("IN AFTERR UPDATEE");
 
         // if the name not equal to null, not empty & not the same as the current name
         if(username != null && username.length() > 0 && !Objects.equals(username, user.getusername())) {
             // update the name
             user.setusername(username);
+            System.out.println("new username saved= "+username);
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){

@@ -17,7 +17,8 @@ import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
-
+    @Autowired
+    private UpdateUserCommand updateUserCommand;
     @Autowired
     private UserUserService userUserService;
 
@@ -47,15 +48,12 @@ public class UserUserController {
                            @RequestParam(name="newPassword",required = false) String newPassword
                         ,@RequestParam(name="photo",required = false) MultipartFile photo
     ) throws Exception {
-        System.out.println("IN UPDATEEEEE USERRRRRRRR CONTROLLER");
-        UpdateUserCommand x= new UpdateUserCommand();
+        System.out.println("IN UPDATE USER CONTROLLER");
+
         HashMap<String,Object>map=new HashMap<>();
         map.put("user_id",id);map.put("username",username);
-        System.out.println("XXXXXXXXXXXXXXXXXXX= "+x==null);
-        x.execute(map);
-        boolean h= x.getService()==null;
-        System.out.println("hhhhhhhhhhhhhhhhhhhhh= "+h);
-        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
+        updateUserCommand.execute(map);
+//        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
     }
 
 }
