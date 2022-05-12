@@ -81,6 +81,7 @@ public class UserPostController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
         map.put("otherId",otherId);
+        System.out.println("in");
         return (String)unblockUserCommand.execute(map);
 //        return userPostService.unblockUser(myId, otherId);
         //userUserService.deleteUser(id);
