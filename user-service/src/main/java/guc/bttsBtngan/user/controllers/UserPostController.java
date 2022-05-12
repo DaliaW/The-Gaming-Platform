@@ -75,7 +75,7 @@ public class UserPostController {
 //        return userPostService.blockUser(myId, otherId);
         //userUserService.deleteUser(id);
     }
-    @DeleteMapping(path = "users/unblock/{userId}")
+    @DeleteMapping(path = "users/unblock/")
     public String unblockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
