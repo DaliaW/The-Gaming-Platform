@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.core.MongoOperations;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserPostService {
@@ -52,21 +51,15 @@ public class UserPostService {
             throw new IllegalStateException("User does not exist");
         }
         UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
-
-        //remove the other from my following and follower list and block them.
+        //remove the other from my following and follower list.
         List<String> myFollowers = myUser.getFollowers();
         myFollowers.remove(userId);
         List<String> myFollowing = myUser.getFollowing();
         myFollowing.remove(userId);
         myUser.setFollowers(myFollowers);
         myUser.setFollowing(myFollowing);
-        List<String> myBlockedBy = myUser.getBlockedBy();
-        if(myBlockedBy.contains(userId))
-            return "User is already blocked";
-        myBlockedBy.add(userId);
-        myUser.setBlockedBy(myBlockedBy);
 
-        //remove the myself from other following and follower list and block myself in their profile.
+        //remove myself from other following and follower list and block myself in their profile.
         List<String> otherFollowers = otherUser.getFollowers();
         otherFollowers.remove(currentId);
         List<String> otherFollowing = otherUser.getFollowing();
@@ -79,14 +72,15 @@ public class UserPostService {
         otherBlockedBy.add(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
 
+        userPostRepository.save(otherUser);
+        userPostRepository.save(myUser);
         return "User is blocked";
     }
 
     public String unblockUser(String currentId, String userId) {
         // TODO: get the  current id from the current loggedIn user session
-        // TODO: Ask about: what if the user who I am unblocking is still blocking me ?!
         //assuming current id in the parameters now
-        UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
+//        UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
 
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
@@ -95,20 +89,42 @@ public class UserPostService {
         }
         UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
 
-        //remove the other my blockedBy list
-        List<String> myBlockedBy = myUser.getBlockedBy();
-        if(!myBlockedBy.contains(userId))
-            return "User is not blocked";
-        myBlockedBy.remove(userId);
-        myUser.setBlockedBy(myBlockedBy);
-
         //remove myself from other's blockedBy List.
         List<String> otherBlockedBy = otherUser.getBlockedBy();
         if(!otherBlockedBy.contains(currentId))
             return "User is already blocked";
         otherBlockedBy.remove(currentId);
         otherUser.setBlockedBy(otherBlockedBy);
+
+        userPostRepository.save(otherUser);
         return "User is unblocked";
+    }
+
+    public List<String> userRecommendations(String userId) {
+        // TODO: get the  userId from the current loggedIn user session
+        // TODO: Ask about: I added the recommended user IDs to the returned List,
+        // TODO: should we change the response request sheet or include the whole profile in the output ?
+        List<String> recommendedUsers = new ArrayList<>();
+        UserPostInteraction myUser = userPostRepository.findByUserId(userId);
+        List<String> myfollowing = myUser.getFollowing();
+        HashSet<String> myfollowingSet = new HashSet<>();
+        myfollowingSet.addAll(myfollowing);
+        TreeMap<String, Integer> recommendedUsersMap = new TreeMap<>();
+        for(int  i=0; i<myfollowing.size(); i++){
+            UserPostInteraction others = userPostRepository.findByUserId(myfollowing.get(i));
+            List<String> followingFollowing = others.getFollowing();
+            for(int j=0; j<followingFollowing.size(); j++){
+                String toBeRecommended = followingFollowing.get(j);
+                if(!myfollowingSet.contains(toBeRecommended)){
+                    int countOfMutualFollowers = recommendedUsersMap.getOrDefault(toBeRecommended,0);
+                    recommendedUsersMap.put(toBeRecommended,countOfMutualFollowers+1);
+                }
+            }
+        }
+        for(String key : recommendedUsersMap.keySet()){
+            recommendedUsers.add(key);
+        }
+        return recommendedUsers;
     }
 
 //    public void testMD(){

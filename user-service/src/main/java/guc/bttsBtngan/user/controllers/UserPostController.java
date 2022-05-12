@@ -4,6 +4,8 @@ import guc.bttsBtngan.user.services.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 //@RequestMapping(path = "user/user-post")
 public class UserPostController {
@@ -22,18 +24,26 @@ public class UserPostController {
         return userPostService.getAllReports(moderatorId);
     }
 
-    @DeleteMapping(path = "block/{userId}")
+    @DeleteMapping(path = "users/block/{userId}")
     public String blockUser(@PathVariable("userId") String id) {
         // TODO: change myId to be taken from login session
         String myId = "1";
         return userPostService.blockUser(myId, id);
         //userUserService.deleteUser(id);
     }
-    @DeleteMapping(path = "unblock/{userId}")
+    @DeleteMapping(path = "users/unblock/{userId}")
     public String unblockUser(@PathVariable("userId") String id) {
         // TODO: change myId to be taken from login session
         String myId = "1";
         return userPostService.unblockUser(myId, id);
+        //userUserService.deleteUser(id);
+    }
+
+    @GetMapping(path = "users/recommendUser")
+    public List<String> recommendUsers() {
+        // TODO: change myId to be taken from login session
+        String myId = "1";
+        return userPostService.userRecommendations(myId);
         //userUserService.deleteUser(id);
     }
 
