@@ -19,6 +19,7 @@ import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 public class UserUserController {
     @Autowired
     private UpdateUserCommand updateUserCommand;
+
     @Autowired
     private UserUserService userUserService;
 
@@ -27,6 +28,13 @@ public class UserUserController {
         // TODO: implement
         return userUserService.getAllUsers();
     }
+//    @GetMapping("/test")
+//    public void test() throws MinioException, IOException {
+//        System.out.println("TESTTTTTTTTTTT");
+//        // TODO: implement
+//         userUserService.test();
+//    }
+
 
 
     @PostMapping("/users/register")
@@ -51,7 +59,12 @@ public class UserUserController {
         System.out.println("IN UPDATE USER CONTROLLER");
 
         HashMap<String,Object>map=new HashMap<>();
-        map.put("user_id",id);map.put("username",username);
+        map.put("user_id",id);
+        map.put("username",username);
+        map.put("oldPassword",oldPassword);
+        map.put("newPassword",newPassword);
+        map.put("email",email);
+        map.put("photo",photo);
         updateUserCommand.execute(map);
 //        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
     }
