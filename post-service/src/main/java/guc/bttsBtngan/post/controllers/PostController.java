@@ -60,16 +60,19 @@ public class PostController {
     }
     
     @PostMapping("/post/assignmod")
-    public String assignModerator(@RequestBody String postId,@RequestBody String userId) throws InterruptedException, ExecutionException {
-        return service.assignModerator(postId,userId);
+    public String assignModerator(@RequestBody postRequest req) throws InterruptedException, ExecutionException {
+        return service.assignModerator(req.postId, req.userId);
     }
     
     @PostMapping("/post/modcheckrep")
-    public String checkPostReports(@RequestBody String postId,@RequestBody String userId) throws InterruptedException, ExecutionException, ResponseStatusException {
-        return service.checkPostReports(userId,postId);
+    public String checkPostReports(@RequestBody postRequest req) throws InterruptedException, ExecutionException, ResponseStatusException {
+        return service.checkPostReports(req.postId, req.userId);
     }
 
-
+    static public class postRequest{
+        public String postId;
+        public  String userId;
+    }
     static public class tagRequest{
         public String postId;
         String[]userIds;

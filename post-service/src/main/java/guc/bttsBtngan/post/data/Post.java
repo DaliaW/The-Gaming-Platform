@@ -1,6 +1,8 @@
 package guc.bttsBtngan.post.data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import guc.bttsBtngan.post.data.Comment.CommentVote;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -46,7 +48,12 @@ public class Post {
 	public ArrayList<PostVote> getPostVotes() {
 		return postVotes;
 	}
-
+	public void addPostVote(PostVote vote) {
+		this.postVotes.add(vote);
+	}
+	public void delPostVote(PostVote vote) {
+		this.postVotes.remove(vote);
+	}
 	public void setPostVotes(ArrayList<PostVote> postVotes) {
 		this.postVotes = postVotes;
 	}
