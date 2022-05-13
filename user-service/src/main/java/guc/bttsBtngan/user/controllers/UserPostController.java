@@ -3,12 +3,12 @@ package guc.bttsBtngan.user.controllers;
 import guc.bttsBtngan.user.services.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
-//@RequestMapping(path = "user/user-post")
 public class UserPostController {
 
     @Autowired
@@ -21,16 +21,8 @@ public class UserPostController {
 
     // moderator can see reports being made by users
     @GetMapping("users/reports")
-    public String getAllReports(String moderatorId) {
-        return userPostService.getAllReports(moderatorId);
+    public String getAllReports(@RequestBody HashMap<String, Object> body) throws Exception {
+        return userPostService.getAllReports((String)body.get("user_id"));
     }
-
-
-//    @PostMapping("users/repor")
-//    public void testMD() {
-//         userPostService.testMD();
-//    }
-    // moderator can ban users
-//    @PostMapping("/ban")
 
 }

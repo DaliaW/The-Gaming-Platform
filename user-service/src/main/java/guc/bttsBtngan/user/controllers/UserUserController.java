@@ -1,17 +1,14 @@
 package guc.bttsBtngan.user.controllers;
 
 import com.jlefebure.spring.boot.minio.MinioException;
-import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
-import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
 
 @RestController
 //@RequestMapping(path = "users")
@@ -59,15 +56,16 @@ public class UserUserController {
 
 
     // moderator can ban users
-    @PostMapping(path = "users/ban/{userId}")
-    public String banUser(@PathVariable("userId") String userId) {
-        return userUserService.banUser(userId);
+    @PostMapping(path = "users/ban")
+    public String banUser(@RequestBody HashMap<String, Object> body) {
+        return userUserService.banUser((String)body.get("user_id") ,(String)body.get("userToBan"));
     }
 
+
     // moderator can unban users
-    @PostMapping(path = "users/unban/{userId}")
-    public String unbanUser(@PathVariable("userId") String userId) {
-        return userUserService.unbanUser(userId);
+    @PostMapping(path = "users/unban")
+    public String unbanUser(@RequestBody HashMap<String, Object> body) {
+        return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
     }
 
     @DeleteMapping(path = "block/{userId}")

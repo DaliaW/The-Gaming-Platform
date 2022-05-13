@@ -1,27 +1,20 @@
 package guc.bttsBtngan.user.services;
 
-import com.jlefebure.spring.boot.minio.MinioConfiguration;
 import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -183,22 +176,20 @@ public class UserUserService {
 //        return "hello";
     }
 
-    // moderator ban user by id
-    public String banUser(String userId) {
-        // TODO: get the moderator id from the current loggedIn user session
+    // moderator ban user
+    public String banUser(String moderatorId ,String userId) {
         // check if the user is already banned
         if (userRepository.findById(userId).get().isBanned()) {
             // if the user is already banned
             throw new IllegalStateException("User is already banned");
         }
         // check if the current user is a moderator
-//        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
-        // check if the user is a moderator
-//        if (!moderator.get().isModerator()) {
-//            // if the user is not a moderator
-//            throw new IllegalStateException("User is not a moderator");
-//        }
-        // check if the user exists
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("Unauthorized, you are not a moderator!");
+        }
+        // check if the user to be banned exists
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
             // if the user does not exist
@@ -209,19 +200,19 @@ public class UserUserService {
         return "User banned";
     }
 
-    public String unbanUser(String userId) {
-        // TODO: get the moderator id from the current loggedIn user session
+    // moderator unban user
+    public String unbanUser(String moderatorId, String userId) {
         // check if the user is already unbanned
         if (!userRepository.findById(userId).get().isBanned()) {
             // if the user is already unbanned
             throw new IllegalStateException("User is already unbanned");
         }
         // check if the current user is a moderator
-//        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
-//        if (!moderator.get().isModerator()) {
-//            // if the user is not a moderator
-//            throw new IllegalStateException("User is not a moderator");
-//        }
+        Optional<UserUserInteraction> moderator = userRepository.findById(moderatorId);
+        if (!moderator.get().isModerator()) {
+            // if the user is not a moderator
+            throw new IllegalStateException("Unauthorized, you are not a moderator!");
+        }
         // check if the user exists
         Optional<UserUserInteraction> user = userRepository.findById(userId);
         if (!user.isPresent()) {
