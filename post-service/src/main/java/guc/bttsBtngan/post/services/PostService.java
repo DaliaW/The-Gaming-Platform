@@ -7,7 +7,10 @@ import java.util.concurrent.ExecutionException;
 
 
 import guc.bttsBtngan.post.data.Comment;
+import guc.bttsBtngan.post.data.Comment.CommentVote;
 import guc.bttsBtngan.post.data.Post;
+import guc.bttsBtngan.post.data.Post.PostVote;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -57,6 +60,92 @@ public class PostService {
 
     }
 
+    
+    public String commentPost(String userId, String postId, String comment)throws InterruptedException, ExecutionException {
+    	Query query = new Query();
+    	query.addCriteria(Criteria.where("_id").is(postId));
+    	Post post = mongoOperations.findById(query, Post.class, "post");
+
+    	Comment postComment = new Comment(userId, comment);
+
+    	post.getComments().add(postComment);
+
+    	mongoOperations.save(post);
+
+    	return "DONE, Potatoes comment post : "+(postComment).toString();
+
+    }
+    
+ 
+    
+    public String commentVote(String userId, String postId, String commentId,boolean vote)throws InterruptedException, ExecutionException {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(postId));
+		Post post = mongoOperations.findById(query, Post.class, "post");
+		if(post==null){
+			return "post id is not valid";
+		}
+//		Comment cmnt;
+//		for(Comment cmnt2: post.getComments()) {
+//			cmnt2.getCommen
+//		}
+//		todo search for comment
+		Comment cmnt = post.getComments().get(0);//TODO: search for comment by commentId
+		boolean found =false;
+		for(CommentVote cv: cmnt.getCommentVotes() ) {
+			if(cv.getVoterId().equals(userId)) {
+				found =true;
+				if(cv.isUpVote()==vote) {
+					cmnt.delCommentVote(cv);
+				}
+				else {
+					cv.setUpVote(vote);
+	
+				}
+				
+			}
+		}
+		if(!found) {
+			CommentVote cv=new CommentVote(userId,vote);
+			cmnt.addCommentVote(cv);
+		}
+		mongoOperations.save(post);
+
+		return "DONE, Potatoes tag in post : "+(post).toString();
+
+	}
+    
+    
+    public String postVote(String userId, String postId,boolean vote)throws InterruptedException, ExecutionException {
+  		Query query = new Query();
+  		query.addCriteria(Criteria.where("_id").is(postId));
+  		Post post = mongoOperations.findById(query, Post.class, "post");
+  		if(post==null){
+  			return "post id is not valid";
+  		}
+  		boolean found =false;
+  		for(PostVote pv: post.getPostVotes() ) {
+  			if(pv.getVoterId().equals(userId)) {
+  				found =true;
+  				if(pv.isUpVote()==vote) {
+  					post.delPostVote(pv);
+  				}
+  				else {
+  					pv.setUpVote(vote);
+  	
+  				}
+  				
+  			}
+  		}
+  		if(!found) {
+  			PostVote pv=new PostVote(userId,vote);
+  			post.addPostVote(pv);
+  		}
+  		mongoOperations.save(post);
+
+  		return "DONE, Potatoes tag in post : "+(post).toString();
+
+  	}
 	public String tagInPost(String postId, String[]userIds)throws InterruptedException, ExecutionException {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
@@ -150,17 +239,17 @@ public class PostService {
 
 	}
 	
-	
+	// TAG
 	public String assignModerator(String postId, String userId)throws InterruptedException, ExecutionException {
 		System.out.println("hi");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findOne(query, Post.class, "post");
+//		Post post = mongoOperations.findOne(query, Post.class, "post");
 		
 		Update update = new Update().set("moderatorId", userId);
 		mongoOperations.updateFirst(query, update, Post.class);
 		
-		return "DONE, Potatoes report post : "+(post);
+		return "DONE, Potatoes report post : ";
 
 	}
 	
@@ -176,4 +265,6 @@ public class PostService {
 		return "DONE, Potatoes report post : "+(post.getPostReports());
 
 	}
+	
+	
 }

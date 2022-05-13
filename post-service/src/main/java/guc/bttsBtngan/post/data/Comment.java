@@ -11,7 +11,7 @@ public class Comment {
 	
 	public Comment() {}
 	
-	public Comment(String content, String commenterId) {
+	public Comment(String commenterId, String  content) {
 		super();
 		this.content = content;
 		this.commenterId = commenterId;
@@ -32,7 +32,7 @@ public class Comment {
 	public String getCommenterId() {
 		return commenterId;
 	}
-
+	
 	public void setCommenterId(String commenterId) {
 		this.commenterId = commenterId;
 	}
@@ -43,6 +43,13 @@ public class Comment {
 
 	public void setCommentVotes(ArrayList<CommentVote> commentVotes) {
 		this.commentVotes = commentVotes;
+	}
+	
+	public void addCommentVote(CommentVote vote) {
+		this.commentVotes.add(vote);
+	}
+	public void delCommentVote(CommentVote vote) {
+		this.commentVotes.remove(vote);
 	}
 
 	public ArrayList<String> getCommentTags() {
@@ -61,8 +68,7 @@ public class Comment {
 		this.commentTags.remove(tag);
 	}
 
-
-
+	
 	public static class CommentVote{
 		private String voterId;
 		private boolean upVote;
