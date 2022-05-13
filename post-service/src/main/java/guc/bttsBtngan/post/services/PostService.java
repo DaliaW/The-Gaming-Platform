@@ -149,7 +149,7 @@ public class PostService {
 	public String tagInPost(String postId, String[]userIds)throws InterruptedException, ExecutionException {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null){
 			return "post id is not valid";
 		}
@@ -166,8 +166,10 @@ public class PostService {
 	public String delTagInPost(String postId, String[]userIds)throws InterruptedException, ExecutionException {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
-
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		if(post==null){
+			return "post id is not valid";
+		}
 		for(String userId:userIds){
 			//TODO: check if user id is valid-<<<<<<<<<<<<<<<<<<---
 			post.delPostTags(userId);
@@ -181,7 +183,7 @@ public class PostService {
 	public String commentTagInPost(String postId, String commentId, String[]userIds)throws InterruptedException, ExecutionException {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null){
 			return "post id is not valid";
 		}
@@ -199,7 +201,7 @@ public class PostService {
 	public String delCommentTagInPost(String postId, String commentId, String[]userIds)throws InterruptedException, ExecutionException {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null){
 			return "post id is not valid";
 		}
