@@ -22,17 +22,6 @@ public class UserUserInteraction {
     public UserUserInteraction() {
     }
 
-    public UserUserInteraction(String userId, String userName, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
-        super();
-        this.userId = userId;
-        this.userName = userName;
-        Password = password;
-        this.email = email;
-        this.photoRef = photoRef;
-        this.isModerator = isModerator;
-        this.isBanned = isBanned;
-    }
-
     public UserUserInteraction(String userName, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
         super();
         this.userName = userName;
