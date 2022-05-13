@@ -196,8 +196,13 @@ public class UserUserService {
             throw new IllegalStateException("User does not exist");
         }
         // if the user exists then ban the user
-        user.get().setBanned(true);
-        return "User banned";
+        if(moderator != user ) {
+            user.get().setBanned(true);
+            userRepository.save(user.get());    // save the user
+            return "User banned successfully";
+        }
+        else
+            throw new IllegalStateException("You cannot ban yourself");
     }
 
     // moderator unban user
@@ -221,6 +226,7 @@ public class UserUserService {
         }
         // if the user exists then unban the user
         user.get().setBanned(false);
-        return "User unbanned";
+        userRepository.save(user.get());    // save the user
+        return "User unbanned successfully";
     }
 }
