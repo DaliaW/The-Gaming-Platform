@@ -57,9 +57,12 @@ public class UserUserService {
     }
 
     public String registerUser(UserUserInteraction user) {
-        // register a user
-        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
+        // check that username, email and password are not empty
+        if (user.getUserName().equals("") || user.getEmail().equals("") || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("Username, email and password cannot be empty");
+        }
         // check if the email is already registered
+        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
         if (email.isPresent()) {
             // if the user email already exists
             throw new IllegalStateException("Email already exists");
