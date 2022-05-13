@@ -30,6 +30,7 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service // to specify that this class is responsible for the business logic
 public class UserUserService {
@@ -146,8 +147,10 @@ public class UserUserService {
         if(photo!=null ){
             String textPath=minioConfigurationProperties.getBucket();
             textPath+="/";
-            String imgName= photo.getOriginalFilename();
-            textPath+=imgName;
+            String uniqueID = UUID.randomUUID().toString();
+            textPath+=uniqueID;
+//            String imgName= photo.getOriginalFilename();
+//            textPath+=imgName;
 //             textPath+="monica.png";
             Path source = Paths.get(textPath);
             InputStream file=photo.getInputStream();
