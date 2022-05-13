@@ -79,12 +79,10 @@ public class UserUserService {
         }
 
         // password hashing
-        System.out.println("password: " + user.getPassword());  // for testing
         int strength = 10;
         BCryptPasswordEncoder bCryptPasswordEncoder =
                 new BCryptPasswordEncoder(strength, new SecureRandom());
         String encryptedPassword= bCryptPasswordEncoder.encode(user.getPassword());
-        System.out.println("encrypted password: " + encryptedPassword);  // for testing
         user.setPassword(encryptedPassword);
 
         // if the email is not registered yet then save the user
@@ -172,8 +170,6 @@ public class UserUserService {
     public String getAllphotoRef(String photoRef) {
         Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
         return userRepository.findByphotoRef(photoRef).toString();
-//        System.out.println(userRepository.findByphotoRef(photoRef).toString());
-//        return "hello";
     }
 
     // moderator ban user
