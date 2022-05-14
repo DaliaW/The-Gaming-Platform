@@ -58,7 +58,7 @@ public class JwtAuthenticationController {
 
 
     @RequestMapping(value="/verify", method = RequestMethod.POST)
-    public long verify(@RequestHeader ("Authorization") String token) throws Exception{
+    public String verify(@RequestHeader ("Authorization") String token) throws Exception{
         //String token = header.get("Authorization").substring(7);
         token = token.substring(7);
         System.out.println("The token is "+token);

@@ -1,15 +1,17 @@
 package guc.bttsBtngan.authentication.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "appUser")
+@Table(name = "user_user_interaction")
 public class DAOUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+
+    private String userId;
 
     @Column
     private String username;
@@ -22,7 +24,7 @@ public class DAOUser {
     private String email;
 
     @Column
-    private String photo_ref;
+    private String photoRef;
 
     @Column
     private boolean isModerator;
@@ -32,8 +34,8 @@ public class DAOUser {
 
 
 
-    public long getId(){
-        return id;
+    public String getId(){
+        return userId;
     }
     public String getEmail() {
         return email;
@@ -44,11 +46,11 @@ public class DAOUser {
     }
 
     public String getPhoto_ref() {
-        return photo_ref;
+        return photoRef;
     }
 
     public void setPhoto_ref(String photo_ref) {
-        this.photo_ref = photo_ref;
+        this.photoRef = photo_ref;
     }
 
     public boolean isModerator() {
