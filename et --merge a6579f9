@@ -1,0 +1,19 @@
+[33m5ff968d[m[33m ([m[1;36mHEAD -> [m[1;32mmoderator[m[33m, [m[1;31morigin/moderator[m[33m)[m HEAD@{0}: checkout: moving from user-ms to moderator
+[33mf813e4c[m[33m ([m[1;31morigin/user-ms[m[33m, [m[1;32muser-ms[m[33m)[m HEAD@{1}: commit: Update UserPostService.java
+[33me24a273[m HEAD@{2}: pull --ff --progress origin: Fast-forward
+[33ma6579f9[m[33m ([m[1;31morigin/moderatorCommands[m[33m)[m HEAD@{3}: checkout: moving from moderator to user-ms
+[33m57598e2[m HEAD@{4}: reset: moving to HEAD
+[33m57598e2[m HEAD@{5}: commit: added register command + removed unnecessarily constructor
+[33mc7723af[m HEAD@{6}: commit: Updated register
+[33m33ca4f4[m HEAD@{7}: commit: Update UserUserService.java
+[33m7bcdd51[m HEAD@{8}: commit: added commands + updates in moderator
+[33m48eec1a[m HEAD@{9}: commit: added moderator fixes
+[33m2870bb2[m HEAD@{10}: checkout: moving from user-ms to moderator
+[33ma6579f9[m[33m ([m[1;31morigin/moderatorCommands[m[33m)[m HEAD@{11}: reset: moving to HEAD
+[33ma6579f9[m[33m ([m[1;31morigin/moderatorCommands[m[33m)[m HEAD@{12}: checkout: moving from moderator to user-ms
+[33m2870bb2[m HEAD@{13}: checkout: moving from testCommand to moderator
+[33maa63260[m HEAD@{14}: reset: moving to HEAD
+[33maa63260[m HEAD@{15}: checkout: moving from user-ms to testCommand
+[33ma6579f9[m[33m ([m[1;31morigin/moderatorCommands[m[33m)[m HEAD@{16}: reset: moving to HEAD
+[33ma6579f9[m[33m ([m[1;31morigin/moderatorCommands[m[33m)[m HEAD@{17}: checkout: moving from master to user-ms
+[33mfcc90e1[m[33m ([m[1;31morigin/notification-ms[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{18}: clone: from https://github.com/DaliaW/The-Gaming-Platform.git
