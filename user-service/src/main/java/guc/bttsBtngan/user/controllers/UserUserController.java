@@ -1,16 +1,15 @@
 package guc.bttsBtngan.user.controllers;
 
 import com.jlefebure.spring.boot.minio.MinioException;
-import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
-import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -65,19 +64,13 @@ public class UserUserController {
         return userUserService.banUser((String)body.get("user_id") ,(String)body.get("userToBan"));
     }
 
+
     // moderator can unban users
     @PostMapping(path = "users/unban")
     public String unbanUser(@RequestBody HashMap<String, Object> body) {
         return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
     }
 
-
-
-//    @GetMapping("/api/employeeswithvariable/{id}")
-//    @ResponseBody
-//    public String getEmployeesByIdWithVariableName(@PathVariable("id") String employeeId) {
-//        return "ID: " + employeeId;
-//    }
 
 
 }

@@ -1,27 +1,20 @@
 package guc.bttsBtngan.user.services;
 
-import com.jlefebure.spring.boot.minio.MinioConfiguration;
 import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -64,9 +57,12 @@ public class UserUserService {
     }
 
     public String registerUser(UserUserInteraction user) {
-        // register a user
-        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
+        // check that username, email and password are not empty
+        if (user.getUserName().equals("") || user.getEmail().equals("") || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("Username, email and password cannot be empty");
+        }
         // check if the email is already registered
+        Optional<UserUserInteraction> email = userRepository.findByEmail2(user.getEmail());
         if (email.isPresent()) {
             // if the user email already exists
             throw new IllegalStateException("Email already exists");
@@ -86,12 +82,10 @@ public class UserUserService {
         }
 
         // password hashing
-        System.out.println("password: " + user.getPassword());  // for testing
         int strength = 10;
         BCryptPasswordEncoder bCryptPasswordEncoder =
                 new BCryptPasswordEncoder(strength, new SecureRandom());
         String encryptedPassword= bCryptPasswordEncoder.encode(user.getPassword());
-        System.out.println("encrypted password: " + encryptedPassword);  // for testing
         user.setPassword(encryptedPassword);
 
         // if the email is not registered yet then save the user
@@ -201,8 +195,13 @@ public class UserUserService {
             throw new IllegalStateException("User does not exist");
         }
         // if the user exists then ban the user
-        user.get().setBanned(true);
-        return "User banned";
+        if(moderator != user ) {
+            user.get().setBanned(true);
+            userRepository.save(user.get());    // save the user
+            return "User banned successfully";
+        }
+        else
+            throw new IllegalStateException("You cannot ban yourself");
     }
 
     // moderator unban user
@@ -226,7 +225,8 @@ public class UserUserService {
         }
         // if the user exists then unban the user
         user.get().setBanned(false);
-        return "User unbanned";
+        userRepository.save(user.get());    // save the user
+        return "User unbanned successfully";
     }
 
 

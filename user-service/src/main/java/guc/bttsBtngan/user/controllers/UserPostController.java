@@ -5,14 +5,18 @@ import guc.bttsBtngan.user.commands.UserPost.RecommendUserCommand;
 import guc.bttsBtngan.user.commands.UserPost.UnblockUserCommand;
 import guc.bttsBtngan.user.services.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.HashMap;
+
 @RestController
-//@RequestMapping(path = "user/user-post")
 public class UserPostController {
 
     //instance from userpostcommands
@@ -96,12 +100,5 @@ public class UserPostController {
 //        return userPostService.userRecommendations(myId);
         //userUserService.deleteUser(id);
     }
-
-//    @PostMapping("users/repor")
-//    public void testMD() {
-//         userPostService.testMD();
-//    }
-    // moderator can ban users
-//    @PostMapping("/ban")
 
 }

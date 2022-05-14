@@ -1,6 +1,5 @@
 package guc.bttsBtngan.user.services;
 
-import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class UserPostService {
         // if current user is moderator, return all reports
         List<UserReports> reports = mongoOperations.findAll(UserReports.class);
         return reports.toString();
-    }
 
     public String blockUser(String currentId, String userId) throws Exception {
         // TODO: get the  current id from the current loggedIn user session
