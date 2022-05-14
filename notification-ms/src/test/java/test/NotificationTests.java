@@ -81,7 +81,9 @@ public class NotificationTests {
         notification.setType("message");
         notification.setUserIDs(userID);
         try {
-            notificationService.createNotification(notification);
+            String createID=notificationService.createNotification(notification);
+            System.out.println(createID);
+            System.out.println(String.valueOf(uuid));
             ArrayList realOut = notificationService.getNotification(String.valueOf(uuid));
             notificationService = Mockito.mock(NotificationService.class);
             ArrayList<String> mockOut = new ArrayList<String>();

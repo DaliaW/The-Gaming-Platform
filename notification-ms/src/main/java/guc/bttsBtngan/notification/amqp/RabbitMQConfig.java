@@ -128,21 +128,21 @@ public class RabbitMQConfig {
 //    }
 
     // dummy method for testing get
-    @Bean
-    public ApplicationRunner runner(AmqpTemplate template) {
-        return args -> {
-            for(int i = 0 ; i < 5; i++) {
-                Map<String, Object> map = new HashMap<>();
-
-            //    map.put("notificationID", "0VQssXEceOufv7hAUHqT");
-                map.put("userID", "id1015");
-
-                template.convertAndSend(request_queue, map, m -> {
-                    m.getMessageProperties().setHeader("command", "getNotificationCommand");
-                    return m;
-                });
-            }
-        };
-    }
+//    @Bean
+//    public ApplicationRunner runner(AmqpTemplate template) {
+//        return args -> {
+//            for(int i = 0 ; i < 5; i++) {
+//                Map<String, Object> map = new HashMap<>();
+//
+//            //    map.put("notificationID", "0VQssXEceOufv7hAUHqT");
+//                map.put("userID", "id1015");
+//
+//                template.convertAndSend(request_queue, map, m -> {
+//                    m.getMessageProperties().setHeader("command", "getNotificationCommand");
+//                    return m;
+//                });
+//            }
+//        };
+//    }
 
 }
