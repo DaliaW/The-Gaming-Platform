@@ -10,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashMap;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
@@ -68,22 +71,6 @@ public class UserUserController {
         return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
     }
 
-    @DeleteMapping(path = "block/{userId}")
-    public void blockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-    @DeleteMapping(path = "unblock/{userId}")
-    public void unblockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-
-//    @GetMapping("/api/employeeswithvariable/{id}")
-//    @ResponseBody
-//    public String getEmployeesByIdWithVariableName(@PathVariable("id") String employeeId) {
-//        return "ID: " + employeeId;
-//    }
 
 
 }
