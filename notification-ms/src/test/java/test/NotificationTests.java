@@ -82,6 +82,7 @@ public class NotificationTests {
         notification.setUserIDs(userID);
         try {
             String createID=notificationService.createNotification(notification);
+            Thread.sleep(5000);
             System.out.println(createID);
             System.out.println(String.valueOf(uuid));
             ArrayList realOut = notificationService.getNotification(String.valueOf(uuid));
