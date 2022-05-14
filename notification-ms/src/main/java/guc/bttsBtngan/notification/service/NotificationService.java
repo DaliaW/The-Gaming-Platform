@@ -17,10 +17,11 @@ public class NotificationService<retun> {
     public String createNotification(Notifications notification) throws ExecutionException, InterruptedException {
 
         Firestore firestoredb= FirestoreClient.getFirestore();
+        UUID uuid = UUID.randomUUID();
+        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(String.valueOf(uuid.toString())).create(notification);
 
-        ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document().create(notification);
 
-        return "Notification Created, "+collectionApi.get().getUpdateTime().toString();
+        return uuid.toString();
 
     }
 
