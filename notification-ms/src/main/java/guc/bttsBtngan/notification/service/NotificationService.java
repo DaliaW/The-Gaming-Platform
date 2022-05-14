@@ -50,10 +50,17 @@ public class NotificationService<retun> {
         if(document.exists()){
             notifications=document.toObject(Notifications.class);
             List<String> oldList=notifications.getUserIDs();
+
             boolean flag=oldList.remove(userID);
+
             if(flag) {
                 notifications.setUserIDs(oldList);
                 ApiFuture<WriteResult> collectionApi = documentReference.set(notifications);
+                if(oldList.size()==0){
+                    documentReference.delete();
+                    return "Notification Deleted";
+
+                }
 
                 return "Notification Deleted for userID " + userID + ", at: " + collectionApi.get().getUpdateTime().toString();
             }else{
@@ -81,6 +88,18 @@ public class NotificationService<retun> {
                 if(notifications.getUserIDs()!=null&&notifications.getUserIDs().contains(userID)){
                     notificationTypes.add(notifications.getType());
                 }
+            }
+        }
+        for (int i = 0;i<notificationTypes.size();i++){
+            switch (notificationTypes.get(i)){
+                case "comment" : notificationTypes.set(i,"You have a new comment !"); break;
+                case "message" : notificationTypes.set(i,"You have a new message !"); break;
+                case "tagged" : notificationTypes.set(i,"You are tagged in new post !"); break;
+                case "joinGroup" : notificationTypes.set(i,"You are added to new group. Say Hi !"); break;
+                case "changeAdmin" : notificationTypes.set(i,"New admin to the group"); break;
+                case "likePhoto" : notificationTypes.set(i,"You have a new like on your photo"); break;
+                case "commentPhoto" : notificationTypes.set(i,"You have a new comment on your photo"); break;
+                case "newFollower" : notificationTypes.set(i,"You got a new follower"); break;
             }
         }
         return notificationTypes;

@@ -25,17 +25,17 @@ public class RabbitMQConfig {
     @Autowired
     private AmqpTemplate amqpTemplate;
     private static final String request_queue = "notification_req";
-    private static final String reply_queue = "notification_gateway";
+   // private static final String reply_queue = "notification_gateway";
 
     @Bean(name = {request_queue})
     public Queue request_queue() {
         return new Queue(request_queue);
     }
 
-    @Bean(name = {reply_queue})
-    public Queue reply_queue() {
-        return new Queue(reply_queue);
-    }
+//    @Bean(name = {reply_queue})
+//    public Queue reply_queue() {
+//        return new Queue(reply_queue);
+//    }
 
     @Bean
     public MessageConverter converter() {
@@ -47,6 +47,8 @@ public class RabbitMQConfig {
         HashMap<String, Object> map = new HashMap<>();
         try {
             System.out.println("started processing task: " + payload.get("type"));
+            payload.put("user_id", headers.get("user_id"));
+            payload.put("timestamp", headers.get("timestamp").toString());
             Object res = commands.get((String)headers.get("command")).execute(payload);
             map.put("data", res);
             System.out.println(res);
@@ -54,18 +56,22 @@ public class RabbitMQConfig {
             map.put("error", e.getMessage());
             System.out.println(e.getMessage());
         } finally {
-            amqpTemplate.convertAndSend(reply_queue, map);
+            amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+                m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+                m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+                return m;
+            });
             System.out.println("finished processing task: " + payload.get("type"));
         }
     }
 
-//    // dummy method for testing create
+    // dummy method for testing create
 //    @Bean
 //    public ApplicationRunner runner(AmqpTemplate template) {
 //        return args -> {
 //            for(int i = 0 ; i < 20; i++) {
 //                Map<String, Object> map = new HashMap<>();
-//                map.put("type", "comment"+i);
+//                map.put("type", "comment");
 //                ArrayList<String>list=new ArrayList<String>();
 //                list.add("id10"+i);
 //                list.add("id11"+i+1);

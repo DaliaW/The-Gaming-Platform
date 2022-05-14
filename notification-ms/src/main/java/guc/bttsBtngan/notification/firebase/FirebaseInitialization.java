@@ -19,7 +19,7 @@ public class FirebaseInitialization {
         FileInputStream serviceAccount =
                 null;
         try {//check directory
-            serviceAccount = new FileInputStream("notification-ms/gaming-platform-notificationms-firebase-adminsdk-merdm-c95c9d247b.json");
+            serviceAccount = new FileInputStream("gaming-platform-notificationms-firebase-adminsdk-merdm-c95c9d247b.json");
 
 
         FirebaseOptions options = new FirebaseOptions.Builder()
