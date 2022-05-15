@@ -14,7 +14,6 @@ public class UserUserInteraction {
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-
     private String id;
     private String username;
     private String Password;
