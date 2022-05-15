@@ -67,15 +67,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/the gaming platform/The-Gaming-Platform&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.com.haulmont.jpb.tools&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "F:/the gaming platform/The-Gaming-Platform/user-service/src/main/java/guc/bttsBtngan/user/data",
+    "settings.editor.selected.configurable": "configurable.group.com.haulmont.jpb.tools"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\the gaming platform\The-Gaming-Platform\user-service\src\main\java\guc\bttsBtngan\user\data" />
+      <recent name="F:\the gaming platform\The-Gaming-Platform\user-service\src\main\java\guc\bttsBtngan\user\commands" />
+      <recent name="F:\the gaming platform\The-Gaming-Platform\user-service\src\main\java\guc\bttsBtngan\user\commands\UserUser" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="guc.bttsBtngan.user.commands.UserUser" />
     </key>
