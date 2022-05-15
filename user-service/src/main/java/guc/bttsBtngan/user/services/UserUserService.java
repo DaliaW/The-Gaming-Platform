@@ -235,12 +235,21 @@ public class UserUserService {
         return "User unbanned";
     }
 
-    public String followUser(String userId,String userToBeFollowedId) {
+    public String followUser(String userId,String userToBeFollowedId) throws Exception {
         UserPostInteraction user= userPostRepository.findByUserId(userId);
         UserPostInteraction followedUser=userPostRepository.findByUserId(userToBeFollowedId);
+        Optional<UserUserInteraction> usersql = userRepository.findById(userToBeFollowedId);
+        if (!usersql.isPresent()) {
+            // if the user does not exist
+            throw new Exception("User does not exist");
+        }
+
         List<String> userFollowings= user.getFollowing();
         if(userFollowings==null)
             userFollowings=new ArrayList<>();
+        if(userFollowings.contains(userToBeFollowedId)){
+            throw new Exception("User is already followed");
+        }
         userFollowings.add(userToBeFollowedId);
         user.setFollowing(userFollowings);
         List<String> userFollowers=followedUser.getFollowers();
@@ -260,12 +269,21 @@ public class UserUserService {
         return "you are following this user now";
     }
 
-    public String unfollowUser(String userId,String userToBeUnfollowedId) {
+    public String unfollowUser(String userId,String userToBeUnfollowedId) throws Exception {
         UserPostInteraction user= userPostRepository.findByUserId(userId);
         UserPostInteraction unfollowedUser=userPostRepository.findByUserId(userToBeUnfollowedId);
+        Optional<UserUserInteraction> usersql = userRepository.findById(userToBeUnfollowedId);
+        if (!usersql.isPresent()) {
+            // if the user does not exist
+            throw new Exception("User does not exist");
+        }
+
         List<String> userFollowings= user.getFollowing();
         if(userFollowings==null)
             userFollowings=new ArrayList<>();
+        if(!userFollowings.contains(userToBeUnfollowedId)){
+            throw new Exception("User is already not followed");
+        }
         userFollowings.remove(userToBeUnfollowedId);
         user.setFollowing(userFollowings);
         List<String> userFollowers=unfollowedUser.getFollowers();

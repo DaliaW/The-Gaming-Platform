@@ -153,6 +153,21 @@ public class UserPostService {
         return recommendedUsers;
     }
 
+    public boolean validate(String userId){
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            return false;
+        }
+        return true;
+    }
+
+    public List<String> blockedBy(String userId){
+        UserPostInteraction user = userPostRepository.findByUserId(userId);
+        List<String> blockedBy = user.getBlockedBy();
+        return blockedBy;
+    }
+
 //    public void testMD(){
 //        System.out.println("Data creation started...");
 //        List<String> followers = new java.util.ArrayList<>();

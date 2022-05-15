@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="216376eb-b977-4001-9286-48722e2ee4f3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserPost/BlockUserCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserPost/RecommendUserCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserPost/UnblockUserCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserUser/FollowUserCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserUser/UnfollowUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserPost/UserPostCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/commands/UserPost/UserPostCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/controllers/UserPostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/controllers/UserPostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/controllers/UserUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/controllers/UserUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/data/UserPostInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/data/UserPostInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserPostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserPostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/guc/bttsBtngan/user/services/UserUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
