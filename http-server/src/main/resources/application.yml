@@ -1,0 +1,5 @@
+server:
+  port: 2000
+spring:
+  rabbitmq:
+    channel-rpc-timeout: 10000

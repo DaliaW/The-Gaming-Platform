@@ -1,0 +1,41 @@
+server:
+  port: 1000
+
+jwt:
+  secret: javainuse
+
+
+spring:
+  datasource:
+    username: postgres
+    password: 12345
+    url: jdbc:postgresql://localhost:5432/student
+    platform: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 1
+        prefetch: 1
+
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: Trace
