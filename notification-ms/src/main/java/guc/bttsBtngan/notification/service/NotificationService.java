@@ -20,7 +20,7 @@ public class NotificationService<retun> {
         UUID uuid = UUID.randomUUID();
         ApiFuture<WriteResult> collectionApi= firestoredb.collection("notification").document(String.valueOf(uuid.toString())).create(notification);
 
-
+        System.out.println("Notification Created, "+collectionApi.get().getUpdateTime().toString());
         return uuid.toString();
 
     }
