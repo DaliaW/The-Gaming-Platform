@@ -1,3 +1,4 @@
+
 server:
   port: 5000
 
@@ -6,17 +7,28 @@ spring:
     mongodb:
       uri: mongodb+srv://dalia:hgdw-09123@user.taiu3.mongodb.net/userPostInteraction?retryWrites=true&w=majority
 #
+
 #server:
 #  port: 2000
+
+#spring:
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 1
+        prefetch: 1
+
+#server:
+#  port: 5000
 #
 #spring:
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
-#    listener:
-#      simple:
-#        concurrency: 1
-#        max-concurrency: 1
-#        prefetch: 1
+#  data:
+#    mongodb:
+#      uri: mongodb+srv://Dalia:hgdw-09123@cluster0.wtjb5.mongodb.net/userMS?retryWrites=true&w=majority
+
+#

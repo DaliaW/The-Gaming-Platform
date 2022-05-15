@@ -3,18 +3,26 @@ package guc.bttsBtngan.user.services;
 import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 import com.jlefebure.spring.boot.minio.MinioException;
 import com.jlefebure.spring.boot.minio.MinioService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -24,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service // to specify that this class is responsible for the business logic
 public class UserUserService {
@@ -38,12 +47,17 @@ public class UserUserService {
     private final UserRepository userRepository;
     // the repository for the user table in postgres to deal with database operations including CRUD operations
 
+    // private PasswordEncoder passwordEncoder;
+
     @Autowired
     MongoOperations mongoOperations;
 
     @Autowired
     public UserUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        int strength=10;
+
+        this.passwordEncoder=new BCryptPasswordEncoder(strength,new SecureRandom());
     }
 
     @GetMapping
@@ -51,10 +65,7 @@ public class UserUserService {
         return userRepository.findAll().toString();
     }
 
-    public String getUser(String id) {
-        Optional<UserUserInteraction> userId = userRepository.findById(id);
-        return userId.toString();
-    }
+
 
     public String registerUser(UserUserInteraction user) {
         // check that username, email and password are not empty
@@ -89,6 +100,8 @@ public class UserUserService {
         user.setPassword(encryptedPassword);
 
         // if the email is not registered yet then save the user
+        // String encryptedPassword= passwordEncoder.encode(user.getPassword());
+        // user.setPassword(encryptedPassword);
         userRepository.save(user);
 
         // initialize the user's followers, following & report with empty lists
@@ -115,37 +128,53 @@ public class UserUserService {
         userRepository.deleteById(id);
     }
 
-    @Transactional
+//    @Transactional
+//    public String updateUser(){
+//        System.out.println("IN UPDATE SERVICE");
+//        return "IN UPDATE";
+//    }
+
+
+        @Transactional
     public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
 
+        System.out.println("id= "+id);
+            System.out.println("username= "+username);
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
         // if the name not equal to null, not empty & not the same as the current name
-        if(username != null && username.length() > 0 && !Objects.equals(username, user.getUserName())) {
+        if(username != null && username.length() > 0 && !Objects.equals(username, user.getusername())) {
             // update the name
-            user.setUserName(username);
+            user.setusername(username);
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){
-            Optional<UserUserInteraction> emailExists = userRepository.findByEmail2(email);
+            Optional<UserUserInteraction> emailExists = userRepository.findByEmail(email);
             // check if the email is already registered
-            if (emailExists.isPresent()) {
-                // if the user email already exists
-                throw new IllegalStateException("Email already exists");
-            } else {
-                // update the email
+            if (!emailExists.isPresent()) {
                 user.setEmail(email);
+
+            } else {
+                throw new IllegalStateException("Email already exists");
+
             }
+
         }
         // if password is not null, not empty & not the same as the current password
+            if((oldPassword ==null ||oldPassword.length()==0)&& newPassword!=null) {
+                throw new IllegalStateException("Please enter old password.");
+            }
         if(oldPassword != null && oldPassword.length()>0){
-            if( !Objects.equals(oldPassword, user.getPassword())) {
+
+//            if(!Objects.equals(encryptedPassword, user.getPassword())) {
+            if(!passwordEncoder.matches(oldPassword,user.getPassword())){
                 throw new IllegalStateException("Old Password is incorrect.");
             }
             else if(newPassword!=null && newPassword.length()>0){
-                if(!Objects.equals(newPassword, user.getPassword())){
-                    user.setPassword(newPassword);
+                if(!passwordEncoder.matches(newPassword,user.getPassword())){
+                    String encryptedNewPassword= passwordEncoder.encode(newPassword);
+                    user.setPassword(encryptedNewPassword);
                 }
                 else
                     throw new IllegalStateException("New password is same as old password.");
@@ -157,12 +186,16 @@ public class UserUserService {
         if(photo!=null ){
             String textPath=minioConfigurationProperties.getBucket();
             textPath+="/";
-            String imgName= photo.getOriginalFilename();
-            textPath+=imgName;
+            String uniqueID = UUID.randomUUID().toString();
+            textPath+=uniqueID;
+//            String imgName= photo.getOriginalFilename();
+//            textPath+=imgName;
+//             textPath+="monica.png";
             Path source = Paths.get(textPath);
             InputStream file=photo.getInputStream();
             String contentType=photo.getContentType();
             minioService.upload(source,file,contentType);
+            user.setPhotoRef(textPath);
         }
 
 

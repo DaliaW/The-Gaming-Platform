@@ -1,7 +1,9 @@
 package guc.bttsBtngan.user.commands;
+
+
 import java.util.HashMap;
 
-//import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class Command {

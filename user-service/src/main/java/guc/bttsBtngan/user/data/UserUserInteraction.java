@@ -8,11 +8,15 @@ import javax.persistence.*;
 @Entity
 @Table
 public class UserUserInteraction {
-
+//<<<<<<< HEAD
+//    @Id
+//    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String userId;
-    private String userName;
+
+    private String id;
+    private String username;
     private String Password;
     private String email;
     private String photoRef;
@@ -22,9 +26,9 @@ public class UserUserInteraction {
     public UserUserInteraction() {
     }
 
-    public UserUserInteraction(String userName, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
+    public UserUserInteraction(String username, String password, String email, String photoRef, boolean isModerator, boolean isBanned) {
         super();
-        this.userName = userName;
+        this.username = username;
         Password = password;
         this.email = email;
         this.photoRef = photoRef;
@@ -32,20 +36,20 @@ public class UserUserInteraction {
         this.isBanned = isBanned;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getid() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setid(String id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getusername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setusername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -91,8 +95,8 @@ public class UserUserInteraction {
     @Override
     public String toString() {
         return "UserUserInteraction{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", Password='" + Password + '\'' +
                 ", email='" + email + '\'' +
                 ", photoRef='" + photoRef + '\'' +

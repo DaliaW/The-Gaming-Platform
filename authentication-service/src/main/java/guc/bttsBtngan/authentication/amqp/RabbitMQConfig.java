@@ -79,7 +79,6 @@ public class RabbitMQConfig {
         HashMap<String, Object> map = new HashMap<>();
         try {
             payload.put("user_id", headers.get("user_id"));
-            payload.put("timestamp", headers.get("timestamp").toString());
             Object res = commands.get((String)headers.get("command")).execute(payload);
             map.put("data", res);
         } catch (Exception e) {

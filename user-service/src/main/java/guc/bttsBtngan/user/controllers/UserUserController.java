@@ -9,10 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
-
+import java.util.List;
+import java.util.Optional;
+import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
+    @Autowired
+    private UpdateUserCommand updateUserCommand;
 
     @Autowired
     private UserUserService userUserService;
@@ -22,31 +26,45 @@ public class UserUserController {
         // TODO: implement
         return userUserService.getAllUsers();
     }
+//    @GetMapping("/test")
+//    public void test() throws MinioException, IOException {
+//        System.out.println("TESTTTTTTTTTTT");
+//        // TODO: implement
+//         userUserService.test();
+//    }
 
-    @GetMapping("/users/{id}")
-    public String getUser(@PathVariable String id) {
-        return userUserService.getUser(id);
-    }
+
 
     @PostMapping("/users/register")
     public void registerUser(@RequestBody UserUserInteraction user) {
         userUserService.registerUser(user);
     }
 
-    @DeleteMapping(path = "/users/user-profile/{userId}")
+
+    @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") String id) {
         userUserService.deleteUser(id);
     }
 
-    @PutMapping(path = "/users/user-profile/{userId}")
-    public void updateUser(@PathVariable("userId") String id,
-                           @RequestParam(required = false) String username,
-                           @RequestParam(required = false) String email,
-                           @RequestParam(required = false) String oldPassword,
-                           @RequestParam(required = false) String newPassword
+    @PutMapping(path = "/users/user-profile")
+    public void updateUser(@RequestParam(name="user_id") String id,
+                           @RequestParam(name="username",required = false) String username,
+                           @RequestParam(name="email",required = false) String email,
+                           @RequestParam(name="oldPassword",required = false) String oldPassword,
+                           @RequestParam(name="newPassword",required = false) String newPassword
                         ,@RequestParam(name="photo",required = false) MultipartFile photo
-    ) throws MinioException, IOException {
-        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
+    ) throws Exception {
+        System.out.println("IN UPDATE USER CONTROLLER");
+        userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
+        // HashMap<String,Object>map=new HashMap<>();
+        // map.put("user_id",id);
+        // map.put("username",username);
+        // map.put("oldPassword",oldPassword);
+        // map.put("newPassword",newPassword);
+        // map.put("email",email);
+        // map.put("photo",photo);
+        // updateUserCommand.execute(map);
+    
     }
 
     @GetMapping(path = "users/photo/{photoRef}")
