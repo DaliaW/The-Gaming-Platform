@@ -1,17 +1,13 @@
 package guc.bttsBtngan.user.controllers;
 
-import com.jlefebure.spring.boot.minio.MinioException;
+import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
@@ -84,6 +80,23 @@ public class UserUserController {
     @PostMapping(path = "users/unban")
     public String unbanUser(@RequestBody HashMap<String, Object> body) {
         return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
+    }
+
+    // see banned users
+    @GetMapping(path = "users/banned")
+    public String getBannedUsers() {
+        return userUserService.getBannedUsers();
+    }
+
+    // the below endpoints are for testing purposes only
+    @PutMapping("/users/set-role")
+    public void setRole(@RequestBody HashMap<String, Object> body) {
+        userUserService.setRole((String)body.get("user_id"),(String)body.get("role"));
+    }
+
+    @GetMapping("/users/get-role")
+    public String getRole(@RequestBody HashMap<String, Object> body) {
+        return userUserService.getRole((String)body.get("user_id"));
     }
 
     @DeleteMapping(path = "block/{userId}")

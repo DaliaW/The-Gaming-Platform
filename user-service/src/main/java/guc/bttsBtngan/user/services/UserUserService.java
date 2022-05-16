@@ -197,9 +197,9 @@ public class UserUserService {
     }
 
     // moderator ban user
-    public String banUser(String moderatorId ,String userId) {
+    public String banUser(String moderatorId ,String user_id) {
         // check if the user is already banned
-        if (userRepository.findById(userId).get().isBanned()) {
+        if (userRepository.findById(user_id).get().isBanned()) {
             // if the user is already banned
             throw new IllegalStateException("User is already banned");
         }
@@ -210,7 +210,7 @@ public class UserUserService {
             throw new IllegalStateException("Unauthorized, you are not a moderator!");
         }
         // check if the user to be banned exists
-        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        Optional<UserUserInteraction> user = userRepository.findById(user_id);
         if (!user.isPresent()) {
             // if the user does not exist
             throw new IllegalStateException("User does not exist");
@@ -226,9 +226,9 @@ public class UserUserService {
     }
 
     // moderator unban user
-    public String unbanUser(String moderatorId, String userId) {
+    public String unbanUser(String moderatorId, String user_id) {
         // check if the user is already unbanned
-        if (!userRepository.findById(userId).get().isBanned()) {
+        if (!userRepository.findById(user_id).get().isBanned()) {
             // if the user is already unbanned
             throw new IllegalStateException("User is already unbanned");
         }
@@ -239,7 +239,7 @@ public class UserUserService {
             throw new IllegalStateException("Unauthorized, you are not a moderator!");
         }
         // check if the user exists
-        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        Optional<UserUserInteraction> user = userRepository.findById(user_id);
         if (!user.isPresent()) {
             // if the user does not exist
             throw new IllegalStateException("User does not exist");
@@ -248,5 +248,45 @@ public class UserUserService {
         user.get().setBanned(false);
         userRepository.save(user.get());    // save the user
         return "User unbanned successfully";
+    }
+
+    // these methods are added for testing purposes
+    public void setRole(String user_id, String role) {
+        Optional<UserUserInteraction> user = userRepository.findById(user_id);
+        if (user.isPresent()) {
+            if (role.equals("moderator")) {
+                user.get().setModerator(true);
+            } else if (role.equals("user")) {
+                user.get().setModerator(false);
+            } else {
+                throw new IllegalStateException("Invalid role");
+            }
+            userRepository.save(user.get());
+        } else {
+            throw new IllegalStateException("User does not exist");
+        }
+    }
+
+    public String getRole(String user_id) {
+        Optional<UserUserInteraction> user = userRepository.findById(user_id);
+        if (user.isPresent()) {
+            if (user.get().isModerator()) {
+                return "moderator";
+            } else {
+                return "user";
+            }
+        } else {
+            throw new IllegalStateException("User does not exist");
+        }
+    }
+
+    public String getBannedUsers() {
+        StringBuilder sb = new StringBuilder();
+        for (UserUserInteraction user : userRepository.findAll()) {
+            if (user.isBanned()) {
+                sb.append(user.getid()).append(" ");
+            }
+        }
+        return sb.toString();
     }
 }
