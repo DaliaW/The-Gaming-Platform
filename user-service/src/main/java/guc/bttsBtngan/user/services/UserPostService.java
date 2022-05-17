@@ -104,19 +104,31 @@ public class UserPostService {
         System.out.println("the report made : "+report);
         List<UserReports> getAllUserReports= user.getUserReports();
         if(getAllUserReports.isEmpty()){
+            System.out.println("ana fadyyyyy");
             getAllUserReports= new ArrayList<>();
         }
         System.out.println("get all, users report "+getAllUserReports);
 
         // HANDLE THE REPITION OF THE REPORTS INSIDE THE DATABASE
-//        for(int i=0;i<getAllUserReports.size();i++){
-//            List<UserReports> newReports= (List<UserReports>) getAllUserReports.get(i);
-//            System.out.println(newReports);
-//            if(newReports.contains(user)&& newReports.contains(reportComment)){
-//                System.out.println("ana the same message");
-//                throw new Exception("The user has been already reported");
-//            }
-//        }
+        for(int i=0;i<getAllUserReports.size();i++){
+            UserReports newReports= getAllUserReports.get(i);
+            System.out.println(newReports);
+            String user1= newReports.getIssuerId();
+            String comment1= newReports.getComment();
+            System.out.println("user1 : "+user1);
+            System.out.println("user : "+user);
+            System.out.println("comment 1: "+comment1);
+            System.out.println("report comment : "+reportComment);
+            System.out.println("user1.equals(user) "+user1.equalsIgnoreCase(userId));
+            System.out.println("comment1.equals(reportcomment)  "+comment1.equals(reportComment));
+
+            if(user1.equals(userId)&& comment1.equals(reportComment)){
+                System.out.println("ana the same message");
+                throw new Exception("The user has been already reported with the same comment.");
+            }
+        }
+
+        System.out.println("ana hena ahooooooo");
 
 
         getAllUserReports.add(report);
