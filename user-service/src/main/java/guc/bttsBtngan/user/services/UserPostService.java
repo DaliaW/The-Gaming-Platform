@@ -1,11 +1,16 @@
 package guc.bttsBtngan.user.services;
 
+import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,5 +67,70 @@ public class UserPostService {
 //        mongoOperations.save(userReports);
 //        System.out.println("Data creation finished.");
 //    }
+
+    //=============== REPORT USERS :- =============================================
+    public String reportUser(String userId, String userId2, String reportComment) throws Exception {
+        UserPostInteraction user = userPostRepository.findByUserId(userId2);
+
+        Optional<UserUserInteraction> userX = userRepository.findById(userId);
+        System.out.println("here is the data "+ userId+ "  "+ userId2+"   "+ reportComment);
+        if (!userX.isPresent()) {
+            // if the user does not exist
+            throw new Exception("User does not exist");
+        }
+        if(reportComment.isEmpty()){
+//            System.out.println("ana fadyyy ahoooo");
+            reportComment=" ";
+        }
+        // check if the user exists
+        System.out.println("userX: "+userX);
+        Optional<UserUserInteraction> userX2 = userRepository.findById(userId2);
+        // check if the user exists
+        System.out.println("userX2: "+userX2);
+        if (!userX2.isPresent()) {
+            // if the user does not exist
+            System.out.println("ana mesh mawgood");
+            throw new IllegalStateException("User does not exist");
+        }
+//        UserPostInteraction user = userPostRepository.findByUserId(userId2);
+//        System.out.println("ana hena user ahooooooo "+user);
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId2));
+//        UserPostInteraction user = mongoOperations.findById(query, UserPostInteraction.class);
+        System.out.println("user from mongo : "+user);
+
+        UserReports report = new UserReports(userId, reportComment);
+        System.out.println("the report made : "+report);
+        List<UserReports> getAllUserReports= user.getUserReports();
+        if(getAllUserReports.isEmpty()){
+            getAllUserReports= new ArrayList<>();
+        }
+        System.out.println("get all, users report "+getAllUserReports);
+
+        // HANDLE THE REPITION OF THE REPORTS INSIDE THE DATABASE
+//        for(int i=0;i<getAllUserReports.size();i++){
+//            List<UserReports> newReports= (List<UserReports>) getAllUserReports.get(i);
+//            System.out.println(newReports);
+//            if(newReports.contains(user)&& newReports.contains(reportComment)){
+//                System.out.println("ana the same message");
+//                throw new Exception("The user has been already reported");
+//            }
+//        }
+
+
+        getAllUserReports.add(report);
+        user.setUserReports(getAllUserReports);
+        System.out.println("AFTER ADDING "+user);
+
+        Update reportAdd=new Update().set("userReports",getAllUserReports);
+
+        mongoOperations.updateFirst(query,reportAdd,UserPostInteraction.class);
+        System.out.println("report added document : " + reportAdd);
+        System.out.println("report user  : " + user);
+//        mongoOperations.save(user);
+
+        return " the report has been posted successfully: ";
+    }
 
 }

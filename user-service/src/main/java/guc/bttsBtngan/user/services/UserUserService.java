@@ -8,12 +8,15 @@ import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +34,10 @@ public class UserUserService {
     // this class will deal with all user-user interaction and database operations in postgres
 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserPostRepository userPostRepository;
+
 
     private final UserRepository userRepository;
     // the repository for the user table in postgres to deal with database operations including CRUD operations
@@ -104,17 +111,17 @@ public class UserUserService {
         return "User registered successfully";
     }
 
-    public void deleteUser(String id) {
-        // delete a user
-        boolean exists = userRepository.existsById(id);
-        // check if the user exists
-        if (!exists) {
-            // if the user does not exist
-            throw new IllegalStateException("User does not exist");
-        }
-        // if the user exists then delete the user
-        userRepository.deleteById(id);
-    }
+//    public void deleteUser(String id) {
+//        // delete a user
+//        boolean exists = userRepository.existsById(id);
+//        // check if the user exists
+//        if (!exists) {
+//            // if the user does not exist
+//            throw new IllegalStateException("User does not exist");
+//        }
+//        // if the user exists then delete the user
+//        userRepository.deleteById(id);
+//    }
 
 //    @Transactional
 //    public String updateUser(){
@@ -249,4 +256,96 @@ public class UserUserService {
         userRepository.save(user.get());    // save the user
         return "User unbanned successfully";
     }
+
+    public String DeleteUser(String userId) throws Exception {
+        UserPostInteraction user = userPostRepository.findByUserId(userId);
+        Optional<UserUserInteraction> userX = userRepository.findById(userId);
+        // check if the user exists
+        System.out.println("user:  "+user);
+        System.out.println("userX:  "+userX);
+
+        if (!userX.isPresent()) {
+            // if the user does not exist
+            System.out.println("user hereeeeeee ");
+            throw new IllegalStateException("User does not exist here ");
+        }
+
+        //remove the user from their following and followers list.
+        List<String> followers = user.getFollowers();
+        List<String> following = user.getFollowing();
+        if(!followers.isEmpty()){
+            for(int i=0;i< followers.size();i++){
+                // OTHER USERS FOLLOW ME !!!!!!!
+                // loop over each of the followers, get their id,
+                // remove the user id from their following list
+                String followId= followers.get(i);
+                System.out.println(followId);
+                UserPostInteraction follower = userPostRepository.findByUserId(followId);
+                List<String> FollowFolloweringsList = follower.getFollowing();
+                // user following list, other user followers list
+                for(int j=0;j<FollowFolloweringsList.size();j++){
+                    if(FollowFolloweringsList.get(i).equals(userId)) {
+                        // I reached the user id in the following list
+                        FollowFolloweringsList.remove(userId);
+                        follower.setFollowing(FollowFolloweringsList);
+
+                        Query query =new Query();
+                        query.addCriteria(Criteria.where("userId").is(followId));
+                        Update deleteAFollowing=new Update().set("following",FollowFolloweringsList);
+                        mongoOperations.updateFirst(query,deleteAFollowing,UserPostInteraction.class);
+                        // userPostRepository.save(follower);
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println(" ana follers fadyyyyyyyyyyy");
+
+        }
+        if(!following.isEmpty()){
+            for(int i=0;i< following.size();i++){
+                // I follow other USERS !!!!!!!
+                // loop over each of the following, get their id,
+                // remove the user id from their followers list
+                String followId= followers.get(i);
+                System.out.println(followId);
+                UserPostInteraction follow = userPostRepository.findByUserId(followId);
+                List<String> FollowFollowersList = follow.getFollowers();
+                // user following list, other user followers list
+                for(int j=0;j<FollowFollowersList.size();j++){
+                    if(FollowFollowersList.get(i).equals(userId)) {
+                        FollowFollowersList.remove(userId);
+                        follow.setFollowers(FollowFollowersList);
+
+                        Query query2 =new Query();
+                        query2.addCriteria(Criteria.where("userId").is(followId));
+                        Update deleteAFollower=new Update().set("followers",FollowFollowersList);
+                        mongoOperations.updateFirst(query2,deleteAFollower,UserPostInteraction.class);
+
+                        // userPostRepository.save(follow);
+
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println(" ana following fadyyyyyyyyyyy");
+
+        }
+
+        Query query1 =new Query();
+        query1.addCriteria(Criteria.where("userId").is(userId));
+//        UserPostInteraction userTest2 = mongoOperations.findOne(query1, UserPostInteraction.class);
+        mongoOperations.remove(query1,UserPostInteraction.class);
+//                remove(user);
+        System.out.println("Deleted document : " + user);
+//        // if the user exists then delete the user
+        userRepository.deleteById(userId);
+        //userPostRepository.delete(user);
+        //mongoOperations.save(user);
+        return "User account has been successfully deleted";
+    }
+
+
+
 }

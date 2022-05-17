@@ -1,6 +1,7 @@
 package guc.bttsBtngan.user.controllers;
 
 import com.jlefebure.spring.boot.minio.MinioException;
+import guc.bttsBtngan.user.commands.UserUser.DeleteUserCommand;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 public class UserUserController {
     @Autowired
     private UpdateUserCommand updateUserCommand;
+
+    @Autowired
+    private DeleteUserCommand deleteUserCommand;
+
 
     @Autowired
     private UserUserService userUserService;
@@ -40,10 +45,16 @@ public class UserUserController {
         userUserService.registerUser(user);
     }
 
+    @DeleteMapping(path = "/users/user-profile/delete")
+    public void deleteUser(@RequestBody HashMap<String,Object> body) throws Exception {
+//        public void deleteUser(@RequestBody String userId) throws Exception {
+//        HashMap<String, Object> map=new HashMap<>();
+//        map.put("userId",userId);
+//        return (String) deleteUserCommand.execute(map);
 
-    @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") String id) {
-        userUserService.deleteUser(id);
+        userUserService.DeleteUser((String) body.get("user_id"));
+//        return "the user has been deleted";
+
     }
 
     @PutMapping(path = "/users/user-profile")
