@@ -3,10 +3,12 @@ package guc.bttsBtngan.post.controllers;
 
 import java.util.concurrent.ExecutionException;
 
+import com.jlefebure.spring.boot.minio.MinioException;
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -25,7 +27,7 @@ public class PostController {
     }
 
     @PostMapping("/post/content")
-    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
+    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException, MinioException {
         return service.searchPosts(req.content);
     }
 
@@ -69,6 +71,24 @@ public class PostController {
         return service.checkPostReports(req.postId, req.userId);
     }
 
+
+    @PutMapping(path = "/posts/attach-photo")
+    public void updateUser(@RequestParam(name="post_id") String id,
+                           @RequestParam(name="photo",required = false) MultipartFile photo
+    ) throws Exception {
+        System.out.println("IN UPDATE USER CONTROLLER");
+//        userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
+        service.attachPost(id,photo);
+        // HashMap<String,Object>map=new HashMap<>();
+        // map.put("user_id",id);
+        // map.put("username",username);
+        // map.put("oldPassword",oldPassword);
+        // map.put("newPassword",newPassword);
+        // map.put("email",email);
+        // map.put("photo",photo);
+        // updateUserCommand.execute(map);
+
+    }
     static public class postRequest{
         public String postId;
         public  String userId;

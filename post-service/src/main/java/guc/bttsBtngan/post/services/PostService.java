@@ -1,9 +1,11 @@
 package guc.bttsBtngan.post.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
+import java.util.*;
 
 
 import guc.bttsBtngan.post.data.Comment;
@@ -18,16 +20,24 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
+import com.jlefebure.spring.boot.minio.MinioException;
+import com.jlefebure.spring.boot.minio.MinioService;
 
 
 
 @Service
 public class PostService {
+	@Autowired
+	MinioService minioService;
+	@Autowired
+	MinioConfigurationProperties minioConfigurationProperties;
     @Autowired
     MongoOperations mongoOperations;
 
-    public String createPost(Post post) throws InterruptedException, ExecutionException {
+	public String createPost(Post post) throws InterruptedException, ExecutionException {
     	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
         return "DONE, created post is: "+(post).toString();
@@ -235,7 +245,7 @@ public class PostService {
 		}
 		return c;
 	}
-	public String searchPosts(String subContent)throws InterruptedException, ExecutionException {
+	public String searchPosts(String subContent) throws InterruptedException, ExecutionException, MinioException {
 		Query query = new Query();
 		StringBuilder pattern= new StringBuilder(".*");//starts with anything
 		String[]tokens=subContent.split(" ");
@@ -246,7 +256,7 @@ public class PostService {
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
 
-		return "DONE, Potatoes report post : "+(post);
+		return "DONE, Potatoes report post : "+(post)+" bucket is : "+minioConfigurationProperties.getBucket()+" access key is : "+minioConfigurationProperties.getAccessKey()+" secret key is : "+minioConfigurationProperties.getSecretKey();
 
 	}
 	
@@ -276,6 +286,29 @@ public class PostService {
 		return "DONE, Potatoes report post : "+(post.getPostReports());
 
 	}
-	
+
+	public void attachPost(String post_id,  MultipartFile photo) throws MinioException, IOException {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(post_id));
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		if(post==null){
+			//throw exception
+		}
+//		if(photo!=null ){
+//			String textPath=minioConfigurationProperties.getBucket();
+//			textPath+="/";
+//			String uniqueID = UUID.randomUUID().toString();
+//			textPath+=uniqueID;
+////            String imgName= photo.getOriginalFilename();
+////            textPath+=imgName;
+////             textPath+="monica.png";
+//			Path source = Paths.get(textPath);
+//			InputStream file=photo.getInputStream();
+//			String contentType=photo.getContentType();
+//			minioService.upload(source,file,contentType);
+//			assert post != null;
+//			post.setPhotoRef(textPath);
+//		}
+	}
 	
 }
