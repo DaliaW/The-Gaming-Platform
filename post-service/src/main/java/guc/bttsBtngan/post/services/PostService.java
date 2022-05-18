@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import guc.bttsBtngan.notification.commands.*;
 
 import guc.bttsBtngan.post.data.Comment;
 import guc.bttsBtngan.post.data.Comment.CommentVote;
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.data.Post.PostVote;
 
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -26,10 +30,29 @@ import org.springframework.web.server.ResponseStatusException;
 public class PostService {
     @Autowired
     MongoOperations mongoOperations;
-
-    public String createPost(Post post) throws InterruptedException, ExecutionException {
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+    
+    public String createPost(Post post) throws Exception {
     	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
+        
+        
+        // check if the user who posted the post has followers
+        // if the list contains followers, we do the notification step (create hash map with Type,list<string>)
+            
+        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+	  	ArrayList<String> btngan = new ArrayList<String>();  ;
+	  	type_IDs.put("type", "post");
+	  	type_IDs.put("userIDs", btngan);
+        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+            m.getMessageProperties().setHeader("command", "createNotificationCommand");
+            return m;
+        });
+        
+     /////////////////////////////////////////////////////////////////////////////   
+      
+      
         return "DONE, created post is: "+(post).toString();
     }
     
