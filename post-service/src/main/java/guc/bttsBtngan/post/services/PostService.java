@@ -359,37 +359,37 @@ public class PostService {
 	
 	
 	
-	public ResponseEntity addImage(String postId,String photoRef) throws Exception  {
-    	
-	      
-		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findOne(query, Post.class, "post");
-		if(post!=null)
-		{
-			Update update = new Update().set("photoRef", photoRef);
-			try
-			{
-				mongoOperations.updateFirst(query, update, Post.class); 
-
-			}
-			catch (Exception e) 
-			{
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
-			}
-			
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
-		}
-		 
-	        
-	      
-	      
-		return new ResponseEntity<>("Done Successfully", 
-				   HttpStatus.OK);
-	    }
+//	public ResponseEntity addImage(String postId,String photoRef) throws Exception  {
+//    	
+//	      
+//		Query query = new Query();
+//		query.addCriteria(Criteria.where("_id").is(postId));
+//		Post post = mongoOperations.findOne(query, Post.class, "post");
+//		if(post!=null)
+//		{
+//			Update update = new Update().set("photoRef", photoRef);
+//			try
+//			{
+//				mongoOperations.updateFirst(query, update, Post.class); 
+//
+//			}
+//			catch (Exception e) 
+//			{
+//				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
+//			}
+//			
+//		}
+//		else
+//		{
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
+//		}
+//		 
+//	        
+//	      
+//	      
+//		return new ResponseEntity<>("Done Successfully", 
+//				   HttpStatus.OK);
+//	    }
 	
 	
 	
