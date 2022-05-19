@@ -69,12 +69,12 @@ public class PostController {
     }
     
     @PostMapping("/post/assignmod")
-    public String assignModerator(@RequestBody postRequest req) throws InterruptedException, ExecutionException {
+    public String assignModerator(@RequestBody postRequest req) throws Exception {
         return service.assignModerator(req.postId, req.userId);
     }
     
     @PostMapping("/post/modcheckrep")
-    public String checkPostReports(@RequestBody postRequest req) throws InterruptedException, ExecutionException, ResponseStatusException {
+    public String checkPostReports(@RequestBody postRequest req) throws Exception {
         return service.checkPostReports(req.postId, req.userId);
     }
     @GetMapping("/post/postrecommend")

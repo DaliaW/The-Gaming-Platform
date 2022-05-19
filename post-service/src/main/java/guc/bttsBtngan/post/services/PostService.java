@@ -366,11 +366,22 @@ public class PostService {
 	}
 	
 	// TAG
-	public String assignModerator(String postId, String userId)throws InterruptedException, ExecutionException {
-		System.out.println("hi");
+	public String assignModerator(String postId, String userId)throws Exception {
+		
+		if(postId == null)
+			throw new Exception("Must include postId");
+		if(userId == null)
+			throw new Exception("Must include userId");
+		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-//		Post post = mongoOperations.findOne(query, Post.class, "post");
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		
+		if(post == null)
+			throw new Exception("This post does not exist");
+		
+		if(!post.getUserId().equals(userId)) 
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
 		
 		Update update = new Update().set("moderatorId", userId);
 		mongoOperations.updateFirst(query, update, Post.class);
@@ -379,11 +390,19 @@ public class PostService {
 
 	}
 	
-	public String checkPostReports(String postId, String userId)throws InterruptedException, ExecutionException, ResponseStatusException {
+	public String checkPostReports(String postId, String userId)throws Exception {
+		
+		if(postId == null)
+			throw new Exception("Must include postId");
+		if(userId == null)
+			throw new Exception("Must include userId");
 		
 		Query query = new Query();		
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
+		
+		if(post == null)
+			throw new Exception("This post does not exist");
 		
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
