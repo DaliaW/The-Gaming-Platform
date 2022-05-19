@@ -10,6 +10,7 @@ import guc.bttsBtngan.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -29,7 +30,7 @@ public class PostController {
 
     @PostMapping("/post/content")
     public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
-        return service.searchPosts(req.content);
+        return service.searchPosts(req.content,req.userId);
     }
 
     @PostMapping("/post/follow")
@@ -43,22 +44,22 @@ public class PostController {
     }
 
     @PutMapping("/post/tag")
-    public String tagInPost(@RequestBody tagRequest req) throws InterruptedException, ExecutionException {
-        return service.tagInPost(req.postId,req.userIds);
+    public String tagInPost(@RequestBody tagRequest req) throws Exception {
+        return service.tagInPost(req.postId,req.userIds,req.userIdSending);
     }
 
     @DeleteMapping("/post/tag")
-    public String delTagInPost(@RequestBody tagRequest req) throws InterruptedException, ExecutionException {
+    public String delTagInPost(@RequestBody tagRequest req) throws Exception {
         return service.delTagInPost(req.postId,req.userIds);
     }
 
     @PutMapping("/post/comment/tag")
-    public String tagInCommentPost(@RequestBody commentTagRequest req) throws InterruptedException, ExecutionException {
-        return service.commentTagInPost(req.postId, req.commentId, req.userIds);
+    public String tagInCommentPost(@RequestBody commentTagRequest req) throws Exception {
+        return service.commentTagInPost(req.postId, req.commentId, req.userIds,req.userIdSending);
     }
 
     @DeleteMapping("/post/comment/tag")
-    public String delTagInCommentPost(@RequestBody commentTagRequest req) throws InterruptedException, ExecutionException {
+    public String delTagInCommentPost(@RequestBody commentTagRequest req) throws Exception {
         return service.delCommentTagInPost(req.postId,req.commentId,req.userIds);
     }
     
@@ -83,6 +84,24 @@ public class PostController {
 //    }
     
 
+
+    @PutMapping(path = "/posts/attach-photo")
+    public void updatePost(@RequestParam(name="post_id") String id,
+                           @RequestParam(name="photo",required = false) MultipartFile photo
+    ) throws Exception {
+        System.out.println("IN UPDATE USER CONTROLLER");
+//        userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
+        service.attachImageToPost(id,photo);
+        // HashMap<String,Object>map=new HashMap<>();
+        // map.put("user_id",id);
+        // map.put("username",username);
+        // map.put("oldPassword",oldPassword);
+        // map.put("newPassword",newPassword);
+        // map.put("email",email);
+        // map.put("photo",photo);
+        // updateUserCommand.execute(map);
+
+    }
     static public class postRequest{
         public String postId;
         public  String userId;
@@ -99,16 +118,17 @@ public class PostController {
     }
     
     static public class tagRequest{
-        public String postId;
+        public String postId,userIdSending;
         String[]userIds;
     }
     static public class commentTagRequest{
-        public String postId;
+        public String postId,userIdSending;
         public String commentId;
         public String[]userIds;
     }
     static public class searchRequest{
         public String content;
+        public String userId;
     }
     static public class followPostRequest{
         public String userId;

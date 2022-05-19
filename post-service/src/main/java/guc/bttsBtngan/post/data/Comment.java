@@ -1,12 +1,21 @@
 package guc.bttsBtngan.post.data;
 
-import java.util.ArrayList;
-
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+
 public class Comment {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Id
 	private String id;
+
 	private String content;
 	private String commenterId;
 	private ArrayList<CommentVote> commentVotes;
