@@ -1,12 +1,23 @@
 package guc.bttsBtngan.post.data;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 
 public class Comment {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Id
 	private String id;
+
 	private String content;
 	private String commenterId;
 	private ArrayList<CommentVote> commentVotes;
@@ -72,7 +83,18 @@ public class Comment {
 		this.commentTags.remove(tag);
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Comment{" +
+				"id='" + id + '\'' +
+				", content='" + content + '\'' +
+				", commenterId='" + commenterId + '\'' +
+				", commentVotes=" + commentVotes +
+				", commentTags=" + commentTags +
+				'}';
+	}
+
+
 	public static class CommentVote{
 		private String voterId;
 		private boolean upVote;
