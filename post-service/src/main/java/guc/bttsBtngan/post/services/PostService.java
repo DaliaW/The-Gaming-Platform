@@ -34,21 +34,20 @@ public class PostService {
     
 
     public String createPost(Post post) throws InterruptedException, ExecutionException{
-    	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
         
         
         // check if the user who posted the post has followers
         // if the list contains followers, we do the notification step (create hash map with Type,list<string>)
             
-        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-	  	ArrayList<String> btngan = new ArrayList<String>();  ;
-	  	type_IDs.put("type", "post");
-	  	type_IDs.put("userIDs", btngan);
-        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-            m.getMessageProperties().setHeader("command", "createNotificationCommand");
-            return m;
-        });
+//        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+//	  	ArrayList<String> btngan = new ArrayList<String>();  ;
+//	  	type_IDs.put("type", "post");
+//	  	type_IDs.put("userIDs", btngan);
+//        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+//            m.getMessageProperties().setHeader("command", "createNotificationCommand");
+//            return m;
+//        });
         
      /////////////////////////////////////////////////////////////////////////////   
       
@@ -56,7 +55,7 @@ public class PostService {
         return "DONE, created post is: "+(post).toString();
     }
     
-    public String followPost(String userId, String postId, boolean follow)throws InterruptedException, ExecutionException {
+    public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
     	
@@ -85,18 +84,28 @@ public class PostService {
     	{
     		post.addPostFollower(userId);
     	}
-    	else
+    	else 
     	{
-    		// Exception
+    		// following and trying to follow
+    		if(follow)
+    		{
+    			throw new Exception("Cannot do follow because you are already following");
+    		}
     		// either not following and trying to unfollow
-    		// or following and trying to follow
+    		else
+    		{
+    			throw new Exception("Cannot do unfollow because you are already not following");    			
+    		}
     	}
     	
+    	post.setNoOfFollwer(post.getPostFollowers().size());
     	
-    	Update update = new Update().set("postFollowers", post.getPostFollowers());
+    	
+    	Update update = new Update().set("postFollowers", post.getPostFollowers())
+    								.set("noOfFollwer", post.getNoOfFollwer());
         mongoOperations.updateFirst(query, update, Post.class);
     	
-    	return "DONE, Potatoes follow post : "+(post).toString();
+    	return "request done!";
     	
     }
 

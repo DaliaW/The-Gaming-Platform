@@ -39,6 +39,14 @@ public class Post {
 		this.postFollowers = new ArrayList<String>();
 	}
 
+	public Integer getNoOfFollwer() {
+		return noOfFollwer;
+	}
+
+	public void setNoOfFollwer(Integer noOfFollwer) {
+		this.noOfFollwer = noOfFollwer;
+	}
+
 	public ArrayList<Comment> getComments() {
 		return comments;
 	}

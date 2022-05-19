@@ -33,7 +33,7 @@ public class PostController {
     }
 
     @PostMapping("/post/follow")
-    public String followPost(@RequestBody followPostRequest req) throws InterruptedException, ExecutionException {
+    public String followPost(@RequestBody followPostRequest req) throws Exception {
         return service.followPost(req.userId,req.postId,req.follow);
     }
 
