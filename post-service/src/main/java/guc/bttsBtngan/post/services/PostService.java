@@ -18,9 +18,18 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+
+import com.mongodb.client.result.UpdateResult;
+import guc.bttsBtngan.post.data.Comment;
+import guc.bttsBtngan.post.data.Comment.CommentVote;
+import guc.bttsBtngan.post.data.Post;
+import guc.bttsBtngan.post.data.Post.PostVote;
+
 
 
 @Service
@@ -35,10 +44,27 @@ public class PostService {
 	public String createPost(Post post) throws InterruptedException, ExecutionException {
 //    	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
+        
+        
+        // check if the user who posted the post has followers
+        // if the list contains followers, we do the notification step (create hash map with Type,list<string>)
+            
+//        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+//	  	ArrayList<String> btngan = new ArrayList<String>();  ;
+//	  	type_IDs.put("type", "post");
+//	  	type_IDs.put("userIDs", btngan);
+//        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+//            m.getMessageProperties().setHeader("command", "createNotificationCommand");
+//            return m;
+//        });
+        
+     /////////////////////////////////////////////////////////////////////////////   
+      
+      
         return "DONE, created post is: "+(post).toString();
     }
     
-    public String followPost(String userId, String postId)throws InterruptedException, ExecutionException {
+    public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
     	
@@ -46,12 +72,49 @@ public class PostService {
     	{
     		post.setPostFollowers(new ArrayList<String>());
     	}
-    	post.addPostFollower(userId);
+    	int followIdx = -1;
+    	int followersCount = post.getPostFollowers().size();
+    	for(int i=0;i<followersCount;i++)
+    	{
+    		String currFollower = post.getPostFollowers().get(i);
+    		if(currFollower.equals(userId))
+    		{
+    			followIdx = i;
+    			break;
+    		}
+    	}
+    	// If I am a follower to the post and I want to unfollow
+    	if(followIdx!=-1 && !follow)
+    	{
+    		post.getPostFollowers().remove(followIdx);
+    	}
+    	// If I am not a follower to the post and I want to follow
+    	else if(followIdx == -1 && follow)
+    	{
+    		post.addPostFollower(userId);
+    	}
+    	else 
+    	{
+    		// following and trying to follow
+    		if(follow)
+    		{
+    			throw new Exception("Cannot do follow because you are already following");
+    		}
+    		// either not following and trying to unfollow
+    		else
+    		{
+    			throw new Exception("Cannot do unfollow because you are already not following");    			
+    		}
+    	}
     	
-    	Update update = new Update().set("postFollowers", post.getPostFollowers());
+    	post.setNoOfFollwer(post.getPostFollowers().size());
+    	
+    	
+    	Update update = new Update().set("postFollowers", post.getPostFollowers())
+    								.set("noOfFollwer", post.getNoOfFollwer());
         mongoOperations.updateFirst(query, update, Post.class);
     	
-    	return "DONE, Potatoes follow post : "+(post).toString();
+    	return "request done!";
     	
     }
 
@@ -345,5 +408,61 @@ public class PostService {
 }
 	
 	// !!!! shofna !!!!
+	
+	
+	
+	public List<Post> postRecommend(String userId)  {
+    	
+       //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
+		// get the list of blocked users
+		
+		Query query = new Query();
+		//query.addCriteria(Criteria.where("userId").`is`()).with(Sort.by(Sort.Direction.DESC, "sortField"));
+
+	//	query.addCriteria(Criteria.where("_id").is(postId));
+		List<Post> posts = mongoOperations.find(query, Post.class, "post");
+        
+        
+        
+      
+      
+        return posts;
+    }
+	
+	
+	
+	public ResponseEntity addImage(String postId,String photoRef) throws Exception  {
+    	
+	      
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(postId));
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		if(post!=null)
+		{
+			Update update = new Update().set("photoRef", photoRef);
+			try
+			{
+				mongoOperations.updateFirst(query, update, Post.class); 
+
+			}
+			catch (Exception e) 
+			{
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
+			}
+			
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
+		}
+		 
+	        
+	      
+	      
+		return new ResponseEntity<>("Done Successfully", 
+				   HttpStatus.OK);
+	    }
+	
+	
 	
 }

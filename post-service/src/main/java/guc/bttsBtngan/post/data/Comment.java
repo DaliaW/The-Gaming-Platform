@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
+import org.springframework.data.annotation.Id;
+
 public class Comment {
 	public String getId() {
 		return id;
@@ -15,7 +17,6 @@ public class Comment {
 
 	@Id
 	private String id;
-
 	private String content;
 	private String commenterId;
 	private ArrayList<CommentVote> commentVotes;
