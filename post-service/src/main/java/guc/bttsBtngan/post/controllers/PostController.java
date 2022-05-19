@@ -3,7 +3,6 @@ package guc.bttsBtngan.post.controllers;
 
 import java.util.concurrent.ExecutionException;
 
-import com.jlefebure.spring.boot.minio.MinioException;
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class PostController {
     }
 
     @PostMapping("/post/content")
-    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException, MinioException {
+    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
         return service.searchPosts(req.content);
     }
 
@@ -73,12 +72,12 @@ public class PostController {
 
 
     @PutMapping(path = "/posts/attach-photo")
-    public void updateUser(@RequestParam(name="post_id") String id,
+    public void updatePost(@RequestParam(name="post_id") String id,
                            @RequestParam(name="photo",required = false) MultipartFile photo
     ) throws Exception {
         System.out.println("IN UPDATE USER CONTROLLER");
 //        userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
-        service.attachPost(id,photo);
+        service.attachImageToPost(id,photo);
         // HashMap<String,Object>map=new HashMap<>();
         // map.put("user_id",id);
         // map.put("username",username);
