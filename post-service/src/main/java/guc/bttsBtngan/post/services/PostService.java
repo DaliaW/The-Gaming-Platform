@@ -15,6 +15,7 @@ import guc.bttsBtngan.post.data.Post.PostVote;
 import guc.bttsBtngan.post.firebase.FirebaseImageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -273,7 +274,7 @@ public class PostService {
 	
 	public String checkPostReports(String postId, String userId)throws InterruptedException, ExecutionException, ResponseStatusException {
 		
-		Query query = new Query();
+		Query query = new Query();		
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
 		
