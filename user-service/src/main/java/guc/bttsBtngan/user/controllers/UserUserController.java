@@ -1,5 +1,6 @@
 package guc.bttsBtngan.user.controllers;
 
+import com.jlefebure.spring.boot.minio.MinioException;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,5 +138,9 @@ public class UserUserController {
         //return (String) unfollowUserCommand.execute(map);
         return userUserService.unfollowUser(userId, userToBeUnfollowedId);
     }
-
+    @DeleteMapping(path = "/users/deleteProfilePicture")
+    public void deleteProfilePicture(@RequestParam("user_id") String id) throws MinioException {
+//        System.out.println("in deleteeeeeee");
+        userUserService.deleteProfilePicture(id);
+    }
 }
