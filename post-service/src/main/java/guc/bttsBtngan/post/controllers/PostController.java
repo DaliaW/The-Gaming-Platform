@@ -1,11 +1,14 @@
 package guc.bttsBtngan.post.controllers;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -68,11 +71,33 @@ public class PostController {
     public String checkPostReports(@RequestBody postRequest req) throws InterruptedException, ExecutionException, ResponseStatusException {
         return service.checkPostReports(req.postId, req.userId);
     }
+    @GetMapping("/post/postrecommend")
+    
+    public List<Post> postRecommend(@RequestBody postRecommender req) throws InterruptedException, ExecutionException, ResponseStatusException {
+        return service.postRecommend(req.userId);
+    }
+    
+    @PostMapping("/post/addimage")
+    public ResponseEntity addImage(@RequestBody imageAdder req) throws Exception {
+        return service.addImage(req.postId,req.PhotoRef);
+    }
+    
 
     static public class postRequest{
         public String postId;
         public  String userId;
     }
+    
+    static public class postRecommender{
+        public  String userId;
+
+    }
+    
+    static public class imageAdder{
+    	public String postId;
+        public  String PhotoRef;
+    }
+    
     static public class tagRequest{
         public String postId;
         String[]userIds;

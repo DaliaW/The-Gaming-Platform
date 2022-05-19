@@ -21,8 +21,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.mongodb.client.result.UpdateResult;
 
 
 
@@ -33,7 +36,7 @@ public class PostService {
     @Autowired
     private AmqpTemplate amqpTemplate;
     
-    public String createPost(Post post) throws Exception {
+    public String createPost(Post post)  {
     	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
         
@@ -299,6 +302,62 @@ public class PostService {
 		return "DONE, Potatoes report post : "+(post.getPostReports());
 
 	}
+	
+	
+	
+	
+	public List<Post> postRecommend(String userId)  {
+    	
+       //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
+		// get the list of blocked users
+		
+		Query query = new Query();
+		//query.addCriteria(Criteria.where("userId").`is`()).with(Sort.by(Sort.Direction.DESC, "sortField"));
+
+	//	query.addCriteria(Criteria.where("_id").is(postId));
+		List<Post> posts = mongoOperations.find(query, Post.class, "post");
+        
+        
+        
+      
+      
+        return posts;
+    }
+	
+	
+	
+	public ResponseEntity addImage(String postId,String photoRef) throws Exception  {
+    	
+	      
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(postId));
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		if(post!=null)
+		{
+			Update update = new Update().set("photoRef", photoRef);
+			try
+			{
+				mongoOperations.updateFirst(query, update, Post.class); 
+
+			}
+			catch (Exception e) 
+			{
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
+			}
+			
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
+		}
+		 
+	        
+	      
+	      
+		return new ResponseEntity<>("Done Successfully", 
+				   HttpStatus.OK);
+	    }
+	
 	
 	
 }

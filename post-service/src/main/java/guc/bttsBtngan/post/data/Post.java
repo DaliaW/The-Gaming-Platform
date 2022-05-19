@@ -13,6 +13,7 @@ public class Post {
 	private String content;
 	private String photoRef;
 	private Timestamp date;
+	private Integer noOfFollwer;
 	private String moderatorId;
 	private ArrayList<Comment> comments;
 	private ArrayList<PostVote> postVotes;
@@ -29,6 +30,7 @@ public class Post {
 		this.content = content;
 		this.photoRef = photoRef;
 		this.date = date;
+		this.noOfFollwer=0;
 		this.moderatorId = moderatorId;
 		this.comments = new ArrayList<Comment>();
 		this.postVotes = new ArrayList<PostVote>();
