@@ -294,7 +294,6 @@ public class PostService {
 		return auth_res && !res.contains(suspiciousUser);
 	}
 	public String searchPosts(String subContent,String userId) throws InterruptedException, ExecutionException {
-
 		Query query = new Query();
 		StringBuilder pattern= new StringBuilder(".*");//starts with anything
 		String[]tokens=subContent.split(" ");
@@ -304,7 +303,7 @@ public class PostService {
 		}
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
-		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
+//		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
 
 		return "DONE, Potatoes report post : "+(post);
 

@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import guc.bttsBtngan.post.commands.SearchPostCommand;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -78,7 +79,7 @@ public class RabbitMQConfig {
 //    }
 
     @RabbitListener(queues = request_queue)
-    public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
         HashMap<String, Object> map = new HashMap<>();
         try {
             payload.put("user_id", headers.get("user_id"));
@@ -97,23 +98,23 @@ public class RabbitMQConfig {
     }
 
     // dummy method for testing
-//    @Bean
-//    public ApplicationRunner runner(AmqpTemplate template) {
-//        return args -> {
-//        	for(int i = 0 ; i < 20; i++) {
-//            	Map<String, Object> map = new HashMap<>();
-//            	map.put("user_id", "user_1");
-//            	map.put("group_id", "qNjVI5EPodNC5UHQnbF2");
-//            	map.put("content", "message " + i);
-//            	template.convertAndSend(request_queue, map, m -> {
-//                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
-//                	m.getMessageProperties().setReplyTo(reply_queue);
-//                	m.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
-//                	return m;
-//                });
-//        	}
-//        };
-//    }
+    @Bean
+    public ApplicationRunner runner(AmqpTemplate template) {
+        return args -> {
+        	for(char c='a' ; c<'z'; c++) {
+            	Map<String, Object> map = new HashMap<>();
+            	map.put("userId", "user_1");
+            	map.put("content", "hi"+c);
+                final Object response = amqpTemplate.convertSendAndReceive(
+                        request_queue, map, m -> {
+                            m.getMessageProperties().setHeader("command", "searchPostCommand");
+                            m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
+                            return m;
+                        });
+                System.out.println(response+" "+c);
+        	}
+        };
+    }
 
 
 
