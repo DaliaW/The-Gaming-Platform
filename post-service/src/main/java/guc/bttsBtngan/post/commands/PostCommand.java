@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class PostCommand extends Command{
 
+    @Autowired
     private PostService service;
 
     public PostService getService() {
