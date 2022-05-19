@@ -1,6 +1,7 @@
 package guc.bttsBtngan.user.services;
 
 import guc.bttsBtngan.user.data.UserPostInteraction;
+//import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
