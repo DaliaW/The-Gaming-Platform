@@ -1,12 +1,16 @@
 package guc.bttsBtngan.post.commands;
 
 import java.util.HashMap;
+
 import org.springframework.stereotype.Component;
 
 @Component
-public class TagInPostCommand extends PostCommand{
+public class FollowPostCommand extends PostCommand{
+
     @Override
     public Object execute(HashMap<String, Object> map) throws Exception {
-        return getService().tagInPost((String)map.get("postId"),(String[])map.get("userIds"),(String)map.get("userIdSending"));
+        return getService().followPost((String)map.get("userId"),
+        		(String)map.get("postId"),  
+        		(boolean)map.get("follow"));
     }
 }
