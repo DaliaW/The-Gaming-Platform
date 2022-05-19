@@ -378,6 +378,7 @@ public class PostService {
 		
 		Query query = new Query();
 		query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
+        System.out.println("kol btts kteer");
 		List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
 		List<Post> filteredPosts = new ArrayList<Post>();
 		
@@ -389,7 +390,7 @@ public class PostService {
 			}
 		}
         
-        
+        System.out.println("kol btts kteer");
         
       
       

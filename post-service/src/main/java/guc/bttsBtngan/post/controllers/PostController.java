@@ -75,7 +75,9 @@ public class PostController {
     @GetMapping("/post/postrecommend")
     
     public List<Post> postRecommend(@RequestBody postRecommender req) throws InterruptedException, ExecutionException, ResponseStatusException {
-        return service.postRecommend(req.userId);
+        System.out.println("kol btts kteer");
+
+    	return service.postRecommend(req.userId);
     }
     
 //    @PostMapping("/post/addimage")
