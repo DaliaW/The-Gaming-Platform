@@ -167,7 +167,7 @@ public class UserUserService {
         return "Profile updated successfully";
 
     }
-
+    @Transactional
     public String deleteProfilePicture(String id) throws MinioException {
         System.out.println("in delete");
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));

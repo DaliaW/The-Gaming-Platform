@@ -1,5 +1,6 @@
 package guc.bttsBtngan.user.data;
 
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -78,6 +79,7 @@ public class UserUserInteraction {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
     public String getPhotoRef() {
         return photoRef;
