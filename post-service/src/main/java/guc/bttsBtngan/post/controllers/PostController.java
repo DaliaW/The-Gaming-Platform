@@ -27,7 +27,7 @@ public class PostController {
 
     @PostMapping("/post/content")
     public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
-        return service.searchPosts(req.content);
+        return service.searchPosts(req.content,req.userId);
     }
 
     @PostMapping("/post/follow")
@@ -41,22 +41,22 @@ public class PostController {
     }
 
     @PutMapping("/post/tag")
-    public String tagInPost(@RequestBody tagRequest req) throws InterruptedException, ExecutionException {
-        return service.tagInPost(req.postId,req.userIds);
+    public String tagInPost(@RequestBody tagRequest req) throws Exception {
+        return service.tagInPost(req.postId,req.userIds,req.userIdSending);
     }
 
     @DeleteMapping("/post/tag")
-    public String delTagInPost(@RequestBody tagRequest req) throws InterruptedException, ExecutionException {
+    public String delTagInPost(@RequestBody tagRequest req) throws Exception {
         return service.delTagInPost(req.postId,req.userIds);
     }
 
     @PutMapping("/post/comment/tag")
-    public String tagInCommentPost(@RequestBody commentTagRequest req) throws InterruptedException, ExecutionException {
-        return service.commentTagInPost(req.postId, req.commentId, req.userIds);
+    public String tagInCommentPost(@RequestBody commentTagRequest req) throws Exception {
+        return service.commentTagInPost(req.postId, req.commentId, req.userIds,req.userIdSending);
     }
 
     @DeleteMapping("/post/comment/tag")
-    public String delTagInCommentPost(@RequestBody commentTagRequest req) throws InterruptedException, ExecutionException {
+    public String delTagInCommentPost(@RequestBody commentTagRequest req) throws Exception {
         return service.delCommentTagInPost(req.postId,req.commentId,req.userIds);
     }
     
@@ -93,16 +93,17 @@ public class PostController {
         public  String userId;
     }
     static public class tagRequest{
-        public String postId;
+        public String postId,userIdSending;
         String[]userIds;
     }
     static public class commentTagRequest{
-        public String postId;
+        public String postId,userIdSending;
         public String commentId;
         public String[]userIds;
     }
     static public class searchRequest{
         public String content;
+        public String userId;
     }
     static public class followPostRequest{
         public String userId;
