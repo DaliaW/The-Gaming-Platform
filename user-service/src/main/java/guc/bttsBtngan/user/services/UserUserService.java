@@ -130,11 +130,12 @@ public class UserUserService {
 //    }
 
 
-        @Transactional
+    @Transactional
     public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
 
         System.out.println("id= "+id);
-            System.out.println("username= "+username);
+        System.out.println("username= "+username);
+        System.out.println(photo==null);
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
@@ -157,9 +158,9 @@ public class UserUserService {
 
         }
         // if password is not null, not empty & not the same as the current password
-            if((oldPassword ==null ||oldPassword.length()==0)&& newPassword!=null) {
-                throw new IllegalStateException("Please enter old password.");
-            }
+        if((oldPassword ==null ||oldPassword.length()==0)&& newPassword!=null) {
+            throw new IllegalStateException("Please enter old password.");
+        }
         if(oldPassword != null && oldPassword.length()>0){
 
 //            if(!Objects.equals(encryptedPassword, user.getPassword())) {
@@ -178,15 +179,18 @@ public class UserUserService {
             else
                 throw new IllegalStateException("Please enter new password");
         }
-        if(photo!=null ){
+        if(photo!=null && !photo.isEmpty()){
+            System.out.println("phottt here");
             String textPath=minioConfigurationProperties.getBucket();
-            textPath+="/";
+            System.out.println("bucket="+textPath);
+//            textPath+="/";
             String uniqueID = UUID.randomUUID().toString();
             textPath+=uniqueID;
 //            String imgName= photo.getOriginalFilename();
 //            textPath+=imgName;
 //             textPath+="monica.png";
             Path source = Paths.get(textPath);
+            System.out.println("path= "+source);
             InputStream file=photo.getInputStream();
             String contentType=photo.getContentType();
             minioService.upload(source,file,contentType);
@@ -194,10 +198,29 @@ public class UserUserService {
         }
 
 
-        return "User updated successfully";
+        return "Profile updated successfully";
 
     }
+    @Transactional
+    public String deleteProfilePicture(String id) throws MinioException {
+        System.out.println("in delete");
+        UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
+        String photoRef= user.getPhotoRef();
+        System.out.println("photoRef= "+photoRef);
+        if(photoRef!=null && photoRef.length()>0) {
+            Path source = Paths.get(photoRef);
+            minioService.remove(source);
+            user.setPhotoRef("");
+            System.out.println("after= "+user.getPhotoRef());
+        }
+        else{
+            throw new IllegalStateException("No photo to delete.");
+        }
+        System.out.println("after= "+user.getPhotoRef());
+        return "Profile picture deleted successfully";
 
+
+    }
     public String getAllphotoRef(String photoRef) {
         Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
         return userRepository.findByphotoRef(photoRef).toString();
