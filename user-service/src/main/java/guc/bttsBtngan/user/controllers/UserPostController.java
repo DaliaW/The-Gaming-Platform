@@ -15,6 +15,14 @@ import java.util.List;
 public class UserPostController {
 
     @Autowired
+    private BlockUserCommand blockUserCommand;
+
+    @Autowired
+    private UnblockUserCommand unblockUserCommand;
+
+    @Autowired
+    private RecommendUserCommand recommendUserCommand;
+    @Autowired
     private UserPostService userPostService;
 
     @Autowired
@@ -46,5 +54,35 @@ public class UserPostController {
         return userPostService.reportUser(userId,userId2,reportComment);
 
     }
+    @DeleteMapping(path = "users/block")
+    public String blockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
+//        String myId = "1";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id",myId);
+        map.put("otherId",otherId);
+        //return (String)blockUserCommand.execute(map);
+        return userPostService.blockUser(myId, otherId);
+        //userUserService.deleteUser(id);
+    }
+    @DeleteMapping(path = "users/unblock/")
+    public String unblockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
+//        String myId = "1";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id",myId);
+        map.put("otherId",otherId);
+        System.out.println("in");
+        //return (String)unblockUserCommand.execute(map);
+        return userPostService.unblockUser(myId, otherId);
+        //userUserService.deleteUser(id);
+    }
 
+    @GetMapping(path = "users/recommendUser")
+    public List<String> recommendUsers(@RequestParam("user_id") String myId) throws Exception {
+//        String myId = "1";
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id",myId);
+        // return (List<String>)recommendUserCommand.execute(map);
+        return userPostService.userRecommendations(myId);
+        //userUserService.deleteUser(id);
+    }
 }

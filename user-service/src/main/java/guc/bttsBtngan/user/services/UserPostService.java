@@ -145,4 +145,129 @@ public class UserPostService {
         return " the report has been posted successfully: ";
     }
 
+    public String blockUser(String currentId, String userId) throws Exception {
+        // TODO: get the  current id from the current loggedIn user session
+        //assuming current id in the parameters now
+        UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
+
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            throw new Exception("User does not exist");
+        }
+        UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
+        //remove the other from my following and follower list.
+        List<String> myFollowers = myUser.getFollowers();
+        myFollowers.remove(userId);
+        List<String> myFollowing = myUser.getFollowing();
+        myFollowing.remove(userId);
+        myUser.setFollowers(myFollowers);
+        myUser.setFollowing(myFollowing);
+
+        //remove myself from other following and follower list and block myself in their profile.
+        List<String> otherFollowers = otherUser.getFollowers();
+        otherFollowers.remove(currentId);
+        List<String> otherFollowing = otherUser.getFollowing();
+        otherFollowing.remove(currentId);
+        otherUser.setFollowers(otherFollowers);
+        otherUser.setFollowing(otherFollowing);
+        List<String> otherBlockedBy = otherUser.getBlockedBy();
+        if(otherBlockedBy.contains(currentId))
+            throw new Exception("User is already blocked");
+        otherBlockedBy.add(currentId);
+        otherUser.setBlockedBy(otherBlockedBy);
+
+
+        Query query1 =new Query();
+        query1.addCriteria(Criteria.where("userId").is(currentId));
+        Update updateFollowing=new Update().set("following",myFollowing);
+        mongoOperations.updateFirst(query1,updateFollowing,UserPostInteraction.class);
+        Update updateFollowers=new Update().set("followers",myFollowers);
+        mongoOperations.updateFirst(query1,updateFollowers,UserPostInteraction.class);
+
+        Query query2 =new Query();
+        query2.addCriteria(Criteria.where("userId").is(userId));
+        Update updateFollowersother=new Update().set("followers",otherFollowers);
+        mongoOperations.updateFirst(query2,updateFollowersother,UserPostInteraction.class);
+        Update updateFollowingother=new Update().set("following",otherFollowing);
+        mongoOperations.updateFirst(query2,updateFollowingother,UserPostInteraction.class);
+        Update updateBlockedByOther=new Update().set("blockedBy",otherBlockedBy);
+        mongoOperations.updateFirst(query2,updateBlockedByOther,UserPostInteraction.class);
+
+
+//        userPostRepository.save(otherUser);
+//        userPostRepository.save(myUser);
+        return "User is blocked";
+    }
+
+    public String unblockUser(String currentId, String userId) throws Exception {
+        // TODO: get the  current id from the current loggedIn user session
+        //assuming current id in the parameters now
+//        UserPostInteraction myUser = userPostRepository.findByUserId(currentId);
+
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            throw new Exception("User does not exist");
+        }
+        UserPostInteraction otherUser = userPostRepository.findByUserId(userId);
+
+        //remove myself from other's blockedBy List.
+        List<String> otherBlockedBy = otherUser.getBlockedBy();
+        if(!otherBlockedBy.contains(currentId))
+            throw new Exception("User is not blocked already");
+        otherBlockedBy.remove(currentId);
+        otherUser.setBlockedBy(otherBlockedBy);
+
+        Query query2 =new Query();
+        query2.addCriteria(Criteria.where("userId").is(userId));
+        Update updateBlockedByOther=new Update().set("blockedBy",otherBlockedBy);
+        mongoOperations.updateFirst(query2,updateBlockedByOther,UserPostInteraction.class);
+//        userPostRepository.save(otherUser);
+        return "User is unblocked";
+    }
+
+    public List<String> userRecommendations(String userId) {
+        // TODO: get the  userId from the current loggedIn user session
+        // TODO: Ask about: I added the recommended user IDs to the returned List,
+        // TODO: should we change the response request sheet or include the whole profile in the output ?
+        List<String> recommendedUsers = new ArrayList<>();
+        UserPostInteraction myUser = userPostRepository.findByUserId(userId);
+        List<String> myfollowing = myUser.getFollowing();
+        List<String> blockedBy = myUser.getBlockedBy();
+        HashSet<String> myfollowingSet = new HashSet<>();
+        myfollowingSet.addAll(myfollowing);
+        TreeMap<String, Integer> recommendedUsersMap = new TreeMap<>();
+        for(int  i=0; i<myfollowing.size(); i++){
+            UserPostInteraction others = userPostRepository.findByUserId(myfollowing.get(i));
+            List<String> followingFollowing = others.getFollowing();
+            for(int j=0; j<followingFollowing.size(); j++){
+                String toBeRecommended = followingFollowing.get(j);
+                if(!myfollowingSet.contains(toBeRecommended) && !blockedBy.contains(toBeRecommended)){
+                    int countOfMutualFollowers = recommendedUsersMap.getOrDefault(toBeRecommended,0);
+                    recommendedUsersMap.put(toBeRecommended,countOfMutualFollowers+1);
+                }
+            }
+        }
+        for(String key : recommendedUsersMap.keySet()){
+            recommendedUsers.add(key);
+        }
+        return recommendedUsers;
+    }
+
+    public boolean validate(String userId){
+        Optional<UserUserInteraction> user = userRepository.findById(userId);
+        if (!user.isPresent()) {
+            // if the user does not exist
+            return false;
+        }
+        return true;
+    }
+
+    public List<String> blockedBy(String userId){
+        UserPostInteraction user = userPostRepository.findByUserId(userId);
+        List<String> blockedBy = user.getBlockedBy();
+        return blockedBy;
+    }
+
 }

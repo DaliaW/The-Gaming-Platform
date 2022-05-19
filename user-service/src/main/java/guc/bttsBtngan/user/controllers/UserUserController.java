@@ -16,6 +16,12 @@ import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
+
+    @Autowired
+    private FollowUserCommand followUserCommand;
+    @Autowired
+    private UnfollowUserCommand unfollowUserCommand;
+
     @Autowired
     private UpdateUserCommand updateUserCommand;
 
@@ -114,5 +120,28 @@ public class UserUserController {
 //        return "ID: " + employeeId;
 //    }
 
+    @PutMapping(path = "/users/follow/{userId}/{userToBeFollowed}")
+    public String followUser(@PathVariable("userId") String userId,
+                             @PathVariable("userToBeFollowed") String userToBeFollowedId
+    ) throws Exception {
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("user_id",userId);
+        map.put("userToFollowId",userToBeFollowedId);
+//        System.out.println("HIIIIIIIIIIIIIIIIIIIIIIIIII");
+//        System.out.println(followUserCommand);
+        //return (String) followUserCommand.execute(map);
+        return userUserService.followUser(userId, userToBeFollowedId);
+    }
+
+    @PutMapping(path = "/users/unfollow/{userId}/{userToBeUnfollowed}")
+    public String unfollowUser(@PathVariable("userId") String userId,
+                               @PathVariable("userToBeUnfollowed") String userToBeUnfollowedId
+    ) throws Exception {
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("user_id",userId);
+        map.put("userToUnfollowId",userToBeUnfollowedId);
+        //return (String) unfollowUserCommand.execute(map);
+        return userUserService.unfollowUser(userId, userToBeUnfollowedId);
+    }
 
 }

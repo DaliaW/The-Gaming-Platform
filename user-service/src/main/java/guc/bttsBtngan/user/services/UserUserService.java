@@ -345,7 +345,54 @@ public class UserUserService {
         //mongoOperations.save(user);
         return "User account has been successfully deleted";
     }
+    public String followUser(String userId,String userToBeFollowedId) {
+        UserPostInteraction user= userPostRepository.findByUserId(userId);
+        UserPostInteraction followedUser=userPostRepository.findByUserId(userToBeFollowedId);
+        List<String> userFollowings= user.getFollowing();
+        if(userFollowings==null)
+            userFollowings=new ArrayList<>();
+        userFollowings.add(userToBeFollowedId);
+        user.setFollowing(userFollowings);
+        List<String> userFollowers=followedUser.getFollowers();
+        if(userFollowers==null)
+            userFollowers=new ArrayList<>();
+        userFollowers.add(userId);
+        followedUser.setFollowers(userFollowers);
+        Query query =new Query();
+        query.addCriteria(Criteria.where("userId").is(userToBeFollowedId));
+        Update updateFollowers=new Update().set("followers",userFollowers);
+        mongoOperations.updateFirst(query,updateFollowers,UserPostInteraction.class);
+        Query query1 =new Query();
+        query1.addCriteria(Criteria.where("userId").is(userId));
+        Update updateFollowing=new Update().set("following",userFollowings);
+        mongoOperations.updateFirst(query1,updateFollowing,UserPostInteraction.class);
 
+        return "you are following this user now";
+    }
+
+    public String unfollowUser(String userId,String userToBeUnfollowedId) {
+        UserPostInteraction user= userPostRepository.findByUserId(userId);
+        UserPostInteraction unfollowedUser=userPostRepository.findByUserId(userToBeUnfollowedId);
+        List<String> userFollowings= user.getFollowing();
+        if(userFollowings==null)
+            userFollowings=new ArrayList<>();
+        userFollowings.remove(userToBeUnfollowedId);
+        user.setFollowing(userFollowings);
+        List<String> userFollowers=unfollowedUser.getFollowers();
+        if(userFollowers==null)
+            userFollowers=new ArrayList<>();
+        userFollowers.remove(userId);
+        unfollowedUser.setFollowers(userFollowers);
+        Query query =new Query();
+        query.addCriteria(Criteria.where("userId").is(userToBeUnfollowedId));
+        Update updateFollowers=new Update().set("followers",userFollowers);
+        mongoOperations.updateFirst(query,updateFollowers,UserPostInteraction.class);
+        Query query1 =new Query();
+        query1.addCriteria(Criteria.where("userId").is(userId));
+        Update updateFollowing=new Update().set("following",userFollowings);
+        mongoOperations.updateFirst(query1,updateFollowing,UserPostInteraction.class);
+        return "you are not following this user anymore";
+    }
 
 
 }
