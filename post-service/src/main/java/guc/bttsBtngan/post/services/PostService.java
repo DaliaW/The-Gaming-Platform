@@ -343,7 +343,7 @@ public class PostService {
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
-					m.getMessageProperties().setHeader("command", "blockedByComman");
+					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
@@ -359,7 +359,7 @@ public class PostService {
 		}
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
-//		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
+		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
 
 		return "DONE, Potatoes report post : "+(post);
 
