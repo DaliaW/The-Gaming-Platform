@@ -1,10 +1,8 @@
 package guc.bttsBtngan.post.data;
 
-import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
-import org.springframework.data.annotation.Id;
 
 public class Comment {
 	public String getId() {
@@ -15,7 +13,6 @@ public class Comment {
 		this.id = id;
 	}
 
-	@Id
 	private String id;
 
 	private String content;
