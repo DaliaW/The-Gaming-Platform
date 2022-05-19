@@ -14,14 +14,14 @@ import java.util.List;
 @RestController
 public class UserPostController {
 
-    @Autowired
-    private BlockUserCommand blockUserCommand;
-
-    @Autowired
-    private UnblockUserCommand unblockUserCommand;
-
-    @Autowired
-    private RecommendUserCommand recommendUserCommand;
+//    @Autowired
+//    private BlockUserCommand blockUserCommand;
+//
+//    @Autowired
+//    private UnblockUserCommand unblockUserCommand;
+//
+//    @Autowired
+//    private RecommendUserCommand recommendUserCommand;
     @Autowired
     private UserPostService userPostService;
 

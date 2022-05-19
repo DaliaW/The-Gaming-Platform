@@ -1,32 +1,26 @@
 package guc.bttsBtngan.user.controllers;
 
-import com.jlefebure.spring.boot.minio.MinioException;
-import guc.bttsBtngan.user.commands.UserUser.DeleteUserCommand;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import guc.bttsBtngan.user.commands.UserUser.UpdateUserCommand;
 @RestController
 //@RequestMapping(path = "users")
 public class UserUserController {
 
-    @Autowired
-    private FollowUserCommand followUserCommand;
-    @Autowired
-    private UnfollowUserCommand unfollowUserCommand;
+//    @Autowired
+//    private FollowUserCommand followUserCommand;
+//    @Autowired
+//    private UnfollowUserCommand unfollowUserCommand;
 
-    @Autowired
-    private UpdateUserCommand updateUserCommand;
-
-    @Autowired
-    private DeleteUserCommand deleteUserCommand;
+//    @Autowired
+//    private UpdateUserCommand updateUserCommand;
+//
+//    @Autowired
+//    private DeleteUserCommand deleteUserCommand;
 
 
     @Autowired
