@@ -77,10 +77,10 @@ public class PostController {
         return service.postRecommend(req.userId);
     }
     
-    @PostMapping("/post/addimage")
-    public ResponseEntity addImage(@RequestBody imageAdder req) throws Exception {
-        return service.addImage(req.postId,req.PhotoRef);
-    }
+//    @PostMapping("/post/addimage")
+//    public ResponseEntity addImage(@RequestBody imageAdder req) throws Exception {
+//        return service.addImage(req.postId,req.PhotoRef);
+//    }
     
 
     static public class postRequest{

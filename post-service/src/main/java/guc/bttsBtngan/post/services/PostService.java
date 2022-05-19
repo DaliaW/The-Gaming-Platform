@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -339,22 +340,37 @@ public class PostService {
 	
 	
 	
-	public List<Post> postRecommend(String userId)  {
+	public List<Post> postRecommend(String userId) throws Exception  {
     	
        //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
 		// get the list of blocked users
+//      amqpTemplate.convertAndSend("user_req",type_IDs,  m -> {
+//      m.getMessageProperties().setHeader("command", "createNotificationCommand");
+//      return m;
+//  });	
+		
+		
+		ArrayList<String> blockingUsers= new ArrayList<String>();
+		
 		
 		Query query = new Query();
-		//query.addCriteria(Criteria.where("userId").`is`()).with(Sort.by(Sort.Direction.DESC, "sortField"));
-
-	//	query.addCriteria(Criteria.where("_id").is(postId));
-		List<Post> posts = mongoOperations.find(query, Post.class, "post");
+		query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
+		List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
+		List<Post> filteredPosts = new ArrayList<Post>();
+		
+		for(Post x: posts)
+		{
+			if(!blockingUsers.contains(x.getUserId()))
+			{
+				filteredPosts.add(x);
+			}
+		}
         
         
         
       
       
-        return posts;
+        return filteredPosts;
     }
 	
 	
