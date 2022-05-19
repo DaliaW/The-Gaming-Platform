@@ -24,7 +24,7 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public String createPost(@RequestBody Post post) throws InterruptedException, ExecutionException {
+    public String createPost(@RequestBody Post post) throws Exception {
         return service.createPost(post);
     }
 
@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @PostMapping("/post/report")
-    public String reportPost(@RequestBody reportPostRequest req) throws InterruptedException, ExecutionException {
+    public String reportPost(@RequestBody reportPostRequest req) throws Exception {
         return service.reportPost(req.userId,req.postId,req.reportComment);
     }
 
@@ -79,7 +79,7 @@ public class PostController {
     }
     @GetMapping("/post/postrecommend")
     
-    public List<Post> postRecommend(@RequestBody postRecommender req) throws InterruptedException, ExecutionException, ResponseStatusException {
+    public List<Post> postRecommend(@RequestBody postRecommender req) throws Exception {
         System.out.println("kol btts kteer");
 
     	return service.postRecommend(req.userId);

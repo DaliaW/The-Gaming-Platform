@@ -1,6 +1,7 @@
 package guc.bttsBtngan.post.services;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 import java.util.*;
 
@@ -10,6 +11,7 @@ import guc.bttsBtngan.post.data.Comment;
 import guc.bttsBtngan.post.data.Comment.CommentVote;
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.data.Post.PostVote;
+import guc.bttsBtngan.post.data.Post.PostReport;
 import guc.bttsBtngan.post.firebase.FirebaseImageService;
 
 import org.springframework.amqp.core.AmqpTemplate;
@@ -35,25 +37,54 @@ public class PostService {
 	@Autowired
 	private AmqpTemplate amqpTemplate;
 
-	public String createPost(Post post) throws InterruptedException, ExecutionException {
-//    	post.setModeratorId("3amo moderator2");
+	public String createPost(Post post) throws Exception {
+		if(post.getUserId() == null)
+		{
+			throw new Exception("UserId required for creating post");
+		}
+		
+		if(post.getContent() == null)
+		{
+			throw new Exception("Content required for creating post");
+		}
+		
+
+		post.setDate(new Timestamp(System.currentTimeMillis()) );
+		
+		post.setNoOfFollwer(0);
+		
+		post.setComments(new ArrayList<Comment>());
+		
+		post.setPostVotes(new ArrayList<PostVote>());
+		
+		post.setPostReports(new ArrayList<PostReport>());
+		
+		post.setPostTags(new ArrayList<String>());
+		
+		post.setPostFollowers(new ArrayList<String>());
+		
         mongoOperations.save(post);
         
-        
-        // check if the user who posted the post has followers
-        // if the list contains followers, we do the notification step (create hash map with Type,list<string>)
-            
-//        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-//	  	ArrayList<String> btngan = new ArrayList<String>();  ;
-//	  	type_IDs.put("type", "post");
-//	  	type_IDs.put("userIDs", btngan);
-//        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-//            m.getMessageProperties().setHeader("command", "createNotificationCommand");
-//            return m;
-//        });
-        
-     /////////////////////////////////////////////////////////////////////////////   
-      
+        HashMap<String, Object> type_ID= new HashMap<String, Object>();
+        type_ID.put("type", "post");
+        type_ID.put("userID", post.getUserId());
+
+       ArrayList<String> followers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_ID,  m -> {
+        m.getMessageProperties().setHeader("command", "getAllFollowersCommand");
+        return m;
+    });    
+       if(followers!=null && followers.size()!=0)
+       {
+           
+    	   HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+             type_IDs.put("type", "post");
+             type_IDs.put("userIDs", followers);
+           amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+               m.getMessageProperties().setHeader("command", "createNotificationCommand");
+               return m;
+           });
+           
+       }
       
         return "DONE, created post is: "+(post).toString();
     }
@@ -62,10 +93,16 @@ public class PostService {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
     	
+    	if(post == null)
+    	{
+    		throw new Exception("post with id: "+postId+" is not found");
+    	}
+    	
     	if(post.getPostFollowers() == null)
     	{
     		post.setPostFollowers(new ArrayList<String>());
     	}
+    	
     	int followIdx = -1;
     	int followersCount = post.getPostFollowers().size();
     	for(int i=0;i<followersCount;i++)
@@ -112,10 +149,21 @@ public class PostService {
     	
     }
 
-    public String reportPost(String userId, String postId, String reportComment)throws InterruptedException, ExecutionException {
+    public String reportPost(String userId, String postId, String reportComment)throws Exception {
+    	if(reportComment == null)
+    	{
+    		throw new Exception("reportComment is required");
+    	}
+    	
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");
-
+    	
+    	if(post == null)
+    	{
+    		throw new Exception("post with id: "+postId+" is not found");
+    	}
+    	
+    	
     	Post.PostReport postReport = new Post.PostReport(userId, reportComment);
 
     	if(post.getPostReports() == null)
@@ -127,43 +175,69 @@ public class PostService {
     	Update update = new Update().set("postReports", post.getPostReports());
         mongoOperations.updateFirst(query, update, Post.class);
 
-    	return "DONE, Potatoes report post : "+(post).toString();
+    	return "DONE, Potatoes report post";
 
     }
 
     
     public String commentPost(String userId, String postId, String comment)throws Exception {
+    	if(comment == null)
+    	{
+    		throw new Exception("comment is required");
+    	}
+    	
     	Query query = new Query();
     	query.addCriteria(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null)throw new Exception("post id is not valid");
-    	Comment postComment = new Comment(userId, comment);
+    	
+		
 		if(post.getComments()==null){
 			post.setComments(new ArrayList<>());
 		}
+		
+		int lastIdx;
+		int commentsCount = post.getComments().size();
+		if(commentsCount == 0)
+		{
+			lastIdx = -1;
+		}
+		else
+		{
+			Comment lastComment = post.getComments().get(commentsCount-1);
+			lastIdx = Integer.parseInt(lastComment.getId());
+		}
+		
+		Comment postComment = new Comment(userId, comment);
+		postComment.setId(""+(lastIdx+1));
+		
+		
     	post.getComments().add(postComment);
 
-    	mongoOperations.save(post);
+    	
+    	Update update = new Update().set("comments", post.getComments());
+        mongoOperations.updateFirst(query, update, Post.class);
 
-    	return "DONE, Potatoes comment post : "+(postComment)+" "+post;
+    	return "DONE, Potatoes comment post";
 
     }
     
  
     
     public String commentVote(String userId, String postId, String commentId,boolean vote)throws Exception {
-		Query query = new Query();
+    	if(commentId == null)
+    	{
+    		throw new Exception("commentId is required");
+    	}
+    	
+    	Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
-		Post post = mongoOperations.findById(query, Post.class, "post");
+		Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null){
-			return "post id is not valid";
+			throw new Exception("postId is not valid");
 		}
-//		Comment cmnt;
-//		for(Comment cmnt2: post.getComments()) {
-//			cmnt2.getCommen
-//		}
-////		todo search for comment
-//		Comment cmnt = post.getComments().get(0);//TODO: search for comment by commentId
+		
+		
 		Comment cmnt=null;
 		for(Comment c:post.getComments()){
 			if(c.getId().equals(commentId)){
@@ -182,29 +256,31 @@ public class PostService {
 				}
 				else {
 					cv.setUpVote(vote);
-	
 				}
-				
+				break;
 			}
 		}
 		if(!found) {
 			CommentVote cv=new CommentVote(userId,vote);
 			cmnt.addCommentVote(cv);
 		}
-		mongoOperations.save(post);
+		
+    	Update update = new Update().set("comments", post.getComments());
+        mongoOperations.updateFirst(query, update, Post.class);
 
-		return "DONE, Potatoes tag in post : "+(post).toString();
+		return "DONE, Potatoes vote in post";
 
 	}
     
     
-    public String postVote(String userId, String postId, boolean vote)throws InterruptedException, ExecutionException {
+    public String postVote(String userId, String postId, boolean vote)throws Exception {
   		Query query = new Query();
   		query.addCriteria(Criteria.where("_id").is(postId));
-  		Post post = mongoOperations.findById(query, Post.class, "post");
+  		Post post = mongoOperations.findOne(query, Post.class, "post");
   		if(post==null){
-  			return "post id is not valid";
+			throw new Exception("postId is not valid");
   		}
+  		
   		boolean found = false;
   		for(PostVote pv: post.getPostVotes() ) {
   			if(pv.getVoterId().equals(userId)) {
@@ -215,16 +291,20 @@ public class PostService {
   				else {
   					pv.setUpVote(vote);
   				}
-  				
+  				break;
   			}
   		}
   		if(!found) {
   			PostVote pv=new PostVote(userId,vote);
   			post.addPostVote(pv);
   		}
-  		mongoOperations.save(post);
+  		
+  		
 
-  		return "DONE, Potatoes tag in post : "+(post).toString();
+    	Update update = new Update().set("postVotes", post.getPostVotes());
+        mongoOperations.updateFirst(query, update, Post.class);
+
+  		return "DONE, Potatoes";
 
   	}
 	public String tagInPost(String postId, String[]userIds,String userIdSending)throws Exception {
@@ -412,39 +492,35 @@ public class PostService {
 	
 	
 	
-	public List<Post> postRecommend(String userId) throws InterruptedException, ExecutionException, ResponseStatusException  {
-    	
-       //from the userId , if followed posts is empty , then we check top 10 most voted posted to add in list 
-		// get the list of blocked users
-//      amqpTemplate.convertAndSend("user_req",type_IDs,  m -> {
-//      m.getMessageProperties().setHeader("command", "createNotificationCommand");
-//      return m;
-//  });	
-		
-		
-		ArrayList<String> blockingUsers= new ArrayList<String>();
-		
-		
-		Query query = new Query();
-		query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
-        System.out.println("kol btts kteer");
-		List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
-		List<Post> filteredPosts = new ArrayList<Post>();
-		
-		for(Post x: posts)
-		{
-			if(!blockingUsers.contains(x.getUserId()))
-			{
-				filteredPosts.add(x);
-			}
-		}
+	public List<Post> postRecommend(String userId) throws Exception  {
         
-        System.out.println("kol btts kteer");
-        
-      
-      
-        return filteredPosts;
-    }
+
+	      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+	      type_IDs.put("type", "post");
+	      type_IDs.put("userID", userId);
+
+	     ArrayList<String> blockingUsers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_IDs,  m -> {
+	      m.getMessageProperties().setHeader("command", "blockedByCommand");
+	      return m;
+	  });    
+	        
+	     
+	     
+	        Query query = new Query();
+	        query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
+	        List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
+	        List<Post> filteredPosts = new ArrayList<Post>();
+	        
+	        for(Post x: posts)
+	        {
+	            if(!blockingUsers.contains(x.getUserId()))
+	            {
+	                filteredPosts.add(x);
+	            }
+	        }
+	      
+	        return filteredPosts;
+	 }
 	
 	
 	
