@@ -25,6 +25,11 @@ public class PostController {
         return service.createPost(post);
     }
 
+    @PostMapping("/post/comment")
+    public String commentPost(@RequestBody commentPostRequest req) throws Exception {
+        return service.commentPost(req.userId,req.postId, req.comment);
+    }
+
     @PostMapping("/post/content")
     public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
         return service.searchPosts(req.content,req.userId);
@@ -114,5 +119,10 @@ public class PostController {
         public String userId;
         public String postId;
         public String reportComment;
+    }
+    static public class commentPostRequest{
+        public String userId;
+        public String postId;
+        public String comment;
     }
 }

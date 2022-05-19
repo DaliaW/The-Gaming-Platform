@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.*;
 
 
+import guc.bttsBtngan.post.amqp.RabbitMQConfig;
 import guc.bttsBtngan.post.data.Comment;
 import guc.bttsBtngan.post.data.Comment.CommentVote;
 import guc.bttsBtngan.post.data.Post;
@@ -75,18 +76,20 @@ public class PostService {
     }
 
     
-    public String commentPost(String userId, String postId, String comment)throws InterruptedException, ExecutionException {
+    public String commentPost(String userId, String postId, String comment)throws Exception {
     	Query query = new Query();
     	query.addCriteria(Criteria.where("_id").is(postId));
-    	Post post = mongoOperations.findById(query, Post.class, "post");
-
+    	Post post = mongoOperations.findOne(query, Post.class, "post");
+		if(post==null)throw new Exception("post id is not valid");
     	Comment postComment = new Comment(userId, comment);
-
+		if(post.getComments()==null){
+			post.setComments(new ArrayList<>());
+		}
     	post.getComments().add(postComment);
 
     	mongoOperations.save(post);
 
-    	return "DONE, Potatoes comment post : "+(postComment).toString();
+    	return "DONE, Potatoes comment post : "+(postComment)+" "+post;
 
     }
     
@@ -273,16 +276,22 @@ public class PostService {
 	public boolean validUserId(String me,String suspiciousUser){
 		//check first if suspicious user exist in the database
 
+		Map<String, Object> body = new HashMap<>();
+		body.put("userId",me);
+		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
+				"authentication", body, m -> {
+					m.getMessageProperties().setHeader("command", "validateCommand");
+					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
+					return m;
+				});
 		//then check if he is blocked
-		HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-		ArrayList<String> btngan = new ArrayList<String>();  ;
-		type_IDs.put("type", "post");
-		type_IDs.put("userIDs", btngan);
-		amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-			m.getMessageProperties().setHeader("command", "createNotificationCommand");
-			return m;
-		});
-		return true;
+		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
+				"authentication", body, m -> {
+					m.getMessageProperties().setHeader("command", "blockedByComman");
+					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
+					return m;
+				});
+		return auth_res && !res.contains(suspiciousUser);
 	}
 	public String searchPosts(String subContent,String userId) throws InterruptedException, ExecutionException {
 

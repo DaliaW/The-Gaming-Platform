@@ -184,20 +184,28 @@ public class Post {
 		public void setComment(String comment) {
 			this.comment = comment;
 		}
-		
+
 		public String toString() {
 			return "reporter: "+userId+" ---- content: "+comment;
 		}
-		
-		
+
+
 	}
 
 	@Override
 	public String toString() {
-		return "Post [userId=" + userId + ", content=" + content + ", photoRef=" + photoRef + ", date=" + date
-				+ ", moderatorId=" + moderatorId + "]"+
-				"post followers: "+postFollowers+
-				"reports: "+postReports;
+		return "Post{" +
+				"userId='" + userId + '\'' +
+				", content='" + content + '\'' +
+				", photoRef='" + photoRef + '\'' +
+				", date=" + date +
+				", moderatorId='" + moderatorId + '\'' +
+				", comments=" + comments +
+				", postVotes=" + postVotes +
+				", postReports=" + postReports +
+				", postTags=" + postTags +
+				", postFollowers=" + postFollowers +
+				'}';
 	}
-		
+
 }

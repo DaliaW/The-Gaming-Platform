@@ -29,10 +29,10 @@ public class RabbitMQConfig {
     private Map<String, Command> commands;
     @Autowired
     private AmqpTemplate amqpTemplate;
-    	@Autowired
-	private ExecutorService threadPool;
+//    	@Autowired
+//	private ExecutorService threadPool;
     private static final String request_queue = "post_req";
-//	private static final String reply_queue = "gateway";
+	public static final String reply_queue = "gateway";
 
     @Bean(name = {request_queue})
     public Queue request_queue() {
@@ -54,28 +54,28 @@ public class RabbitMQConfig {
 //		return new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000));
 //	}
 
-    @RabbitListener(queues = request_queue)
-    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
-    	threadPool.submit(() -> {
-        	HashMap<String, Object> map = new HashMap<>();
-        	try {
-        		System.out.println("started processing task: " + payload.get("content"));
-        		payload.put("user_id", headers.get("user_id"));
-				payload.put("timestamp", headers.get("timestamp"));
-    			Object res = commands.get((String)headers.get("command")).execute(payload);
-    			map.put("data", res);
-    		} catch (Exception e) {
-    			map.put("error", e.getMessage());
-    		} finally {
-    			amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
-    	        	m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
-    	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
-    	        	return m;
-    			});
-        		System.out.println("finished processing task: " + payload.get("content"));
-    		}
-    	});
-    }
+//    @RabbitListener(queues = request_queue)
+//    public void listen(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {
+//    	threadPool.submit(() -> {
+//        	HashMap<String, Object> map = new HashMap<>();
+//        	try {
+//        		System.out.println("started processing task: " + payload.get("content"));
+//        		payload.put("user_id", headers.get("user_id"));
+//				payload.put("timestamp", headers.get("timestamp"));
+//    			Object res = commands.get((String)headers.get("command")).execute(payload);
+//    			map.put("data", res);
+//    		} catch (Exception e) {
+//    			map.put("error", e.getMessage());
+//    		} finally {
+//    			amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
+//    	        	m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
+//    	        	m.getMessageProperties().setReplyTo((String) headers.get("amqp_replyTo"));
+//    	        	return m;
+//    			});
+//        		System.out.println("finished processing task: " + payload.get("content"));
+//    		}
+//    	});
+//    }
 
     @RabbitListener(queues = request_queue)
     public void listen_2(HashMap<String, Object> payload, @Headers Map<String, Object> headers) {

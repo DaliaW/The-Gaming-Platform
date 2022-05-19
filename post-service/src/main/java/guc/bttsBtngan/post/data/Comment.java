@@ -81,7 +81,18 @@ public class Comment {
 		this.commentTags.remove(tag);
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Comment{" +
+				"id='" + id + '\'' +
+				", content='" + content + '\'' +
+				", commenterId='" + commenterId + '\'' +
+				", commentVotes=" + commentVotes +
+				", commentTags=" + commentTags +
+				'}';
+	}
+
+
 	public static class CommentVote{
 		private String voterId;
 		private boolean upVote;
