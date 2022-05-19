@@ -145,7 +145,7 @@ public class UserUserService {
             else
                 throw new IllegalStateException("Please enter new password");
         }
-        if(photo!=null ){
+        if(photo!=null && !photo.isEmpty() ){
             System.out.println("phottt here");
             String textPath=minioConfigurationProperties.getBucket();
             System.out.println("bucket="+textPath);
