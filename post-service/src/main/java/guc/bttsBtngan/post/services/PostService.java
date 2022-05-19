@@ -133,14 +133,14 @@ public class PostService {
 	}
     
     
-    public String postVote(String userId, String postId,boolean vote)throws InterruptedException, ExecutionException {
+    public String postVote(String userId, String postId, boolean vote)throws InterruptedException, ExecutionException {
   		Query query = new Query();
   		query.addCriteria(Criteria.where("_id").is(postId));
   		Post post = mongoOperations.findById(query, Post.class, "post");
   		if(post==null){
   			return "post id is not valid";
   		}
-  		boolean found =false;
+  		boolean found = false;
   		for(PostVote pv: post.getPostVotes() ) {
   			if(pv.getVoterId().equals(userId)) {
   				found =true;
@@ -149,7 +149,6 @@ public class PostService {
   				}
   				else {
   					pv.setUpVote(vote);
-  	
   				}
   				
   			}
