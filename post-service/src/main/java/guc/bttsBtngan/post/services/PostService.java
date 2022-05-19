@@ -92,7 +92,7 @@ public class PostService {
     
  
     
-    public String commentVote(String userId, String postId, String commentId,boolean vote)throws InterruptedException, ExecutionException {
+    public String commentVote(String userId, String postId, String commentId,boolean vote)throws Exception {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findById(query, Post.class, "post");
@@ -103,8 +103,17 @@ public class PostService {
 //		for(Comment cmnt2: post.getComments()) {
 //			cmnt2.getCommen
 //		}
-//		todo search for comment
-		Comment cmnt = post.getComments().get(0);//TODO: search for comment by commentId
+////		todo search for comment
+//		Comment cmnt = post.getComments().get(0);//TODO: search for comment by commentId
+		Comment cmnt=null;
+		for(Comment c:post.getComments()){
+			if(c.getId().equals(commentId)){
+				cmnt=c;
+			}
+		}
+		if(cmnt==null){
+			throw new Exception("comment id is not valid");
+		}
 		boolean found =false;
 		for(CommentVote cv: cmnt.getCommentVotes() ) {
 			if(cv.getVoterId().equals(userId)) {
