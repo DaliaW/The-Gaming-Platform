@@ -414,7 +414,7 @@ public class PostService {
 	
 	public List<Post> postRecommend(String userId) throws InterruptedException, ExecutionException, ResponseStatusException  {
     	
-       //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
+       //from the userId , if followed posts is empty , then we check top 10 most voted posted to add in list 
 		// get the list of blocked users
 //      amqpTemplate.convertAndSend("user_req",type_IDs,  m -> {
 //      m.getMessageProperties().setHeader("command", "createNotificationCommand");
