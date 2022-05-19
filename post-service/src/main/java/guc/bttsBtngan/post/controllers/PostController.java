@@ -34,7 +34,7 @@ public class PostController {
 
     @PostMapping("/post/follow")
     public String followPost(@RequestBody followPostRequest req) throws InterruptedException, ExecutionException {
-        return service.followPost(req.userId,req.postId);
+        return service.followPost(req.userId,req.postId,req.follow);
     }
 
     @PostMapping("/post/report")
@@ -113,6 +113,7 @@ public class PostController {
     static public class followPostRequest{
         public String userId;
         public String postId;
+        public boolean follow;
     }
     
     static public class reportPostRequest{

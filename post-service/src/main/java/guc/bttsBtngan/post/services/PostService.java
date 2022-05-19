@@ -5,17 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import guc.bttsBtngan.notification.commands.*;
-
-import guc.bttsBtngan.post.data.Comment;
-import guc.bttsBtngan.post.data.Comment.CommentVote;
-import guc.bttsBtngan.post.data.Post;
-import guc.bttsBtngan.post.data.Post.PostVote;
-
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,7 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import com.mongodb.client.result.UpdateResult;
+import guc.bttsBtngan.post.data.Comment;
+import guc.bttsBtngan.post.data.Comment.CommentVote;
+import guc.bttsBtngan.post.data.Post;
+import guc.bttsBtngan.post.data.Post.PostVote;
 
 
 
@@ -36,7 +32,8 @@ public class PostService {
     @Autowired
     private AmqpTemplate amqpTemplate;
     
-    public String createPost(Post post)  {
+
+    public String createPost(Post post) throws InterruptedException, ExecutionException{
     	post.setModeratorId("3amo moderator2");
         mongoOperations.save(post);
         
@@ -59,7 +56,7 @@ public class PostService {
         return "DONE, created post is: "+(post).toString();
     }
     
-    public String followPost(String userId, String postId)throws InterruptedException, ExecutionException {
+    public String followPost(String userId, String postId, boolean follow)throws InterruptedException, ExecutionException {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
     	
@@ -67,7 +64,34 @@ public class PostService {
     	{
     		post.setPostFollowers(new ArrayList<String>());
     	}
-    	post.addPostFollower(userId);
+    	int followIdx = -1;
+    	int followersCount = post.getPostFollowers().size();
+    	for(int i=0;i<followersCount;i++)
+    	{
+    		String currFollower = post.getPostFollowers().get(i);
+    		if(currFollower.equals(userId))
+    		{
+    			followIdx = i;
+    			break;
+    		}
+    	}
+    	// If I am a follower to the post and I want to unfollow
+    	if(followIdx!=-1 && !follow)
+    	{
+    		post.getPostFollowers().remove(followIdx);
+    	}
+    	// If I am not a follower to the post and I want to follow
+    	else if(followIdx == -1 && follow)
+    	{
+    		post.addPostFollower(userId);
+    	}
+    	else
+    	{
+    		// Exception
+    		// either not following and trying to unfollow
+    		// or following and trying to follow
+    	}
+    	
     	
     	Update update = new Update().set("postFollowers", post.getPostFollowers());
         mongoOperations.updateFirst(query, update, Post.class);
