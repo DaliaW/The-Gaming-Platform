@@ -22,6 +22,7 @@ public class UpdateUserCommand extends UserUserCommand{
         String newPassword=map.containsKey("newPassword")?(String)(map.get("newPassword")):null;
         System.out.println("newPassword= "+newPassword);
         MultipartFile photo=map.containsKey("photo")?(MultipartFile)(map.get("photo")):null;
+        System.out.println("photo= "+photo);
         return getService().updateUser(user_id,new_username,email,oldPassword,newPassword,photo);
 
     }

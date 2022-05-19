@@ -43,10 +43,10 @@ public class UserUserController {
     }
 
 
-    @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") String id) {
-        userUserService.deleteUser(id);
-    }
+//    @DeleteMapping(path = "{userId}")
+//    public void deleteUser(@PathVariable("userId") String id) {
+//        userUserService.deleteUser(id);
+//    }
 
     @PutMapping(path = "/users/user-profile")
     public void updateUser(@RequestParam(name="user_id") String id,
@@ -68,5 +68,12 @@ public class UserUserController {
         updateUserCommand.execute(map);
 //        userUserService.updateUser(id, username, email, oldPassword, newPassword,photo);
     }
+    @DeleteMapping(path = "/users/deleteProfilePicture")
+    public void deleteProfilePicture(@RequestParam("user_id") String id) throws MinioException {
+        System.out.println("in deleteeeeeee");
+        userUserService.deleteProfilePicture(id);
+    }
+
+
 
 }
