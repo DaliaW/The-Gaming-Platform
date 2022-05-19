@@ -343,7 +343,7 @@ public class PostService {
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
-					m.getMessageProperties().setHeader("command", "blockedByComman");
+					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
@@ -359,7 +359,7 @@ public class PostService {
 		}
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
-//		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
+		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
 
 		return "DONE, Potatoes report post : "+(post);
 
@@ -433,7 +433,7 @@ public class PostService {
 	
 	public List<Post> postRecommend(String userId) throws InterruptedException, ExecutionException, ResponseStatusException  {
     	
-       //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
+       //from the userId , if followed posts is empty , then we check top 10 most voted posted to add in list 
 		// get the list of blocked users
 //      amqpTemplate.convertAndSend("user_req",type_IDs,  m -> {
 //      m.getMessageProperties().setHeader("command", "createNotificationCommand");
