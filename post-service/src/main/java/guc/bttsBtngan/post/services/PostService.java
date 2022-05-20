@@ -100,6 +100,10 @@ public class PostService {
     		throw new Exception("post with id: "+postId+" is not found");
     	}
     	
+    	if(isBannedFromPost(post, userId)) {
+    		throw new Exception("You are banned from this post");
+    	}
+    	
     	if(post.getPostFollowers() == null)
     	{
     		post.setPostFollowers(new ArrayList<String>());
@@ -185,6 +189,9 @@ public class PostService {
     		throw new Exception("post with id: "+postId+" is not found");
     	}
     	
+    	if(isBannedFromPost(post, userId)) {
+    		throw new Exception("You are banned from this post");
+    	}
     	
     	Post.PostReport postReport = new Post.PostReport(userId, reportComment);
 
@@ -221,6 +228,9 @@ public class PostService {
     	Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null)throw new Exception("post id is not valid");
     	
+		if(isBannedFromPost(post, userId)) {
+    		throw new Exception("You are banned from this post");
+    	}
 		
 		if(post.getComments()==null){
 			post.setComments(new ArrayList<>());
@@ -270,6 +280,9 @@ public class PostService {
 			throw new Exception("postId is not valid");
 		}
 		
+		if(isBannedFromPost(post, userId)) {
+    		throw new Exception("You are banned from this post");
+    	}
 		
 		Comment cmnt=null;
 		for(Comment c:post.getComments()){
@@ -319,6 +332,10 @@ public class PostService {
 			throw new Exception("postId is not valid");
   		}
   		
+  		if(isBannedFromPost(post, userId)) {
+    		throw new Exception("You are banned from this post");
+    	}
+  		
   		boolean found = false;
   		for(PostVote pv: post.getPostVotes() ) {
   			if(pv.getVoterId().equals(userId)) {
@@ -354,10 +371,10 @@ public class PostService {
 		if(post==null){
 			throw new Exception("post id is not valid");
 		}
-
+		
 		for(String userId:userIds){
-			if(!validateUserId(userIdSending,userId)){
-				throw new Exception("User with user id "+userId+" is not a valid user");
+			if(!validateUserId(userIdSending,userId) || isBannedFromPost(post, userId)){
+				throw new Exception("User with user id "+userId+" is not a valid user or is banned");
 			}
 			post.addPostTags(userId);
 		}
@@ -395,6 +412,7 @@ public class PostService {
 		if(post==null){
 			throw new Exception("post id is not valid");
 		}
+		
 		Comment cmnt=null;
 		for(Comment c:post.getComments()){
 			if(c.getId().equals(commentId)){
@@ -405,8 +423,8 @@ public class PostService {
 			throw new Exception("comment id is not valid");
 		}
 		for(String userId:userIds){
-			if(!validateUserId(userIdSending,userId)){
-				throw new Exception("User with user id "+userId+" is not a valid user");
+			if(!validateUserId(userIdSending,userId) || isBannedFromPost(post, userId)){
+				throw new Exception("User with user id "+userId+" is not a valid user or is banned");
 			}
 			cmnt.addCommentTags(userId);
 		}
@@ -490,7 +508,7 @@ public class PostService {
 		posts.removeIf(p -> res.contains(p.getUserId()));
 		return true;
 	}
-	public String searchPosts(String subContent,String userId) throws InterruptedException, ExecutionException {
+	public String searchPosts(String subContent,String userId) throws Exception {
 		Query query = new Query();
 		StringBuilder pattern= new StringBuilder(".*");//starts with anything
 		String[]tokens=subContent.split(" ");
@@ -501,7 +519,7 @@ public class PostService {
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
 
-		post.removeIf(p -> (!validateUserId(userId,p.getUserId())));
+		post.removeIf(p -> (!validateUserId(userId,p.getUserId()) || isBannedFromPost(p, userId)));
 
 		return post.toString();
 
@@ -511,11 +529,13 @@ public class PostService {
 	}
 	
 	// TAG
-	public String assignModerator(String postId, String userId)throws Exception {
+	public String assignModerator(String postId, String userId, String modId)throws Exception {
 		
 		if(postId == null)
 			throw new Exception("Must include postId");
 		if(userId == null)
+			throw new Exception("Must include userId");
+		if(modId == null)
 			throw new Exception("Must include userId");
 		
 		Query query = new Query();
@@ -528,7 +548,7 @@ public class PostService {
 		if(!post.getUserId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
 		
-		Update update = new Update().set("moderatorId", userId);
+		Update update = new Update().set("moderatorId", modId);
 		mongoOperations.updateFirst(query, update, Post.class);
 		
 		return "DONE, Potatoes";
@@ -559,22 +579,24 @@ public class PostService {
   		}
   		if(!found && ban) {
   			post.getBannedUsers().add(userId);
+  			post.getPostFollowers().remove(userId);
+  			post.setNoOfFollwer(post.getPostFollowers().size());
   		}
   		
   		
 
-    	Update update = new Update().set("bannedUsers", post.getBannedUsers());
+    	Update update = new Update()
+    			.set("bannedUsers", post.getBannedUsers())
+				.set("postFollowers", post.getPostFollowers())
+				.set("noOfFollwer", post.getNoOfFollwer());
+		
         mongoOperations.updateFirst(query, update, Post.class);
         
   		return "DONE, Potatoes";
 
   	}
 	
-	public boolean isBannedFromPost(Post post, String userId) throws Exception{
-  		
-  		if(post==null){
-			throw new Exception("postId is not valid");
-  		}
+	public boolean isBannedFromPost(Post post, String userId){
   		
   		if(post.getBannedUsers().contains(userId))
   			return true;
@@ -605,19 +627,29 @@ public class PostService {
 
 	// !!!! ama nshoof !!!!
 	
-	public String attachImageToPost(String post_id,  MultipartFile photo) throws IOException {
-	Query query = new Query();
-	query.addCriteria(Criteria.where("_id").is(post_id));
-	Post post = mongoOperations.findOne(query, Post.class, "post");
-	if(post==null){
-		//throw exception
-	}
-	if(photo!=null ){
-		String textPath=firebaseImage.save(photo);
-		Update update = new Update().set("photoRef", textPath);
-        mongoOperations.updateFirst(query, update, Post.class);
-	}
-	return "Done!";
+	public String attachImageToPost(String userId,String post_id,  MultipartFile photo) throws Exception {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(post_id));
+		Post post = mongoOperations.findOne(query, Post.class, "post");
+		
+		if(post==null){
+			throw new Exception("Post does not exist");
+		}
+		
+		if(photo==null){
+			throw new Exception("Photo is corrupted or does not exist");
+		}
+		
+		if(post.getUserId()!= userId) {
+			throw new Exception("msh postak");
+		}
+		
+		if(photo!=null ){
+			String textPath=firebaseImage.save(photo);
+			Update update = new Update().set("photoRef", textPath);
+	        mongoOperations.updateFirst(query, update, Post.class);
+		}
+		return "Done!";
 }
 	
 	// !!!! shofna !!!!
