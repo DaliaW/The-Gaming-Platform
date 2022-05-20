@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.api.core.ApiFuture;
@@ -19,21 +22,23 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
+import guc.bttsBtngan.chat.amqp.RabbitMQConfig;
 import guc.bttsBtngan.chat.data.ChatMessage;
 import guc.bttsBtngan.chat.data.GroupChat;
 
 @Service
-public class GroupChatService {
+public class GroupChatService {	
 	
-	//TODO: add notifications to appropriate functions
+	@Autowired
+	AmqpTemplate amqpTemplate;
 	
 	public String createGroup(GroupChat chat) throws InterruptedException, ExecutionException {
 		List<String> participants = new ArrayList<>();
 		participants.add(chat.getAdmin_id());
 		chat.setParticipants(participants);
 		Firestore db = FirestoreClient.getFirestore();
-		ApiFuture<DocumentReference> doc_ref = db.collection("group_chat").add(chat);
-		return "Added group with ID: " + doc_ref.get().getId();
+		ApiFuture<WriteResult> doc_ref = db.collection("group_chat").document(chat.getGroup_id()).set(chat);
+		return "Added group at timestamp: " + doc_ref.get().getUpdateTime();
 	}
 	
 	public String changeAdmin(String user_id, String new_admin_id, String group_id) throws Exception {
@@ -51,6 +56,11 @@ public class GroupChatService {
 				WriteResult result = future2.get();
 				return "Write result: " + result;
 			}
+			Map<String, Object> notificationMap = new HashMap<>();
+			notificationMap.put("type", "changeAdmin");
+			chat.getParticipants().remove(user_id);
+			notificationMap.put("userIDs", chat.getParticipants());
+			amqpTemplate.convertAndSend(RabbitMQConfig.notifications_queue, notificationMap);
 			throw new Exception("the new admin must be a member of the group");
 		} else {
 			throw new Exception("No group exists with id: " + group_id);
@@ -81,8 +91,14 @@ public class GroupChatService {
 		ApiFuture<DocumentSnapshot> future = doc_ref.get();
 		DocumentSnapshot document = future.get();
 		if(document.exists()) {
+			GroupChat chat = document.toObject(GroupChat.class);
 			ApiFuture<WriteResult> future2 = doc_ref.update("participants", FieldValue.arrayUnion(user_id));
 			WriteResult result = future2.get();
+			Map<String, Object> notificationMap = new HashMap<>();
+			notificationMap.put("type", "joinGroup");
+			chat.getParticipants().remove(user_id);
+			notificationMap.put("userIDs", chat.getParticipants());
+			amqpTemplate.convertAndSend(RabbitMQConfig.notifications_queue, notificationMap);
 			return "Write result: " + result;
 		} else {
 			throw new Exception("No group exists with id: " + group_id);
@@ -113,12 +129,19 @@ public class GroupChatService {
 			if(!chat.getParticipants().contains(user_id)) 
 				throw new Exception("You are not a member of the group with id: " + group_id);
 			HashMap<String , Object> map = new HashMap<>();
+			String message_id = UUID.randomUUID().toString();
 			map.put("sender_id", user_id);
 			map.put("content", content);
 			map.put("timestamp", timestamp);
-			ApiFuture<DocumentReference> ref = db.collection("group_chat").document(group_id)
-					.collection("messages").add(map);
-			return "Added message with id: " + ref.get().getId();
+			map.put("message_id", message_id);
+			ApiFuture<WriteResult> ref = db.collection("group_chat").document(group_id)
+					.collection("messages").document(message_id).set(map);
+			Map<String, Object> notificationMap = new HashMap<>();
+			notificationMap.put("type", "message");
+			chat.getParticipants().remove(user_id);
+			notificationMap.put("userIDs", chat.getParticipants());
+			amqpTemplate.convertAndSend(RabbitMQConfig.notifications_queue, notificationMap);
+			return "Added message with id: " + message_id;
 		} else {
 			throw new Exception("No group exists with id: " + group_id);
 		}

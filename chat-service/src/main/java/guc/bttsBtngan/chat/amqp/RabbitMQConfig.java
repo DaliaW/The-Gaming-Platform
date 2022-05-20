@@ -33,10 +33,16 @@ public class RabbitMQConfig {
 //	private ExecutorService threadPool;
 	private static final String request_queue = "messaging_req";
 //	private static final String reply_queue = "gateway";
+	public static final String notifications_queue = "notification_req";
 	
 	@Bean(name = {request_queue})
 	public Queue request_queue() {
 		return new Queue(request_queue);
+	}
+	
+	@Bean(name = {notifications_queue})
+	public Queue notifications_queue() {
+		return new Queue(notifications_queue);
 	}
 	
 //	@Bean(name = {reply_queue})
@@ -115,7 +121,4 @@ public class RabbitMQConfig {
 //        };
 //    }
     
-
-    
-	
 }

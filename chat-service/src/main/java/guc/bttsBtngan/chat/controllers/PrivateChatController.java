@@ -23,7 +23,7 @@ public class PrivateChatController {
 	private PrivateChatService service;
 	
 	@PostMapping("/private")
-	public String createPrivateChat(@RequestBody PrivateChat chat) throws InterruptedException, ExecutionException {
+	public String createPrivateChat(@RequestBody PrivateChat chat) throws Exception {
 		return service.createPrivateChat(chat);
 	}
 	

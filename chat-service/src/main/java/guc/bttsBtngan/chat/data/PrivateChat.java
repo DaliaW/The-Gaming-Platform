@@ -6,6 +6,7 @@ public class PrivateChat {
 
 	private String user_1;
 	private String user_2;
+	private String private_id;
 	
 	public PrivateChat() {}
 	
@@ -13,6 +14,7 @@ public class PrivateChat {
 		super();
 		this.user_1 = user_1;
 		this.user_2 = user_2;
+		this.private_id = user_1.compareTo(user_2) < 0 ? user_1 + "-" + user_2 : user_2 + "-" + user_1;
 	}
 
 	public String getUser_1() {
@@ -30,6 +32,14 @@ public class PrivateChat {
 
 	@Override
 	public String toString() {
-		return "PrivateChat [user_1=" + user_1 + ", user_2=" + user_2 + "]";
+		return "PrivateChat [user_1=" + user_1 + ", user_2=" + user_2 + ", private_id=" + private_id + "]";
+	}
+
+	public String getPrivate_id() {
+		return private_id;
+	}
+
+	public void setPrivate_id(String private_id) {
+		this.private_id = private_id;
 	}
 }
