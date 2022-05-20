@@ -8,8 +8,8 @@ jwt:
 spring:
   datasource:
     username: postgres
-    password: 12345
-    url: jdbc:postgresql://localhost:5432/student
+    password: 3580
+    url: jdbc:postgresql://localhost:5432/scalableDB
     platform: postgres
   jpa:
     hibernate:
