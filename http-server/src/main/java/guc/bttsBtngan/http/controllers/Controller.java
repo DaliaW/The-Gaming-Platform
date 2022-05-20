@@ -28,7 +28,7 @@ public class Controller {
 		serviceToCommand.put("authentication", "authentication_req");
 		serviceToCommand.put("notification", "notification_req");
 		serviceToCommand.put("user", "user_req");
-		serviceToCommand.put("post", "messaging_req");
+		serviceToCommand.put("post", "post_req");
 		this.serviceToCommand = serviceToCommand;
 	}
 
