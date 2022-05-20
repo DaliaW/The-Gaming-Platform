@@ -5,14 +5,16 @@ public class ChatMessage {
 	private String content;
 	private String sender_id;
 	private String timestamp;
+	private String message_id;
 	
 	public ChatMessage() {}
 	
-	public ChatMessage(String content, String sender_id, String timestamp) {
+	public ChatMessage(String content, String sender_id, String timestamp, String message_id) {
 		super();
 		this.content = content;
 		this.sender_id = sender_id;
 		this.timestamp = timestamp;
+		this.message_id = message_id;
 	}
 
 	public String getContent() {
@@ -36,7 +38,15 @@ public class ChatMessage {
 
 	@Override
 	public String toString() {
-		return "ChatMessage [content=" + content + ", sender_id=" + sender_id + ", timestamp=" + timestamp + "]";
+		return "ChatMessage [content=" + content + ", sender_id=" + sender_id + ", timestamp=" + timestamp + ", message_id=" + message_id + "]";
+	}
+
+	public String getMessage_id() {
+		return message_id;
+	}
+
+	public void setMessage_id(String message_id) {
+		this.message_id = message_id;
 	}
 	
 }
