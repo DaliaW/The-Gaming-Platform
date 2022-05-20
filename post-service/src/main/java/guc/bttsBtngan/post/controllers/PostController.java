@@ -32,6 +32,16 @@ public class PostController {
     public String commentPost(@RequestBody commentPostRequest req) throws Exception {
         return service.commentPost(req.userId,req.postId, req.comment);
     }
+    
+    @PostMapping("/post/commentVote")
+    public String commentVote(@RequestBody commentVoteRequest req) throws Exception {
+        return service.commentVote(req.userId,req.postId, req.commentId,req.vote);
+    }
+    
+    @PostMapping("/post/postVote")
+    public String postVote(@RequestBody postVoteRequest req) throws Exception {
+        return service.postVote(req.userId,req.postId,req.vote);
+    }
 
     @PostMapping("/post/content")
     public String searchPost(@RequestBody searchRequest req) throws Exception {
@@ -71,6 +81,11 @@ public class PostController {
     @PostMapping("/post/assignmod")
     public String assignModerator(@RequestBody modRequest req) throws Exception {
         return service.assignModerator(req.postId, req.userId, req.modId);
+    }
+    
+    @PostMapping("/post/modBanUser")
+    public String moderatorBanUser(@RequestBody modBanUserRequest req) throws Exception {
+        return service.moderatorBanUser(req.modId,req.postId, req.userId,req.ban);
     }
     
     @PostMapping("/post/modcheckrep")
@@ -121,6 +136,13 @@ public class PostController {
         public  String modId;
     }
     
+    static public class modBanUserRequest{
+        public  String modId;
+    	public String postId;
+        public  String userId;
+        public boolean ban;
+    }
+    
     static public class postRecommender{
         public  String userId;
 
@@ -159,5 +181,18 @@ public class PostController {
         public String userId;
         public String postId;
         public String comment;
+    }
+    
+    static public class commentVoteRequest{
+        public String userId;
+        public String postId;
+        public String commentId;
+        public boolean vote;
+    }
+    
+    static public class postVoteRequest{
+        public String userId;
+        public String postId;
+        public boolean vote;
     }
 }

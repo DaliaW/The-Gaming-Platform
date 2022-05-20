@@ -569,7 +569,7 @@ public class PostService {
 		Update update = new Update().set("moderatorId", modId);
 		mongoOperations.updateFirst(query, update, Post.class);
 		
-		return "DONE, Potatoes";
+		return "DONE, Potatoes moderator";
 
 	}
 	
@@ -593,6 +593,7 @@ public class PostService {
   				found =true;
   				if(!ban) 
   					post.getBannedUsers().remove(userId);
+  				break;
   			}
   		}
   		if(!found && ban) {
@@ -662,11 +663,10 @@ public class PostService {
 			throw new Exception("msh postak");
 		}
 		
-		if(photo!=null ){
-			String textPath=firebaseImage.save(photo);
-			Update update = new Update().set("photoRef", textPath);
-	        mongoOperations.updateFirst(query, update, Post.class);
-		}
+		
+		String textPath=firebaseImage.save(photo);
+		Update update = new Update().set("photoRef", textPath);
+	    mongoOperations.updateFirst(query, update, Post.class);
 		return "Done!";
 }
 	
