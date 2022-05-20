@@ -63,6 +63,8 @@ public class PostService {
 		
 		post.setPostFollowers(new ArrayList<String>());
 		
+		post.setBannedUsers(new ArrayList<String>());
+		
         mongoOperations.save(post);
         
         HashMap<String, Object> type_ID= new HashMap<String, Object>();
@@ -531,6 +533,53 @@ public class PostService {
 		
 		return "DONE, Potatoes";
 
+	}
+	
+	public String moderatorBanUser(String modId, String postId, String userId, boolean ban)throws Exception {
+    	
+  		Query query = new Query();
+  		query.addCriteria(Criteria.where("_id").is(postId));
+  		Post post = mongoOperations.findOne(query, Post.class, "post");
+  		
+  		if(post==null){
+			throw new Exception("postId is not valid");
+  		}
+  		
+  		if(!post.getModeratorId().equals(modId)) {
+  			throw new Exception("msh postak");
+  		}
+  		
+  		boolean found = false;
+  		for(String bu: post.getBannedUsers() ) {
+  			if(bu.equals(userId)) {
+  				found =true;
+  				if(!ban) 
+  					post.getBannedUsers().remove(userId);
+  			}
+  		}
+  		if(!found && ban) {
+  			post.getBannedUsers().add(userId);
+  		}
+  		
+  		
+
+    	Update update = new Update().set("bannedUsers", post.getBannedUsers());
+        mongoOperations.updateFirst(query, update, Post.class);
+        
+  		return "DONE, Potatoes";
+
+  	}
+	
+	public boolean isBannedFromPost(Post post, String userId) throws Exception{
+  		
+  		if(post==null){
+			throw new Exception("postId is not valid");
+  		}
+  		
+  		if(post.getBannedUsers().contains(userId))
+  			return true;
+  		else
+  			return false;
 	}
 	
 	public String checkPostReports(String postId, String userId)throws Exception {

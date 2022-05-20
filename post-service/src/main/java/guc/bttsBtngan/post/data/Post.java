@@ -20,6 +20,7 @@ public class Post {
 	private ArrayList<PostReport> postReports;
 	private ArrayList<String> postTags;
 	private ArrayList<String> postFollowers;
+	private ArrayList<String> bannedUsers;
 	
 	public Post() {}
 
@@ -37,6 +38,15 @@ public class Post {
 		this.postReports = new ArrayList<PostReport>();
 		this.postTags = new ArrayList<String>();
 		this.postFollowers = new ArrayList<String>();
+		this.bannedUsers = new ArrayList<String>();
+	}
+
+	public ArrayList<String> getBannedUsers() {
+		return bannedUsers;
+	}
+
+	public void setBannedUsers(ArrayList<String> bannedUsers) {
+		this.bannedUsers = bannedUsers;
 	}
 
 	public Integer getNoOfFollwer() {
