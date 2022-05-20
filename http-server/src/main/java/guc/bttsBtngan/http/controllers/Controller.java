@@ -27,7 +27,7 @@ public class Controller {
 		serviceToCommand.put("chat", "messaging_req");
 		serviceToCommand.put("authentication", "authentication_req");
 		serviceToCommand.put("notification", "notification_req");
-		serviceToCommand.put("user", "messaging_req");
+		serviceToCommand.put("user", "user_req");
 		serviceToCommand.put("post", "messaging_req");
 		this.serviceToCommand = serviceToCommand;
 	}
@@ -41,9 +41,7 @@ public class Controller {
 		String[] route = headers.get("routing-key").split("\\.");
 		String service = route[0], command = route[1];
 		Map<String, Object> res = null;
-		//TODO: get signup command name from girls team
-		if(!("loginCommand".equals(command) || "signup".equals(command))) {
-			//authentication
+		if(!("loginCommand".equals(command) || "registerUserCommand".equals(command))) {
 			Map<String, Object> auth_body = new HashMap<>();
 			auth_body.put("token", headers.get("token-x"));
 			final Map<String, Object> auth_res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
