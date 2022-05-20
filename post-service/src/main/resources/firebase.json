@@ -1,0 +1,17 @@
+{
+  "type": "service_account",
+  "project_id": "the-gaming-platform-fa064",
+  "private_key_id": "66e032422b57b72baed76a475ed850c873daad96",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDmww+bi8t3wqYs\nYe7Kn2usK2HlSUbfslBTHdkalWGz//Xuk/HtrZN073pg+cZvUzhNjUB54cxUo7Z6\nRu2meOvnK6XxNlJ8Mda0wSWJY3Etjd/dizDD/JWCxfDIFcx7P+AI2I2JdfFdHh7F\n9wFMAREHrkwdvZwAXdkvr85A8chTpTr+TYPeNSWe1cSlosDnRff4d4BozA5xWwGQ\n5DvVV42+A53oSeIgpeDsggMPPBoEo2z6rIIJZc3QSQkue4I41rrvrIiGFa0UfrAC\n0ctxwh/7rqZt4Qw8rfwK7U7DuTQ/8Bp+XCv1Q80XNV9Hoh3l3rcxCWnalRLQQdab\nMolnTDcDAgMBAAECggEAA/Wf3G7jIFxuJn/NrZtbqRobdWgy956jIzH1ai/a+9Au\nA5h1Q7tBNvXu9yACCCH46te8HftCWsduV53E8SDNB2vnzoI8mxXt1a8kuj1DEWGI\nUFBVl19Ln3FPBtfc6NZ5PR2eHBgyeoMMSyBIXOn9xVB3zODWfukdU2SkWNftNIYu\nbC7VNQsVm3KH3Q80AoeIw8RX+pmLJQCie11SZxn39yfXyiqMlN37poNa2p8ZXpmt\nL4wVh95Yjt2s/kz0GE7WLaBJwKRLWhN46O2yO36xVs8s4xV5VTxIH1Oa+PE8PXNo\n5AMvOq6/34/p9I+VIw0qjhyDJQUncNyXd6gDgRUO9QKBgQDzkHHG2e0U8ndUcSs1\nBR0hEAeO8eUYJWPeU9xqdSODOeUdLuqzs6+6sNMQ1cJ9ME4ZN31M0244aPG1TeWS\ngcADo1ggdJe9NYtfraiu7CqNLFw9tCy6EBUNaAeNtw4HS58gABVL7i2Nn5yryKIB\ncJPeYRgJ84Yx1W44neS3Dz7rjQKBgQDyi0ggwjHVltLtgmyaZogpIyXmGDEfYNii\nnM4LyYYYmj7Xr9jOtwyRzUTGSsmi0SK456lxGGZa9iR6eHHgZxU9SFp3kKCn9fva\nqB4IjvFr/nGNqR34/7kQay790q7GztUrV+ZLK6FygVICf6y+Z8qm5GqoSj+bMwzp\nZrae/ErAzwKBgQDGshefeTkH1aWzpX7yCfHxfvorivqx8A7A2Pj/gAAwlZJrdFLT\ntsqtKoOFQF0hc77Co5n8ip9oNXS5y4p1MpRKY38JOxRurre8nhb2XIN6F65ISCwU\nvfnurec7nRI8sVxm5qp4/xz6ZDOTkGFZe1WmHN9XfusCzHLWjTiAfld+IQKBgCrh\nyz/Xdb4gq2xIqfDmfd5gE3xJ/K1ijwq5FIjq+WVyJ/g0Y+2wWW2R0D4KzPmXZj8w\n3jlbqgUdDbgFgYS+VPf/ydbn4C+yAvRW0vCKbU69rs/v/ZefhtXLTYSc8j++I9xE\n7zeNID9BdAFzF1SWvzKgoebdMb+71+WQPmt/iavrAoGBAM2445Is4K57A4uTfTgx\nP7irbC0QGn4cbh4ZGC7wgD5MnDUnTZOpeRs2eQAydYs1ACi2aLxrxCW7NV92o+2c\n1c66Ls6GcIqF2zeyPMR1ZS+/kd1x5NyGfjX7RZyACwsu0nLbNYpduoSFOxZNQ85s\ny36Gl2IWvgl6PffjTAyWNA9x\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-khnfa@the-gaming-platform-fa064.iam.gserviceaccount.com",
+  "client_id": "110564156436703733788",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-khnfa%40the-gaming-platform-fa064.iam.gserviceaccount.com",
+  "apiKey": "AIzaSyAVAuEV96LLX7SU-Dqao4sir-ARVFzvzss",
+  "authDomain": "the-gaming-platform-fa064.firebaseapp.com",
+  "storageBucket": "the-gaming-platform-fa064.appspot.com",
+  "messagingSenderId": "497529526377",
+  "appId": "1:497529526377:web:823f2092e6620228346af8"
+}
