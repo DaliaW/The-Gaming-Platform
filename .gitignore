@@ -239,3 +239,5 @@ config.json
 
 #intellij
 .idea
+.idea/vcs.xml
+.idea/runConfigurations.xml
