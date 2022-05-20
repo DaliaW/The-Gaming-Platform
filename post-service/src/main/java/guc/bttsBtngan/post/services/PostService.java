@@ -26,7 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
+import com.mongodb.client.result.UpdateResult;
 
 @Service
 public class PostService {
@@ -179,7 +179,15 @@ public class PostService {
 
     }
 
-    
+	void notifyFollowersOfPost(ArrayList<String>followers,String userId){
+        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+	  	type_IDs.put("type", "post by "+userId+" is created");
+	  	type_IDs.put("userIDs", followers);
+        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+            m.getMessageProperties().setHeader("command", "createNotificationCommand");
+            return m;
+        });
+	}
     public String commentPost(String userId, String postId, String comment)throws Exception {
     	if(comment == null)
     	{
@@ -316,7 +324,7 @@ public class PostService {
 		}
 
 		for(String userId:userIds){
-			if(!validUserId(userIdSending,userId)){
+			if(!validateUserId(userIdSending,userId)){
 				throw new Exception("User with user id "+userId+" is not a valid user");
 			}
 			post.addPostTags(userId);
@@ -365,7 +373,7 @@ public class PostService {
 			throw new Exception("comment id is not valid");
 		}
 		for(String userId:userIds){
-			if(!validUserId(userIdSending,userId)){
+			if(!validateUserId(userIdSending,userId)){
 				throw new Exception("User with user id "+userId+" is not a valid user");
 			}
 			cmnt.addCommentTags(userId);
@@ -409,17 +417,37 @@ public class PostService {
 		return "DONE, Potatoes tag in post : "+(post).toString();
 
 	}
-	public boolean validUserId(String me,String suspiciousUser){
-		//check first if suspicious user exist in the database
+	public boolean validateUserId(String me,String suspiciousUser){
 
 		Map<String, Object> body = new HashMap<>();
 		body.put("userId",me);
-		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
+		//check first if suspicious user exist in the database
+//		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
+//				"authentication", body, m -> {
+//					m.getMessageProperties().setHeader("command", "validateCommand");
+//					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
+//					return m;
+//				});
+		//then check if he is blocked
+		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
-					m.getMessageProperties().setHeader("command", "validateCommand");
+					m.getMessageProperties().setHeader("command", "blockedByComman");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
+		return true && !res.contains(suspiciousUser);
+	}
+	public boolean validUserId(String me,List<Post>posts){
+
+		Map<String, Object> body = new HashMap<>();
+		body.put("userId",me);
+		//check first if suspicious user exist in the database
+//		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
+//				"authentication", body, m -> {
+//					m.getMessageProperties().setHeader("command", "validateCommand");
+//					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
+//					return m;
+//				});
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
@@ -427,7 +455,8 @@ public class PostService {
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
-		return auth_res && !res.contains(suspiciousUser);
+		posts.removeIf(p -> res.contains(p.getUserId()));
+		return true;
 	}
 	public String searchPosts(String subContent,String userId) throws InterruptedException, ExecutionException {
 		Query query = new Query();
@@ -439,9 +468,13 @@ public class PostService {
 		}
 		query.addCriteria(Criteria.where("content").regex(pattern.toString()));
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
-		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
+
+		post.removeIf(p -> (!validateUserId(userId,p.getUserId())));
 
 		return post.toString();
+
+//		validUserId(userId,post);
+//		return "DONE, Potatoes report post : "+(post);
 
 	}
 	
@@ -530,14 +563,17 @@ public class PostService {
 	        query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
 	        List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
 	        List<Post> filteredPosts = new ArrayList<Post>();
-	        
-	        for(Post x: posts)
+	        if(blockingUsers!=null && blockingUsers.size()!=0 && posts!=null && posts.size()!=0)
 	        {
-	            if(!blockingUsers.contains(x.getUserId()))
-	            {
-	                filteredPosts.add(x);
-	            }
+	        	for(Post x: posts)
+		        {
+		            if(!blockingUsers.contains(x.getUserId()))
+		            {
+		                filteredPosts.add(x);
+		            }
+		        }
 	        }
+	        
 	      
 	        return filteredPosts.toString();
 	 }
