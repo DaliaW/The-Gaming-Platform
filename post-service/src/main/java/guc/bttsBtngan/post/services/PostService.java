@@ -417,9 +417,12 @@ public class PostService {
 		}
 		
 		Comment cmnt=null;
-		for(Comment c:post.getComments()){
+		int idx=-1;
+		for(int i=0;i<post.getComments().size();i++){
+			Comment c=post.getComments().get(i);
 			if(c.getId().equals(commentId)){
 				cmnt=c;
+				idx=i;
 			}
 		}
 		if(cmnt==null){
@@ -431,7 +434,7 @@ public class PostService {
 			}
 			cmnt.addCommentTags(userId);
 		}
-		post.getComments().set(0,cmnt);
+		post.getComments().set(idx,cmnt);
 
 		Update update = new Update().set("comments", post.getComments());
 		mongoOperations.updateFirst(query, update, Post.class);
@@ -457,9 +460,12 @@ public class PostService {
 			throw new Exception("post id is not valid");
 		}
 		Comment cmnt=null;
-		for(Comment c:post.getComments()){
+		int idx=-1;
+		for(int i=0;i<post.getComments().size();i++){
+			Comment c=post.getComments().get(i);
 			if(c.getId().equals(commentId)){
 				cmnt=c;
+				idx=i;
 			}
 		}
 		if(cmnt==null){
@@ -471,7 +477,7 @@ public class PostService {
 			}
 			cmnt.delCommentTags(userId);
 		}
-		post.getComments().set(0,cmnt);
+		post.getComments().set(idx,cmnt);
 
 		Update update = new Update().set("comments", post.getComments());
 		mongoOperations.updateFirst(query, update, Post.class);
