@@ -1,4 +1,4 @@
-package http.amqp;
+package guc.bttsBtngan.http.amqp;
 
 
 import org.springframework.amqp.core.Queue;

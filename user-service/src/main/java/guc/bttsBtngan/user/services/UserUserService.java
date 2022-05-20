@@ -133,9 +133,6 @@ public class UserUserService {
     @Transactional
     public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
 
-        System.out.println("id= "+id);
-        System.out.println("username= "+username);
-        System.out.println(photo==null);
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
 
@@ -180,9 +177,7 @@ public class UserUserService {
                 throw new IllegalStateException("Please enter new password");
         }
         if(photo!=null && !photo.isEmpty()){
-            System.out.println("phottt here");
             String textPath=minioConfigurationProperties.getBucket();
-            System.out.println("bucket="+textPath);
 //            textPath+="/";
             String uniqueID = UUID.randomUUID().toString();
             textPath+=uniqueID;
@@ -190,7 +185,6 @@ public class UserUserService {
 //            textPath+=imgName;
 //             textPath+="monica.png";
             Path source = Paths.get(textPath);
-            System.out.println("path= "+source);
             InputStream file=photo.getInputStream();
             String contentType=photo.getContentType();
             minioService.upload(source,file,contentType);
@@ -203,20 +197,16 @@ public class UserUserService {
     }
     @Transactional
     public String deleteProfilePicture(String id) throws MinioException {
-        System.out.println("in delete");
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
         String photoRef= user.getPhotoRef();
-        System.out.println("photoRef= "+photoRef);
         if(photoRef!=null && photoRef.length()>0) {
             Path source = Paths.get(photoRef);
             minioService.remove(source);
             user.setPhotoRef("");
-            System.out.println("after= "+user.getPhotoRef());
         }
         else{
             throw new IllegalStateException("No photo to delete.");
         }
-        System.out.println("after= "+user.getPhotoRef());
         return "Profile picture deleted successfully";
 
 

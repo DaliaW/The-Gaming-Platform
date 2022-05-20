@@ -1,17 +1,18 @@
-package http.controllers;
+package guc.bttsBtngan.http.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import http.amqp.RabbitMQConfig;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+
+import guc.bttsBtngan.http.amqp.RabbitMQConfig;
 
 @RestController
 public class Controller {
@@ -30,11 +31,8 @@ public class Controller {
         serviceToCommand.put("post", "messaging_req");
         this.serviceToCommand = serviceToCommand;
     }
-//
-//    @PostMapping("/test")
-//    public void test(){
-//        System.out.println("hereeeeeeeeeeee");
-//    }
+
+
     @SuppressWarnings("unchecked")
     @PostMapping("/")
     public Map<String, Object> handler(@RequestBody Map<String, Object> body,
@@ -42,7 +40,6 @@ public class Controller {
 
         String[] route = headers.get("routing-key").split("\\.");
         String service = route[0], command = route[1];
-        System.out.println("serviceeeeeeeeeee= "+service+" command= "+command);
         Map<String, Object> res = null;
         //TODO: get signup command name from girls team
         if(!("loginCommand".equals(command) || "signup".equals(command))) {
@@ -55,12 +52,10 @@ public class Controller {
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
                         return m;
                     });
-            System.out.println("auth_res"+auth_res);
             if(auth_res.get("error") != null) {
                 servletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return auth_res;
             }
-            System.out.println("ressssssss= "+auth_res.get("data").toString());
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
@@ -71,14 +66,13 @@ public class Controller {
                     });
         }
         else {
-            System.out.println("hereeeeeeeee else");
             res = (Map<String, Object>) amqpTemplate.convertSendAndReceive(
                     serviceToCommand.get(service), body, m -> {
                         m.getMessageProperties().setHeader("command", command);
                         m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
+
                         return m;
                     });
-            System.out.println("ressssssssss= "+res);
         }
 
         if(res.get("error") != null) {

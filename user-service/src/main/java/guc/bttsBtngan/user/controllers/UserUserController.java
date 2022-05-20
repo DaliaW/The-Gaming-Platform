@@ -66,7 +66,6 @@ public class UserUserController {
                            @RequestParam(name="newPassword",required = false) String newPassword
                         ,@RequestParam(name="photo",required = false) MultipartFile photo
     ) throws Exception {
-        System.out.println("IN UPDATE USER CONTROLLER");
         userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
         // HashMap<String,Object>map=new HashMap<>();
         // map.put("user_id",id);
