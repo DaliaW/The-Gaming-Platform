@@ -79,7 +79,7 @@ public class PostController {
     }
     @GetMapping("/post/postrecommend")
     
-    public List<Post> postRecommend(@RequestBody postRecommender req) throws Exception {
+    public String postRecommend(@RequestBody postRecommender req) throws Exception {
         System.out.println("kol btts kteer");
 
     	return service.postRecommend(req.userId);
