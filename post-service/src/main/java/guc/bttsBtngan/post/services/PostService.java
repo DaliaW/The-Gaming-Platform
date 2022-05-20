@@ -145,6 +145,26 @@ public class PostService {
     								.set("noOfFollwer", post.getNoOfFollwer());
         mongoOperations.updateFirst(query, update, Post.class);
     	
+        
+      
+
+        	ArrayList<String> postOwner=new ArrayList<String>();
+        	postOwner.add(post.getUserId());
+        	
+    	    HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+             type_IDs.put("type", "new post follower"+ " userId: "+userId);
+             type_IDs.put("userIDs", postOwner);
+           amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+               m.getMessageProperties().setHeader("command", "createNotificationCommand");
+               return m;
+           });
+           
+       
+        
+        
+        
+        
+        
     	return "request done!";
     	
     }
@@ -179,9 +199,9 @@ public class PostService {
 
     }
 
-	void notifyFollowersOfPost(ArrayList<String>followers,String userId){
+	void notifyFollowersOfPost(ArrayList<String>followers,String message){
         HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-	  	type_IDs.put("type", "post by "+userId+" is created");
+	  	type_IDs.put("type", message);
 	  	type_IDs.put("userIDs", followers);
         amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
             m.getMessageProperties().setHeader("command", "createNotificationCommand");
@@ -225,7 +245,10 @@ public class PostService {
     	
     	Update update = new Update().set("comments", post.getComments());
         mongoOperations.updateFirst(query, update, Post.class);
-
+        ArrayList<String> usersToBeNotified=new ArrayList<String>();
+        usersToBeNotified.addAll(post.getPostFollowers());
+        usersToBeNotified.add(post.getUserId());
+        notifyFollowersOfPost(usersToBeNotified, "new comment");
     	return "DONE, Potatoes comment post";
 
     }
@@ -275,13 +298,18 @@ public class PostService {
 		
     	Update update = new Update().set("comments", post.getComments());
         mongoOperations.updateFirst(query, update, Post.class);
-
-		return "DONE, Potatoes vote in post";
+       
+        ArrayList<String> usersToBeNotified=new ArrayList<String>();
+       
+        usersToBeNotified.add(cmnt.getCommenterId());
+        notifyFollowersOfPost(usersToBeNotified, "new voting comment ");
+		return "DONE, Potatoes vote in comment";
 
 	}
     
     
     public String postVote(String userId, String postId, boolean vote)throws Exception {
+    	
   		Query query = new Query();
   		query.addCriteria(Criteria.where("_id").is(postId));
   		Post post = mongoOperations.findOne(query, Post.class, "post");
@@ -311,7 +339,9 @@ public class PostService {
 
     	Update update = new Update().set("postVotes", post.getPostVotes());
         mongoOperations.updateFirst(query, update, Post.class);
-
+        ArrayList<String> usersToBeNotified=new ArrayList<String>();
+        usersToBeNotified.add(post.getUserId());
+        notifyFollowersOfPost(usersToBeNotified, "new vote on post");
   		return "DONE, Potatoes";
 
   	}
