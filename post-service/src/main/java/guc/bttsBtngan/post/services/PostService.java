@@ -557,14 +557,17 @@ public class PostService {
 	        query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
 	        List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
 	        List<Post> filteredPosts = new ArrayList<Post>();
-	        
-	        for(Post x: posts)
+	        if(blockingUsers!=null && blockingUsers.size()!=0 && posts!=null && posts.size()!=0)
 	        {
-	            if(!blockingUsers.contains(x.getUserId()))
-	            {
-	                filteredPosts.add(x);
-	            }
+	        	for(Post x: posts)
+		        {
+		            if(!blockingUsers.contains(x.getUserId()))
+		            {
+		                filteredPosts.add(x);
+		            }
+		        }
 	        }
+	        
 	      
 	        return filteredPosts;
 	 }
