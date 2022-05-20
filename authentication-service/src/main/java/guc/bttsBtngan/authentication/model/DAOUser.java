@@ -11,7 +11,7 @@ public class DAOUser {
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
 
-    private String userId;
+    private String id;
 
     @Column
     private String username;
@@ -35,7 +35,7 @@ public class DAOUser {
 
 
     public String getId(){
-        return userId;
+        return id;
     }
     public String getEmail() {
         return email;
