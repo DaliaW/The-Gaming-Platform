@@ -337,7 +337,7 @@ public class PostService {
 		}
 		for(String userId:userIds){
 			if(!post.getPostTags().contains(userId)){
-				new Exception("User with user id "+userId+" is not tagged already in the post");
+				throw new Exception("User with user id "+userId+" is not tagged already in the post");
 			}
 			post.delPostTags(userId);
 		}
@@ -441,7 +441,7 @@ public class PostService {
 		List<Post> post = mongoOperations.find(query, Post.class, "post");
 		post.removeIf(p -> (!validUserId(userId,p.getUserId())));
 
-		return "DONE, Potatoes report post : "+(post);
+		return post.toString();
 
 	}
 	
@@ -466,7 +466,7 @@ public class PostService {
 		Update update = new Update().set("moderatorId", userId);
 		mongoOperations.updateFirst(query, update, Post.class);
 		
-		return "DONE, Potatoes report post : ";
+		return "DONE, Potatoes";
 
 	}
 	
@@ -487,13 +487,13 @@ public class PostService {
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
 
-		return "DONE, Potatoes report post : "+(post.getPostReports());
+		return post.getPostReports().toString();
 
 	}
 
 	// !!!! ama nshoof !!!!
 	
-	public void attachImageToPost(String post_id,  MultipartFile photo) throws IOException {
+	public String attachImageToPost(String post_id,  MultipartFile photo) throws IOException {
 	Query query = new Query();
 	query.addCriteria(Criteria.where("_id").is(post_id));
 	Post post = mongoOperations.findOne(query, Post.class, "post");
@@ -505,13 +505,14 @@ public class PostService {
 		Update update = new Update().set("photoRef", textPath);
         mongoOperations.updateFirst(query, update, Post.class);
 	}
+	return "Done!";
 }
 	
 	// !!!! shofna !!!!
 	
 	
 	
-	public List<Post> postRecommend(String userId) throws Exception  {
+	public String postRecommend(String userId) throws Exception  {
         
 
 	      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
@@ -538,7 +539,7 @@ public class PostService {
 	            }
 	        }
 	      
-	        return filteredPosts;
+	        return filteredPosts.toString();
 	 }
 	
 	
