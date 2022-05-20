@@ -34,7 +34,7 @@ public class PostController {
     }
 
     @PostMapping("/post/content")
-    public String searchPost(@RequestBody searchRequest req) throws InterruptedException, ExecutionException {
+    public String searchPost(@RequestBody searchRequest req) throws Exception {
         return service.searchPosts(req.content,req.userId);
     }
 
@@ -69,8 +69,8 @@ public class PostController {
     }
     
     @PostMapping("/post/assignmod")
-    public String assignModerator(@RequestBody postRequest req) throws Exception {
-        return service.assignModerator(req.postId, req.userId);
+    public String assignModerator(@RequestBody modRequest req) throws Exception {
+        return service.assignModerator(req.postId, req.userId, req.modId);
     }
     
     @PostMapping("/post/modcheckrep")
@@ -93,12 +93,13 @@ public class PostController {
 
 
     @PutMapping(path = "/posts/attach-photo")
-    public void updatePost(@RequestParam(name="post_id") String id,
+    public void updatePost(@RequestParam(name="user_id") String userId,
+    					   @RequestParam(name="post_id") String postId,
                            @RequestParam(name="photo",required = false) MultipartFile photo
     ) throws Exception {
         System.out.println("IN UPDATE USER CONTROLLER");
 //        userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
-        service.attachImageToPost(id,photo);
+        service.attachImageToPost(userId,postId,photo);
         // HashMap<String,Object>map=new HashMap<>();
         // map.put("user_id",id);
         // map.put("username",username);
@@ -112,6 +113,12 @@ public class PostController {
     static public class postRequest{
         public String postId;
         public  String userId;
+    }
+    
+    static public class modRequest{
+        public String postId;
+        public  String userId;
+        public  String modId;
     }
     
     static public class postRecommender{
