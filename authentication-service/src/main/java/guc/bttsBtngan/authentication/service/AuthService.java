@@ -82,7 +82,6 @@ public class AuthService {
     }
     public long verify(String token) throws Exception{
         Cache cache = cacheManager.getCache("token");
-        System.out.println("c"+cache);
         if(jwtTokenUtil.getExpirationDate(token).before( new Date())){
            throw new Exception("Token Expired");
         }
@@ -90,9 +89,7 @@ public class AuthService {
             throw new Exception("Token is no longer acceptable");
         }
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("name"+username);
         DAOUser user = userRepository.findByUsername(username);
-        System.out.println("username= "+user.getId());
         return user.getId();
     }
 }
