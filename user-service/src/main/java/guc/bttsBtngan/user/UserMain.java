@@ -2,7 +2,6 @@ package guc.bttsBtngan.user;
 
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.services.UserPostRepository;
-import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
