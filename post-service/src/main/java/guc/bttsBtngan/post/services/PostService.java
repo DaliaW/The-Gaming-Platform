@@ -78,13 +78,8 @@ public class PostService {
        if(followers!=null && followers.size()!=0)
        {
            
-    	   HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-             type_IDs.put("type", "post");
-             type_IDs.put("userIDs", followers);
-           amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-               m.getMessageProperties().setHeader("command", "createNotificationCommand");
-               return m;
-           });
+    	
+           notifyFollowersOfPost(followers, "new post created by : "+post.getUserId());
            
        }
       
@@ -157,13 +152,9 @@ public class PostService {
         	ArrayList<String> postOwner=new ArrayList<String>();
         	postOwner.add(post.getUserId());
         	
-    	    HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-             type_IDs.put("type", "new post follower"+ " userId: "+userId);
-             type_IDs.put("userIDs", postOwner);
-           amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-               m.getMessageProperties().setHeader("command", "createNotificationCommand");
-               return m;
-           });
+             notifyFollowersOfPost(postOwner, "new follower followed your post : "+userId);
+              
+         
            
        
         
@@ -365,13 +356,20 @@ public class PostService {
 
   	}
 	public String tagInPost(String postId, String[]userIds,String userIdSending)throws Exception {
+		 
+		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
+		
+			
+			
 		if(post==null){
 			throw new Exception("post id is not valid");
 		}
-		
+		if(!userIdSending.equals(post.getUserId())) {
+			throw new Exception("ya kalb");
+		}
 		for(String userId:userIds){
 			if(!validateUserId(userIdSending,userId) || isBannedFromPost(post, userId)){
 				throw new Exception("User with user id "+userId+" is not a valid user or is banned");
@@ -380,7 +378,12 @@ public class PostService {
 		}
 		Update update = new Update().set("postTags", post.getPostTags());
 		mongoOperations.updateFirst(query, update, Post.class);
-
+		
+		ArrayList<String> usersToBeNotified=new ArrayList<String>();
+		for(String str:userIds) {
+			usersToBeNotified.add(str);
+		}
+	        notifyFollowersOfPost(usersToBeNotified, "you are tagged in a new post made by user : "+post.getUserId());
 		return "DONE, Potatoes tag in post : "+(post).toString();
 
 	}
@@ -405,7 +408,7 @@ public class PostService {
 
 	}
 
-	public String commentTagInPost(String postId, String commentId, String[]userIds,String userIdSending)throws Exception {
+	public String commentTagInPost(String postId, String commentId, String[]userIds,String userIdSending)throws Exception {      
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
@@ -433,6 +436,15 @@ public class PostService {
 		Update update = new Update().set("comments", post.getComments());
 		mongoOperations.updateFirst(query, update, Post.class);
 
+		ArrayList<String> usersToBeNotified=new ArrayList<String>();
+		for(String str:userIds) {
+			usersToBeNotified.add(str);
+		}
+	        notifyFollowersOfPost(usersToBeNotified, "you are tagged in a  comment made by user : "+cmnt.getCommenterId());
+		
+		
+             
+		
 		return "DONE, Potatoes tag in post : "+(post).toString();
 
 	}
