@@ -229,7 +229,7 @@ package-lock.json
 config.json
 .idea/dataSources.xml
 
-
+.idea
 
 # MacOS
 .DS_Store
