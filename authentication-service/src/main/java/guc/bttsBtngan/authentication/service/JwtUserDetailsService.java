@@ -39,19 +39,18 @@ public class JwtUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 record);
     }
-    @CachePut(cacheNames = "token", key="#token")
-    public HashMap<String, Object> tokenToUser(String token){
+    public String tokenToId(String token){
         String username = jwtTokenUtil.getUsernameFromToken(token);
         DAOUser user = userRepository.findByUsername(username);
-        HashMap<String, Object> record = new HashMap<>();
-        record.put("username",user.getUsername());
-        record.put("email",user.getEmail());
-        record.put("isBanned",user.isBanned());
-        record.put("isModerator",user.isModerator());
-        record.put("photo_ref",user.getPhoto_ref());
-        record.put("id",user.getId());
-        return record;
-
+//        HashMap<String, Object> record = new HashMap<>();
+//        record.put("username",user.getUsername());
+//        record.put("email",user.getEmail());
+//        record.put("isBanned",user.isBanned());
+//        record.put("isModerator",user.isModerator());
+//        record.put("photo_ref",user.getPhoto_ref());
+//        record.put("id",user.getId());
+//        return record;
+          return user.getId();
     }
     public DAOUser save(UserDTO user) throws IllegalAccessException,InstantiationException{
         DAOUser newUser = DAOUser.class.newInstance();

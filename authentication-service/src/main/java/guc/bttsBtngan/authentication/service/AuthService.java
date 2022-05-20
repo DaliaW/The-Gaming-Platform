@@ -1,25 +1,20 @@
 package guc.bttsBtngan.authentication.service;
 
 import guc.bttsBtngan.authentication.config.JwtTokenUtil;
+import guc.bttsBtngan.authentication.dao.CachedTokenRepository;
 import guc.bttsBtngan.authentication.dao.UserRepository;
-import guc.bttsBtngan.authentication.model.DAOUser;
+import guc.bttsBtngan.authentication.model.CachedToken;
 import guc.bttsBtngan.authentication.model.NonValidTokens;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -35,11 +30,15 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
+
     @Autowired
     private NonValidTokens nonValidTokens;
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private CachedTokenRepository cachedTokenRepository;
 
     private void authenticate(String username, String password) throws Exception {
         try {
@@ -62,35 +61,42 @@ public class AuthService {
     }
     public String login(String username, String password) throws Exception {
         final String token = getToken(username,password);
-        userDetailsService.tokenToUser(token);
+        String userId = userDetailsService.tokenToId(token);
+
+        cacheAToken(token,userId);
+
         return token;
     }
     @CacheEvict(value="token", key = "#token")
     public String logout(String token) throws Exception{
-        System.out.println("I am here 1 and non valid tokens size is "+ nonValidTokens.size());
-        int curSize = nonValidTokens.size();
-        nonValidTokens.add(token);
-        if(nonValidTokens.size() == curSize){
-            System.out.println("I am here 2");
-            throw new Exception("Already logged out");
+        try{
+            verify(token);
+        } catch(Exception e){
+            throw e;
         }
-        else
-        nonValidTokens.add(token);
-        System.out.println("I am here 3 and non valid tokens size is "+ nonValidTokens.size() );
-
+        cachedTokenRepository.deleteCachedToken(token);
         return "logged out successfully";
     }
-    public long verify(String token) throws Exception{
-        Cache cache = cacheManager.getCache("token");
-
-        if(jwtTokenUtil.getExpirationDate(token).before( new Date())){
-           throw new Exception("Token Expired");
+    @Cacheable(cacheNames = "token", key="#token")
+    public String verify(String token) throws Exception{
+//        Cache cache = cacheManager.getCache("token");
+       CachedToken cachedToken = cachedTokenRepository.findCachedTokenByToken(token);
+        if(cachedToken == null){
+            throw new Exception("token is not in cache");
         }
-        if(nonValidTokens.contains(token)){
-            throw new Exception("Token is no longer acceptable");
-        }
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        DAOUser user = userRepository.findByUsername(username);
-        return user.getId();
+        System.out.println(jwtTokenUtil.getExpirationDate(token));
+//        if(jwtTokenUtil.getExpirationDate(token).before( new Date())){
+//           throw new Exception("Token Expired");
+//        }
+//        if(!tokenRepository.existsByToken(token)){
+//            throw new Exception("Token is no longer acceptable");
+//        }
+        return cachedToken.getUserId();
+    }
+    public void cacheAToken(String token, String userId){
+        CachedToken t = new CachedToken();
+        t.setToken(token);
+        t.setUserId(userId);
+        cachedTokenRepository.save(t);
     }
 }

@@ -82,8 +82,10 @@ public class RabbitMQConfig {
             payload.put("timestamp", headers.get("timestamp").toString());
             Object res = commands.get((String)headers.get("command")).execute(payload);
             map.put("data", res);
+            System.out.println("data is "+res);
         } catch (Exception e) {
             map.put("error", e.getMessage());
+            System.out.println("message is "+e.getMessage());
         } finally {
             amqpTemplate.convertAndSend((String) headers.get("amqp_replyTo"), map, m -> {
                 m.getMessageProperties().setCorrelationId((String) headers.get("amqp_correlationId"));
@@ -99,17 +101,37 @@ public class RabbitMQConfig {
 //        return args -> {
 //        	for(int i = 0 ; i < 20; i++) {
 //            	Map<String, Object> map = new HashMap<>();
-//            	map.put("user_id", "user_1");
-//            	map.put("group_id", "qNjVI5EPodNC5UHQnbF2");
-//            	map.put("content", "message " + i);
+//            	map.put("token", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOlJNYXplbmVsZ2FklZWQiLCJleHAiOjE2NTIxMjg5OTAsImlhdCI6MTY1MjExMDk5MH0.A_xSHip-mSMOkCduh06CR3nLu2InPLbuKmd6LVP4A9rV-depbOPffvOlrkQK5HwAc9w0IN5dwha9rvpE0xibZQ");
 //            	template.convertAndSend(request_queue, map, m -> {
-//                	m.getMessageProperties().setHeader("command", "sendGroupMessageCommand");
-//                	m.getMessageProperties().setReplyTo(reply_queue);
-//                	m.getMessageProperties().setCorrelationId(UUID.randomUUID().toString());
+//                	m.getMessageProperties().setHeader("command", "verifyCommand");
 //                	return m;
 //                });
 //        	}
 //        };
 //    }
+
+//    @Bean
+//    public ApplicationRunner runner2(AmqpTemplate template) {
+//        return args -> {
+//                Map<String, Object> map = new HashMap<>();
+//                map.put("username", "Mazenelgamed");
+//                map.put("password","12345");
+//                template.convertAndSend(request_queue, map, m -> {
+//                    m.getMessageProperties().setHeader("command", "loginCommand");
+//                    return m;
+//                });
+//        };
+//    }
+//@Bean
+//public ApplicationRunner runner2(AmqpTemplate template) {
+//    return args -> {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("token","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJNYXplbmVsZ2FtZWQiLCJleHAiOjE2NTIxMzM1MTksImlhdCI6MTY1MjExNTUxOX0.nHcHCP1P_NW-dYnmzDIo0tTlDlUdVa1-x3PRy2lcbZStjDlVwDw1nYKjuu57gbx0X0-BNSEKjDX0j-8lwf26QA");
+//        template.convertAndSend(request_queue, map, m -> {
+//            m.getMessageProperties().setHeader("command", "logoutCommand");
+//            return m;
+//        });
+//    };
+//}
 
 }
