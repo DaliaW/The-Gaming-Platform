@@ -23,6 +23,7 @@ import guc.bttsBtngan.post.data.Comment;
 import guc.bttsBtngan.post.data.Comment.CommentVote;
 import guc.bttsBtngan.post.data.Post;
 import guc.bttsBtngan.post.data.Post.PostVote;
+import guc.bttsBtngan.user.data.UserPostInteraction;
 
 
 
@@ -34,25 +35,37 @@ public class PostService {
     private AmqpTemplate amqpTemplate;
     
 
-    public String createPost(Post post) throws InterruptedException, ExecutionException{
+    public String createPost(Post post) throws Exception{
+    	
+    	post.setNoOfFollwer(0);    	
         mongoOperations.save(post);
         
-        
-        // check if the user who posted the post has followers
-        // if the list contains followers, we do the notification step (create hash map with Type,list<string>)
-            
-//        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
-//	  	ArrayList<String> btngan = new ArrayList<String>();  ;
-//	  	type_IDs.put("type", "post");
-//	  	type_IDs.put("userIDs", btngan);
-//        amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
-//            m.getMessageProperties().setHeader("command", "createNotificationCommand");
-//            return m;
-//        });
-        
-     /////////////////////////////////////////////////////////////////////////////   
-      
-      
+        HashMap<String, Object> type_ID= new HashMap<String, Object>();
+        type_ID.put("type", "post");
+        type_ID.put("userID", post.getUserId());
+
+       ArrayList<String> followers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_ID,  m -> {
+        m.getMessageProperties().setHeader("command", "getAllFollowersCommand");
+        return m;
+    });	
+       if(followers!=null || followers.size()!=0)
+       {
+    	   
+        HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+   	  	type_IDs.put("type", "post");
+   	  	type_IDs.put("userIDs", followers);
+           amqpTemplate.convertAndSend("notification_req",type_IDs,  m -> {
+               m.getMessageProperties().setHeader("command", "createNotificationCommand");
+               return m;
+           });
+    	   
+       }
+       else
+       {
+    	   throw new Exception("User dont have followers to notify");
+       }
+       
+  
         return "DONE, created post is: "+(post).toString();
     }
     
@@ -342,17 +355,18 @@ public class PostService {
 	
 	public List<Post> postRecommend(String userId) throws InterruptedException, ExecutionException, ResponseStatusException  {
     	
-       //from the userId , if follwed posts is empty , then we check top 10 most voted posted to add in list 
-		// get the list of blocked users
-//      amqpTemplate.convertAndSend("user_req",type_IDs,  m -> {
-//      m.getMessageProperties().setHeader("command", "createNotificationCommand");
-//      return m;
-//  });	
+
+      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
+      type_IDs.put("type", "post");
+      type_IDs.put("userID", userId);
+
+     ArrayList<String> blockingUsers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_IDs,  m -> {
+      m.getMessageProperties().setHeader("command", "createNotificationCommand");
+      return m;
+  });	
 		
-		
-		ArrayList<String> blockingUsers= new ArrayList<String>();
-		
-		
+     
+     
 		Query query = new Query();
 		query.with(Sort.by(Sort.Direction.DESC, "noOfFollwer"));
 		List<Post> posts = mongoOperations.find(query.limit(30), Post.class, "post");
