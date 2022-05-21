@@ -181,12 +181,17 @@ public class UserUserService {
 //            textPath+="/";
             String uniqueID = UUID.randomUUID().toString();
             textPath+=uniqueID;
+            textPath+=".";
+            String contentType=photo.getContentType();
+            String[]contentTypeSplit=contentType.toString().split("/",0);
+//            System.out.println(contentTypeSplit[1]);
+            textPath+=contentTypeSplit[1];
 //            String imgName= photo.getOriginalFilename();
 //            textPath+=imgName;
 //             textPath+="monica.png";
             Path source = Paths.get(textPath);
             InputStream file=photo.getInputStream();
-            String contentType=photo.getContentType();
+
             minioService.upload(source,file,contentType);
             user.setPhotoRef(textPath);
         }
