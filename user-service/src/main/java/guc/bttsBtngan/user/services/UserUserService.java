@@ -1,11 +1,12 @@
 package guc.bttsBtngan.user.services;
 
-import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
-import com.jlefebure.spring.boot.minio.MinioException;
-import com.jlefebure.spring.boot.minio.MinioService;
+//import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
+//import com.jlefebure.spring.boot.minio.MinioException;
+//import com.jlefebure.spring.boot.minio.MinioService;
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
+import guc.bttsBtngan.user.firebase.FirebaseImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,9 +29,7 @@ import java.util.*;
 @Service // to specify that this class is responsible for the business logic
 public class UserUserService {
     @Autowired
-    private MinioService minioService;
-    @Autowired
-    private MinioConfigurationProperties minioConfigurationProperties;
+    FirebaseImageService firebaseImage;
     // this class will deal with all user-user interaction and database operations in postgres
 
     private PasswordEncoder passwordEncoder;
@@ -123,15 +122,10 @@ public class UserUserService {
 //        userRepository.deleteById(id);
 //    }
 
-//    @Transactional
-//    public String updateUser(){
-//        System.out.println("IN UPDATE SERVICE");
-//        return "IN UPDATE";
-//    }
 
 
     @Transactional
-    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException, MinioException {
+    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException {
 
         // update a user
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
@@ -177,22 +171,7 @@ public class UserUserService {
                 throw new IllegalStateException("Please enter new password");
         }
         if(photo!=null && !photo.isEmpty()){
-            String textPath=minioConfigurationProperties.getBucket();
-//            textPath+="/";
-            String uniqueID = UUID.randomUUID().toString();
-            textPath+=uniqueID;
-            textPath+=".";
-            String contentType=photo.getContentType();
-            String[]contentTypeSplit=contentType.toString().split("/",0);
-//            System.out.println(contentTypeSplit[1]);
-            textPath+=contentTypeSplit[1];
-//            String imgName= photo.getOriginalFilename();
-//            textPath+=imgName;
-//             textPath+="monica.png";
-            Path source = Paths.get(textPath);
-            InputStream file=photo.getInputStream();
-
-            minioService.upload(source,file,contentType);
+            String textPath=firebaseImage.save(photo);
             user.setPhotoRef(textPath);
         }
 
@@ -201,13 +180,13 @@ public class UserUserService {
 
     }
     @Transactional
-    public String deleteProfilePicture(String id) throws MinioException {
+    public String deleteProfilePicture(String id) throws IOException {
         UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
         String photoRef= user.getPhotoRef();
         if(photoRef!=null && photoRef.length()>0) {
-            Path source = Paths.get(photoRef);
-            minioService.remove(source);
+            firebaseImage.delete(photoRef);
             user.setPhotoRef("");
+
         }
         else{
             throw new IllegalStateException("No photo to delete.");

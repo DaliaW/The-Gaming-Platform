@@ -1,6 +1,6 @@
 package guc.bttsBtngan.user.controllers;
 
-import com.jlefebure.spring.boot.minio.MinioException;
+//import com.jlefebure.spring.boot.minio.MinioException;
 import guc.bttsBtngan.user.commands.UserUser.DeleteProfilePicCommand;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
