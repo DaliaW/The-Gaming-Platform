@@ -13,4 +13,5 @@ public interface UserPostRepository extends MongoRepository<UserPostInteraction,
 
     @Query("{'postId': ?0}")
     UserPostInteraction findByPostId(String postId);
+
 }

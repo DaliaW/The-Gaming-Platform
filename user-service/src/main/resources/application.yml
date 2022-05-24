@@ -1,22 +1,24 @@
 server:
-  port: 5000
+  port: 5001
 
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://dalia:hgdw-09123@user.taiu3.mongodb.net/userPostInteraction?retryWrites=true&w=majority
-#
+      uri: mongodb+srv://Dalia:hgdw-09123@cluster0.wtjb5.mongodb.net/userMS?retryWrites=true&w=majority
+#       uri: mongodb+srv://user.taiu3.mongodb.net/userPostInteraction?appName=mongosh+1.3.1
+#      uri: mongodb://dalia:hgdw-09123@user-shard-00-00.taiu3.mongodb.net:27017,user-shard-00-01.taiu3.mongodb.net:27017,user-shard-00-02.taiu3.mongodb.net:27017/userPostInteraction?ssl=true&replicaSet=atlas-yuukco-shard-0&authSource=admin&retryWrites=true&w=majority
+#        rabbitmq:
+#          host: "localhost"
+#          port: 5672
+#          username: "guest"
+#          password: "guest"
+#          listener:
+#            simple:
+#              concurrency: 1
+#              max-concurrency: 1
+#              prefetch: 1
+##
 #server:
 #  port: 2000
 #
 #spring:
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
-#    listener:
-#      simple:
-#        concurrency: 1
-#        max-concurrency: 1
-#        prefetch: 1

@@ -5,7 +5,9 @@ import guc.bttsBtngan.user.services.UserPostRepository;
 import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 

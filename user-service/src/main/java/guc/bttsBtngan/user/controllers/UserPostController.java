@@ -66,7 +66,7 @@ public class UserPostController {
     }
 
     @DeleteMapping(path = "users/block")
-    public String blockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
+    public Object blockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
@@ -76,7 +76,7 @@ public class UserPostController {
         //userUserService.deleteUser(id);
     }
     @DeleteMapping(path = "users/unblock/")
-    public String unblockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
+    public Object unblockUser(@RequestParam("user_id") String myId, @RequestParam("otherId") String otherId) throws Exception {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
@@ -88,7 +88,7 @@ public class UserPostController {
     }
 
     @GetMapping(path = "users/recommendUser")
-    public List<String> recommendUsers(@RequestParam("user_id") String myId) throws Exception {
+    public Object recommendUsers(@RequestParam("user_id") String myId) throws Exception {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
         map.put("user_id",myId);
