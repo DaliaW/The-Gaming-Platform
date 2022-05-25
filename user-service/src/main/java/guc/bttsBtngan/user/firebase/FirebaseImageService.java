@@ -33,7 +33,7 @@ public class FirebaseImageService implements IImageService {
 
         try {
 
-            ClassPathResource serviceAccount = new ClassPathResource("src/main/docker/firebase.json");
+            ClassPathResource serviceAccount = new ClassPathResource("firebase.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount.getInputStream()))
