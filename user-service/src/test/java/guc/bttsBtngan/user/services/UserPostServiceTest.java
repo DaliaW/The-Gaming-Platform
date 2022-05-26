@@ -43,7 +43,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -63,7 +63,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -90,7 +90,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -128,7 +128,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         when(this.mongoOperations.findAll((Class<Object>) any())).thenReturn(new ArrayList<>());
@@ -145,7 +145,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -177,7 +177,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -231,7 +231,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -266,7 +266,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -297,7 +297,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -328,7 +328,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -381,7 +381,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -408,7 +408,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -491,7 +491,7 @@ class UserPostServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);

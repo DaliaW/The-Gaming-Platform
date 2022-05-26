@@ -64,14 +64,14 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
 
         ArrayList<UserUserInteraction> userUserInteractionList = new ArrayList<>();
         userUserInteractionList.add(userUserInteraction);
         when(this.userRepository.findAll()).thenReturn(userUserInteractionList);
-        assertEquals("[UserUserInteraction{id='42', username='janedoe', Password='iloveyou', email='jane.doe@example.org',"
+        assertEquals("[UserUserInteraction{id='42', username='janedoe', Password='pass', email='jane.doe@example.org',"
                 + " photoRef='null', isModerator=true, isBanned=true}]", this.userUserService.getAllUsers());
         verify(this.userRepository).findAll();
     }
@@ -95,7 +95,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
 
@@ -103,7 +103,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
 
@@ -111,9 +111,9 @@ class UserUserServiceTest {
         userUserInteractionList.add(userUserInteraction1);
         userUserInteractionList.add(userUserInteraction);
         when(this.userRepository.findAll()).thenReturn(userUserInteractionList);
-        assertEquals("[UserUserInteraction{id='42', username='janedoe', Password='iloveyou', email='jane.doe@example.org',"
+        assertEquals("[UserUserInteraction{id='42', username='janedoe', Password='pass', email='jane.doe@example.org',"
                         + " photoRef='null', isModerator=true, isBanned=true}, UserUserInteraction{id='42', username='janedoe',"
-                        + " Password='iloveyou', email='jane.doe@example.org', photoRef='null', isModerator=true, isBanned" + "=true}]",
+                        + " Password='pass', email='jane.doe@example.org', photoRef='null', isModerator=true, isBanned" + "=true}]",
                 this.userUserService.getAllUsers());
         verify(this.userRepository).findAll();
     }
@@ -436,13 +436,13 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
     }
@@ -453,7 +453,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser2() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -465,7 +465,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -474,14 +474,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
@@ -513,7 +513,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -522,14 +522,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalArgumentException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
@@ -549,7 +549,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser4() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("Old Password is incorrect.");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -561,7 +561,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -570,14 +570,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findByEmail((String) any());
         verify(this.userRepository).findById((String) any());
@@ -597,7 +597,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser5() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("Old Password is incorrect.");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -609,7 +609,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -618,14 +618,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
@@ -651,14 +651,14 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult);
         when(this.userRepository.findById((String) any())).thenReturn(null);
         UserUserInteraction userUserInteraction1 = mock(UserUserInteraction.class);
-        when(userUserInteraction1.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction1.getPassword()).thenReturn("pass");
         when(userUserInteraction1.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction1.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction1).setBanned(anyBoolean());
@@ -670,10 +670,10 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
-        this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+        this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                 new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8"))));
     }
 
@@ -686,14 +686,14 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult);
         when(this.userRepository.findById((String) any())).thenReturn(Optional.empty());
         UserUserInteraction userUserInteraction1 = mock(UserUserInteraction.class);
-        when(userUserInteraction1.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction1.getPassword()).thenReturn("pass");
         when(userUserInteraction1.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction1.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction1).setBanned(anyBoolean());
@@ -705,11 +705,11 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "iloveyou", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "pass", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction1).setBanned(anyBoolean());
@@ -726,7 +726,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser8() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -738,7 +738,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -747,14 +747,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", null, "jane.doe@example.org",
-                "iloveyou", "iloveyou", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
+                "pass", "pass", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
         verify(userUserInteraction).getPassword();
@@ -772,7 +772,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser9() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -784,7 +784,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -793,14 +793,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", "", "jane.doe@example.org",
-                "iloveyou", "iloveyou", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
+                "pass", "pass", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
         verify(userUserInteraction).getPassword();
@@ -818,7 +818,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser10() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -830,7 +830,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -839,14 +839,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
-        assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", "janedoe", null, "iloveyou",
-                "iloveyou", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
+        assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", "janedoe", null, "pass",
+                "pass", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getPassword();
         verify(userUserInteraction).getusername();
@@ -864,7 +864,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser11() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -876,7 +876,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -885,14 +885,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
-        assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", "janedoe", "", "iloveyou",
-                "iloveyou", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
+        assertThrows(IllegalStateException.class, () -> this.userUserService.updateUser("42", "janedoe", "", "pass",
+                "pass", new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getPassword();
         verify(userUserInteraction).getusername();
@@ -910,7 +910,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser12() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -922,7 +922,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -931,14 +931,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", null, "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", null, "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
@@ -957,7 +957,7 @@ class UserUserServiceTest {
     @Test
     void testUpdateUser13() throws IOException {
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
-        when(userUserInteraction.getPassword()).thenReturn("iloveyou");
+        when(userUserInteraction.getPassword()).thenReturn("pass");
         when(userUserInteraction.getEmail()).thenReturn("jane.doe@example.org");
         when(userUserInteraction.getusername()).thenReturn("janedoe");
         doNothing().when(userUserInteraction).setBanned(anyBoolean());
@@ -969,7 +969,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -978,14 +978,14 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction1);
         when(this.userRepository.findByEmail((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult);
         assertThrows(IllegalStateException.class,
-                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "", "iloveyou",
+                () -> this.userUserService.updateUser("42", "janedoe", "jane.doe@example.org", "", "pass",
                         new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes("UTF-8")))));
         verify(this.userRepository).findById((String) any());
         verify(userUserInteraction).getEmail();
@@ -1007,7 +1007,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1021,12 +1021,12 @@ class UserUserServiceTest {
      */
     @Test
     void testDeleteProfilePicture2() throws IOException {
-        UserUserInteraction userUserInteraction = new UserUserInteraction("janedoe", "iloveyou", "jane.doe@example.org",
+        UserUserInteraction userUserInteraction = new UserUserInteraction("janedoe", "pass", "jane.doe@example.org",
                 "No photo to delete.", true, true);
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1042,12 +1042,12 @@ class UserUserServiceTest {
      */
     @Test
     void testDeleteProfilePicture3() throws IOException {
-        UserUserInteraction userUserInteraction = new UserUserInteraction("janedoe", "iloveyou", "jane.doe@example.org", "",
+        UserUserInteraction userUserInteraction = new UserUserInteraction("janedoe", "pass", "jane.doe@example.org", "",
                 true, true);
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1074,7 +1074,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1111,7 +1111,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1161,7 +1161,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         doNothing().when(this.firebaseImageService).delete((String) any());
@@ -1186,7 +1186,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         doNothing().when(this.firebaseImageService).delete((String) any());
@@ -1209,13 +1209,13 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
         when(this.userRepository.findByphotoRef((String) any())).thenReturn(ofResult);
         assertEquals(
-                "Optional[UserUserInteraction{id='42', username='janedoe', Password='iloveyou', email='jane.doe@example.org',"
+                "Optional[UserUserInteraction{id='42', username='janedoe', Password='pass', email='jane.doe@example.org',"
                         + " photoRef='null', isModerator=true, isBanned=true}]",
                 this.userUserService.getAllphotoRef("Photo Ref"));
         verify(this.userRepository, atLeast(1)).findByphotoRef((String) any());
@@ -1236,7 +1236,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1260,7 +1260,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1286,7 +1286,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1319,7 +1319,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1357,7 +1357,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         this.userUserService.banUser("42", "42");
@@ -1372,7 +1372,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1381,7 +1381,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction1);
@@ -1400,7 +1400,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1429,7 +1429,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1438,7 +1438,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction1);
@@ -1474,7 +1474,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1483,7 +1483,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction1);
@@ -1517,7 +1517,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1526,7 +1526,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction1);
@@ -1560,7 +1560,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1569,7 +1569,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction1);
@@ -1597,7 +1597,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
@@ -1614,7 +1614,7 @@ class UserUserServiceTest {
         userUserInteraction1.setBanned(true);
         userUserInteraction1.setEmail("jane.doe@example.org");
         userUserInteraction1.setModerator(true);
-        userUserInteraction1.setPassword("iloveyou");
+        userUserInteraction1.setPassword("pass");
         userUserInteraction1.setid("42");
         userUserInteraction1.setusername("janedoe");
         this.userUserService.unbanUser("42", "42");
@@ -1629,7 +1629,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1662,7 +1662,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1700,7 +1700,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1747,7 +1747,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
 
@@ -1786,7 +1786,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
@@ -1837,7 +1837,7 @@ class UserUserServiceTest {
         userUserInteraction.setBanned(true);
         userUserInteraction.setEmail("jane.doe@example.org");
         userUserInteraction.setModerator(true);
-        userUserInteraction.setPassword("iloveyou");
+        userUserInteraction.setPassword("pass");
         userUserInteraction.setid("42");
         userUserInteraction.setusername("janedoe");
         Optional<UserUserInteraction> ofResult = Optional.of(userUserInteraction);
