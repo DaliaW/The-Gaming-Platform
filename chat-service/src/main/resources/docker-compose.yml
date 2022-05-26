@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'userfirebase-docker:latest'
+    image: 'chatfirebase-docker:latest'
     build:
       context: .
-    container_name: userfirebase
+    container_name: chatfirebase
     ports:
-      - "5001:5001"
+      - "2000:2000"
     depends_on:
       - firebase
 

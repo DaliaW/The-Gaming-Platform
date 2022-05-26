@@ -2,10 +2,10 @@ version: '2'
 
 services:
   app:
-    image: 'userfirebase-docker:latest'
+    image: 'postfirebase-docker:latest'
     build:
       context: .
-    container_name: userfirebase
+    container_name: postfirebase
     ports:
       - "5001:5001"
     depends_on:

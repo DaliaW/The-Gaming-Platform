@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'user-docker:latest'
+    image: 'authentication-docker:latest'
     build:
       context: .
-    container_name: user
+    container_name: authentication
     ports:
-      - "5001:5001"
+      - "1000:1000"
     depends_on:
       - postgresql
       - rabbitmq

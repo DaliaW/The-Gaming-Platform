@@ -1,0 +1,4 @@
+FROM openjdk:8
+
+COPY http-server-0.0.1-SNAPSHOT.jar /http-docker.jar
+CMD ["java", "-jar", "/http-docker.jar"]

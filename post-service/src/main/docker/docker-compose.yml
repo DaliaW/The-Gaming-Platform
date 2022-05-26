@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'user-docker:latest'
+    image: 'post-docker:latest'
     build:
       context: .
-    container_name: user
+    container_name: post
     ports:
-      - "5001:5001"
+      - "4700:4700"
     depends_on:
       - postgresql
       - rabbitmq

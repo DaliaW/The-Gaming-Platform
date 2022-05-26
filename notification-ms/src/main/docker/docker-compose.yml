@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'user-docker:latest'
+    image: 'notification-docker:latest'
     build:
       context: .
-    container_name: user
+    container_name: notification
     ports:
-      - "5001:5001"
+      - "3000:3000"
     depends_on:
       - postgresql
       - rabbitmq

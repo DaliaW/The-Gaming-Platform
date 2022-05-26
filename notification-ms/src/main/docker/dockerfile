@@ -1,0 +1,4 @@
+FROM openjdk:8
+
+COPY notification-ms-0.0.1-SNAPSHOT.jar /notification-docker.jar
+CMD ["java", "-jar", "/notification-docker.jar"]

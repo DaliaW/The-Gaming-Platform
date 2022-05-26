@@ -1,0 +1,4 @@
+FROM openjdk:8
+
+COPY chat-service-0.0.1-SNAPSHOT.jar /chatfirebase-docker.jar
+CMD ["java", "-jar", "/chatfirebase-docker.jar"]

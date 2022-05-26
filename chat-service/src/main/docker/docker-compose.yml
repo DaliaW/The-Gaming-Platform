@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'user-docker:latest'
+    image: 'chat-docker:latest'
     build:
       context: .
-    container_name: user
+    container_name: chat
     ports:
-      - "5001:5001"
+      - "2000:2000"
     depends_on:
       - postgresql
       - rabbitmq
