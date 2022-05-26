@@ -23,14 +23,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {UserUserService.class})
 @ExtendWith(SpringExtension.class)
@@ -654,16 +646,6 @@ class UserUserServiceTest {
     @Disabled("TODO: Complete this test")
     void testUpdateUser6() throws IOException {
         // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException
-        //       at guc.bttsBtngan.user.services.UserUserService.updateUser(UserUserService.java:133)
-        //   In order to prevent updateUser(String, String, String, String, String, MultipartFile)
-        //   from throwing NullPointerException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   updateUser(String, String, String, String, String, MultipartFile).
-        //   See https://diff.blue/R013 to resolve this issue.
 
         UserUserInteraction userUserInteraction = new UserUserInteraction();
         userUserInteraction.setBanned(true);
@@ -1361,17 +1343,6 @@ class UserUserServiceTest {
     @Disabled("TODO: Complete this test")
     void testBanUser4() {
         // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.util.NoSuchElementException: No value present
-        //       at java.util.Optional.get(Optional.java:135)
-        //       at guc.bttsBtngan.user.services.UserUserService.banUser(UserUserService.java:208)
-        //   In order to prevent banUser(String, String)
-        //   from throwing NoSuchElementException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   banUser(String, String).
-        //   See https://diff.blue/R013 to resolve this issue.
 
         when(this.userRepository.findById((String) any())).thenReturn(Optional.empty());
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
@@ -1621,17 +1592,6 @@ class UserUserServiceTest {
     @Disabled("TODO: Complete this test")
     void testUnbanUser7() {
         // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.util.NoSuchElementException: No value present
-        //       at java.util.Optional.get(Optional.java:135)
-        //       at guc.bttsBtngan.user.services.UserUserService.unbanUser(UserUserService.java:237)
-        //   In order to prevent unbanUser(String, String)
-        //   from throwing NoSuchElementException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   unbanUser(String, String).
-        //   See https://diff.blue/R013 to resolve this issue.
 
         UserUserInteraction userUserInteraction = new UserUserInteraction();
         userUserInteraction.setBanned(true);
@@ -1866,18 +1826,6 @@ class UserUserServiceTest {
     @Disabled("TODO: Complete this test")
     void testDeleteUser6() throws Exception {
         // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-        //       at java.util.ArrayList.rangeCheck(ArrayList.java:657)
-        //       at java.util.ArrayList.get(ArrayList.java:433)
-        //       at guc.bttsBtngan.user.services.UserUserService.DeleteUser(UserUserService.java:309)
-        //   In order to prevent DeleteUser(String)
-        //   from throwing IndexOutOfBoundsException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   DeleteUser(String).
-        //   See https://diff.blue/R013 to resolve this issue.
 
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
         doNothing().when(userUserInteraction).setBanned(anyBoolean());

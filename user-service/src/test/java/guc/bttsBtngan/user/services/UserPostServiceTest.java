@@ -116,18 +116,6 @@ class UserPostServiceTest {
     @Disabled("TODO: Complete this test")
     void testGetAllReports4() throws Exception {
         // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.util.NoSuchElementException: No value present
-        //       at java.util.Optional.get(Optional.java:135)
-        //       at guc.bttsBtngan.user.services.UserPostService.getAllReports(UserPostService.java:38)
-        //   In order to prevent getAllReports(String)
-        //   from throwing NoSuchElementException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   getAllReports(String).
-        //   See https://diff.blue/R013 to resolve this issue.
-
         when(this.userRepository.findById((String) any())).thenReturn(Optional.empty());
         UserUserInteraction userUserInteraction = mock(UserUserInteraction.class);
         when(userUserInteraction.isModerator()).thenReturn(false);
