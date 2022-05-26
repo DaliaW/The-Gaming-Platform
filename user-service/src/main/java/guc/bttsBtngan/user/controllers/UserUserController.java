@@ -1,7 +1,7 @@
 package guc.bttsBtngan.user.controllers;
 
 //import com.jlefebure.spring.boot.minio.MinioException;
-import guc.bttsBtngan.user.commands.UserUser.DeleteProfilePicCommand;
+
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,17 +122,9 @@ public class UserUserController {
 //        return "ID: " + employeeId;
 //    }
 
-    @PutMapping(path = "/users/follow/{userId}/{userToBeFollowed}")
-    public String followUser(@PathVariable("userId") String userId,
-                             @PathVariable("userToBeFollowed") String userToBeFollowedId
-    ) throws Exception {
-        HashMap<String, Object> map=new HashMap<>();
-        map.put("user_id",userId);
-        map.put("userToFollowId",userToBeFollowedId);
-//        System.out.println("HIIIIIIIIIIIIIIIIIIIIIIIIII");
-//        System.out.println(followUserCommand);
-        //return (String) followUserCommand.execute(map);
-        return userUserService.followUser(userId, userToBeFollowedId);
+    @PutMapping(path = "/users/follow")
+    public String followUser(@RequestBody HashMap<String, Object> body) throws Exception {
+        return userUserService.followUser((String)body.get("userId"), (String)body.get("userToFollow"));
     }
 
     @PutMapping(path = "/users/unfollow/{userId}/{userToBeUnfollowed}")

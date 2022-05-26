@@ -3,13 +3,16 @@ package guc.bttsBtngan.user.services;
 //import com.jlefebure.spring.boot.minio.MinioConfigurationProperties;
 //import com.jlefebure.spring.boot.minio.MinioException;
 //import com.jlefebure.spring.boot.minio.MinioService;
+
 import guc.bttsBtngan.user.data.UserPostInteraction;
 import guc.bttsBtngan.user.data.UserReports;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.firebase.FirebaseImageService;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -31,6 +30,9 @@ public class UserUserService {
     @Autowired
     FirebaseImageService firebaseImage;
     // this class will deal with all user-user interaction and database operations in postgres
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     private PasswordEncoder passwordEncoder;
 
@@ -342,9 +344,25 @@ public class UserUserService {
         //mongoOperations.save(user);
         return "User account has been successfully deleted";
     }
+    // new
+    void notify(ArrayList<String>follow){
+        HashMap<String, Object> type_ID= new HashMap<String, Object>();
+        type_ID.put("type", "You've a new follower");
+        type_ID.put("userID", follow);
+        amqpTemplate.convertAndSend("notification_req",type_ID,  m -> {
+            m.getMessageProperties().setHeader("command", "createNotificationCommand");
+            System.out.printf("Sending message: %s", m.getBody());
+            return m;
+        });
+        System.out.printf("Notification sent to %s", follow);
+    }
     public String followUser(String userId,String userToBeFollowedId) {
         UserPostInteraction user= userPostRepository.findByUserId(userId);
         UserPostInteraction followedUser=userPostRepository.findByUserId(userToBeFollowedId);
+
+        System.out.printf("userId: %s", userId);
+        System.out.printf("userToBeFollowedId: %s", userToBeFollowedId);
+
         List<String> userFollowings= user.getFollowing();
         if(userFollowings==null)
             userFollowings=new ArrayList<>();
@@ -363,6 +381,11 @@ public class UserUserService {
         query1.addCriteria(Criteria.where("userId").is(userId));
         Update updateFollowing=new Update().set("following",userFollowings);
         mongoOperations.updateFirst(query1,updateFollowing,UserPostInteraction.class);
+
+        // notify the user that he has been followed
+        ArrayList<String> userToBeNotified=new ArrayList<String>();
+        userToBeNotified.add(user.getUserId());
+        notify(userToBeNotified);
 
         return "you are following this user now";
     }
