@@ -1,4 +1,3 @@
 FROM openjdk:8
-
 COPY user-service-0.0.1-SNAPSHOT.jar /userfirebase-docker.jar
 CMD ["java", "-jar", "/userfirebase-docker.jar"]
