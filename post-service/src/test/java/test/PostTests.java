@@ -192,7 +192,28 @@ public class PostTests {
 
 	}
 	
+	public void likePostTest(){
+		
+		try {
+			// given
+			String id= postService.getValidPostId();
+			Post post=postService.getPost(id);
+			int likesBefore=post.getPostVotes().size();
+			postService.postVote("1234", id, true);
+			Post postAfter=postService.getPost(id);
+			int likesAfter=postAfter.getPostVotes().size();
+			// when
+			
+			// then
+			Assert.assertEquals(likesBefore, likesAfter);
 
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 	@Test
 	public void tagInPostTest(){
 
