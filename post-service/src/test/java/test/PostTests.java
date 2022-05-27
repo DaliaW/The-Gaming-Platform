@@ -90,6 +90,32 @@ public class PostTests {
 
 
 	}
+	
+	
+	
+	@Test
+	public void createCommentTest(){
+		
+		try {
+			// given
+			Comment comment=new Comment("1234", "test comment");
+			
+			// when
+			String realOut=postService.commentPost("1234", "post id", "test comment");
+			String expected="DONE, created post is: "+(comment).toString();
+			
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+
+	}
+	
 
 	@Test
 	public void tagInPostTest(){
