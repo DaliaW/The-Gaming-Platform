@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -88,6 +89,80 @@ public class PostTests {
 
 	}
 	
+	@Test
+	public void followPostTest(){
+		try {
+			// given
+			String userId = "";
+			String postId = "";
+			boolean follow = true;
+			
+			// when
+			String realOut=postService.followPost(userId,postId,follow);
+			String expected="request done!";
+			
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Test
+	public void reportPostTest(){
+		try {
+			// given
+			String userId = "";
+			String postId = "";
+			String reportComment = "";
+			
+			// when
+			String realOut=postService.reportPost(userId,postId,reportComment);
+			String expected="DONE, Potatoes report post";
+			
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@Test
+	public void postRecommendTest(){
+		try {
+			// given
+			String userId = "";
+			
+			// when
+			List<Post> realOut=postService.postRecommend(userId);
+//			String expected="";
+			
+			// then
+//			Assert.assertEquals(expected, realOut);
+			int lastFollowersCount = Integer.MAX_VALUE;
+			for(Post post:realOut)
+			{
+				int curr = post.getNoOfFollwer();
+				if(curr > lastFollowersCount)
+				{
+					throw new Exception("The recommended posts are incorrect");
+				}
+				
+				lastFollowersCount = curr;
+			}
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 	
 	@Test
@@ -109,7 +184,6 @@ public class PostTests {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 
 	}
 	

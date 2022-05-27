@@ -74,6 +74,6 @@ public class OrderService {
         return postService.checkPostReports(postId,userId);
     }
     public String postRecommend(String userId) throws Exception  {
-        return postService.postRecommend(userId);
+        return postService.postRecommend(userId).toString();
     }
 }

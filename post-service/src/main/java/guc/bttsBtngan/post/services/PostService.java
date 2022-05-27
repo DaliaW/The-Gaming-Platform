@@ -154,13 +154,7 @@ public class PostService {
         	
              notifyFollowersOfPost(postOwner, "new follower followed your post : "+userId);
               
-         
-           
-       
-        
-        
-        
-        
+      
         
     	return "request done!";
     	
@@ -674,7 +668,7 @@ public class PostService {
 	
 	
 	
-	public String postRecommend(String userId) throws Exception  {
+	public List<Post> postRecommend(String userId) throws Exception  {
         
 
 	      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
@@ -704,7 +698,7 @@ public class PostService {
 	        }
 	        
 	      
-	        return filteredPosts.toString();
+	        return filteredPosts;
 	 }
 	
 	
