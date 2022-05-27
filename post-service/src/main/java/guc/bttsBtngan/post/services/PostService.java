@@ -86,6 +86,14 @@ public class PostService {
         return "DONE, created post is: "+(post).toString();
     }
     
+	public String getValidPostId() throws Exception{
+		Query query = new Query();
+    	Post post = mongoOperations.findOne(query, Post.class, "post"); 
+    	
+    	return post.get_id();
+	}
+	
+	
     public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	

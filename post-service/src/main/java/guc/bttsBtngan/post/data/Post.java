@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 @Document
 public class Post {
+	private String _id = null;
 	private String userId;
 	private String content;
 	private String photoRef;
@@ -226,6 +227,14 @@ public class Post {
 				", postTags=" + postTags +
 				", postFollowers=" + postFollowers +
 				'}';
+	}
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 
 }
