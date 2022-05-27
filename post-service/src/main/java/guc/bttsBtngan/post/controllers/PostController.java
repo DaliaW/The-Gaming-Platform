@@ -101,7 +101,7 @@ public class PostController {
     public String postRecommend(@RequestBody postRecommender req) throws Exception {
         System.out.println("kol btts kteer");
 
-    	return service.postRecommend(req.userId);
+    	return service.postRecommend(req.userId).toString();
     }
     
     @GetMapping("/post/postValid")
