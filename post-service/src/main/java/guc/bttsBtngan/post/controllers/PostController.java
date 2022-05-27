@@ -94,7 +94,7 @@ public class PostController {
     
     @PostMapping("/post/modcheckrep")
     public String checkPostReports(@RequestBody postRequest req) throws Exception {
-        return service.checkPostReports(req.postId, req.userId);
+        return service.checkPostReports(req.postId, req.userId).toString();
     }
     @GetMapping("/post/postrecommend")
     

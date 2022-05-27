@@ -635,7 +635,7 @@ public class PostService {
   			return false;
 	}
 	
-	public String checkPostReports(String postId, String userId)throws Exception {
+	public ArrayList<PostReport> checkPostReports(String postId, String userId)throws Exception {
 		
 		if(postId == null)
 			throw new Exception("Must include postId");
@@ -652,7 +652,7 @@ public class PostService {
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
 
-		return post.getPostReports().toString();
+		return post.getPostReports();
 
 	}
 
