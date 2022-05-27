@@ -244,6 +244,31 @@ public class PostTests {
 	}
 	
 	
+public void likeCommentTest(){
+		
+		try {
+			// given
+			String id= postService.getValidPostId();
+			Post post=postService.getPost(id);
+			Comment commentBefore=post.getComments().get(0);
+			int likesBefore=commentBefore.getCommentVotes().size();
+			postService.commentVote("1234", id, commentBefore.getId(),true);
+			Comment commentAfter=post.getComments().get(0);
+			int likesAfter=commentAfter.getCommentVotes().size();
+			// when
+			
+			// then
+			Assert.assertEquals(likesBefore, likesAfter);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+	
+	
 	@Test
 	public void tagInPostTest(){
 
