@@ -176,9 +176,9 @@ public class PostTests {
 		try {
 			// given
 			Comment comment=new Comment("1234", "test comment");
-			
+			String id= postService.getValidPostId();
 			// when
-			String realOut=postService.commentPost("1234", "post id", "test comment");
+			String realOut=postService.commentPost(id, "post id", "test comment");
 			String expected="DONE, created post is: "+(comment).toString();
 			
 			// then
