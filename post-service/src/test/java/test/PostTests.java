@@ -326,28 +326,5 @@ public class PostTests {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	@Test
-	public void postReportsTest(){
-
-		try {
-			// given
-			String postId= postService.getValidPostId();
-			Post post=postService.getPost(postId);
-			String modId= post.getModeratorId();
-
-			// when
-			ArrayList<PostReport> realOut = postService.checkPostReports(postId,modId);
-			
-			// then
-			Assert.assertEquals(expected, realOut);
-
-		} catch (ExecutionException e) {
-			throw new RuntimeException(e);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 
 }
