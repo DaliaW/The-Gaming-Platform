@@ -122,7 +122,7 @@ public class PostTests {
 
 		try {
 			// given
-			String postId="";
+			String postId=postService.getValidPostId();
 			String[]userIdsToBeTagged=new String[0];
 			Post post=postService.getPost(postId);
 			String userIdSending=post.getUserId();
@@ -147,10 +147,14 @@ public class PostTests {
 
 		try {
 			// given
-			String postId="";
-			String commentId="";
-			String[]userIdsToBeTagged=new String[0];
+			String postId=postService.getValidPostId();
 			Post post=postService.getPost(postId);
+
+			postService.commentPost(post.getUserId(),postId,"gmdan el btngan comment");
+
+			post=postService.getPost(postId);
+			String commentId=post.getComments().get(post.getComments().size()-1).getId();
+			String[]userIdsToBeTagged=new String[0];
 			String userIdSending=post.getUserId();
 
 			// when
@@ -172,7 +176,7 @@ public class PostTests {
 
 		try {
 			// given
-			String postId="";
+			String postId=postService.getValidPostId();
 			String[]userIdsToBeTagged=new String[0];
 			Post post=postService.getPost(postId);
 
@@ -196,10 +200,14 @@ public class PostTests {
 
 		try {
 			// given
-			String postId="";
-			String commentId="";
-			String[]userIdsToBeTagged=new String[0];
+			String postId=postService.getValidPostId();
 			Post post=postService.getPost(postId);
+
+			postService.commentPost(post.getUserId(),postId,"gmdan el btngan comment to delete tag");
+
+			post=postService.getPost(postId);
+			String commentId=post.getComments().get(post.getComments().size()-1).getId();
+			String[]userIdsToBeTagged=new String[0];
 
 			// when
 			String realOut=postService.delCommentTagInPost(postId,commentId,userIdsToBeTagged);
