@@ -1,4 +1,5 @@
 package guc.bttsBtngan.post.data;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import guc.bttsBtngan.post.data.Comment.CommentVote;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 @Document
 public class Post {
-	private String _id = null;
+	private ObjectId _id = null;
 	private String userId;
 	private String content;
 	private String photoRef;
@@ -229,11 +230,11 @@ public class Post {
 				'}';
 	}
 
-	public String get_id() {
+	public ObjectId get_id() {
 		return _id;
 	}
 
-	public void set_id(String _id) {
+	public void set_id(ObjectId _id) {
 		this._id = _id;
 	}
 

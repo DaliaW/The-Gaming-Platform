@@ -49,7 +49,7 @@ public class PostService {
 		}
 		
 
-		post.setDate(new Timestamp(System.currentTimeMillis()) );
+//		post.setDate(new Timestamp(System.currentTimeMillis()) );
 		
 		post.setNoOfFollwer(0);
 		
@@ -89,8 +89,8 @@ public class PostService {
 	public String getValidPostId() throws Exception{
 		Query query = new Query();
     	Post post = mongoOperations.findOne(query, Post.class, "post"); 
-    	
-    	return post.get_id();
+    	if(post==null)return "post is null";
+    	return post.get_id().toString();
 	}
 	
 	
