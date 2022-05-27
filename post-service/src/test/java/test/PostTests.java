@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -40,7 +41,7 @@ public class PostTests {
 
 		post.setUserId("user btts");
 		post.setContent("testing post");
-		post.setDate(new Timestamp(System.currentTimeMillis()) );
+		post.setDate(new Date(System.currentTimeMillis()) );
 
 		post.setNoOfFollwer(0);
 

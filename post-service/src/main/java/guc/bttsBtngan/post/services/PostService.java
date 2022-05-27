@@ -49,7 +49,7 @@ public class PostService {
 		}
 		
 
-//		post.setDate(new Timestamp(System.currentTimeMillis()) );
+		post.setDate(new Date(System.currentTimeMillis()) );
 		
 		post.setNoOfFollwer(0);
 		

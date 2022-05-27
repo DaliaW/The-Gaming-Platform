@@ -6,6 +6,7 @@ import guc.bttsBtngan.post.data.Comment.CommentVote;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @Document
@@ -14,7 +15,7 @@ public class Post {
 	private String userId;
 	private String content;
 	private String photoRef;
-	private Timestamp date;
+	private Date date;
 	private Integer noOfFollwer;
 	private String moderatorId;
 	private ArrayList<Comment> comments;
@@ -104,11 +105,11 @@ public class Post {
 		this.photoRef = photoRef;
 	}
 
-	public Timestamp getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
