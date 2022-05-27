@@ -11,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -187,5 +190,112 @@ public class PostTests {
 
 	}
 	
+
+	@Test
+	public void tagInPostTest(){
+
+		try {
+			// given
+			String postId=postService.getValidPostId();
+			String[]userIdsToBeTagged=new String[0];
+			Post post=postService.getPost(postId);
+			String userIdSending=post.getUserId();
+
+			// when
+			String realOut=postService.tagInPost(postId,userIdsToBeTagged,userIdSending);
+			String expected="DONE, Potatoes tag in post : "+(post).toString();
+
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	@Test
+	public void commentTagInPostTest(){
+
+		try {
+			// given
+			String postId=postService.getValidPostId();
+			Post post=postService.getPost(postId);
+
+			postService.commentPost(post.getUserId(),postId,"gmdan el btngan comment");
+
+			post=postService.getPost(postId);
+			String commentId=post.getComments().get(post.getComments().size()-1).getId();
+			String[]userIdsToBeTagged=new String[0];
+			String userIdSending=post.getUserId();
+
+			// when
+			String realOut=postService.commentTagInPost(postId,commentId,userIdsToBeTagged,userIdSending);
+			String expected="DONE, Potatoes tag in post : "+(post).toString();
+
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	public void delTagInPostTest(){
+
+		try {
+			// given
+			String postId=postService.getValidPostId();
+			String[]userIdsToBeTagged=new String[0];
+			Post post=postService.getPost(postId);
+
+			// when
+			String realOut=postService.delTagInPost(postId,userIdsToBeTagged);
+			String expected="DONE, Potatoes tag in post : "+(post).toString();
+
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+
+	@Test
+	public void delCommentTagInPostTest(){
+
+		try {
+			// given
+			String postId=postService.getValidPostId();
+			Post post=postService.getPost(postId);
+
+			postService.commentPost(post.getUserId(),postId,"gmdan el btngan comment to delete tag");
+
+			post=postService.getPost(postId);
+			String commentId=post.getComments().get(post.getComments().size()-1).getId();
+			String[]userIdsToBeTagged=new String[0];
+
+			// when
+			String realOut=postService.delCommentTagInPost(postId,commentId,userIdsToBeTagged);
+			String expected="DONE, Potatoes tag in post : "+(post).toString();
+
+			// then
+			Assert.assertEquals(expected, realOut);
+
+		} catch (ExecutionException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 }

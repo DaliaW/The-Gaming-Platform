@@ -49,7 +49,7 @@ public class PostService {
 		}
 		
 
-		post.setDate(new Timestamp(System.currentTimeMillis()) );
+//		post.setDate(new Timestamp(System.currentTimeMillis()) );
 		
 		post.setNoOfFollwer(0);
 		
@@ -86,6 +86,24 @@ public class PostService {
         return "DONE, created post is: "+(post).toString();
     }
     
+	public String getValidPostId() throws Exception{
+		Query query = new Query();
+    	Post post = mongoOperations.findOne(query, Post.class, "post"); 
+    	if(post==null)return "post is null";
+    	return post.get_id().toString();
+	}
+	
+	
+
+    public Post getPost(String postId)throws Exception {
+        Query query = new Query(Criteria.where("_id").is(postId));
+        Post post = mongoOperations.findOne(query, Post.class, "post");
+
+        if (post == null) {
+            throw new Exception("post with id: " + postId + " is not found");
+        }
+        return post;
+    }
     public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	

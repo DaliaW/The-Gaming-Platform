@@ -27,6 +27,10 @@ public class PostController {
     public String createPost(@RequestBody Post post) throws Exception {
         return service.createPost(post);
     }
+    @PostMapping("/get-post")
+    public Post getPost(@RequestBody String id) throws Exception {
+        return service.getPost(id);
+    }
 
     @PostMapping("/post/comment")
     public String commentPost(@RequestBody commentPostRequest req) throws Exception {
@@ -98,6 +102,11 @@ public class PostController {
         System.out.println("kol btts kteer");
 
     	return service.postRecommend(req.userId);
+    }
+    
+    @GetMapping("/post/postValid")
+    public String getValidPostId() throws Exception{
+    	return service.getValidPostId();
     }
     
 //    @PostMapping("/post/addimage")
