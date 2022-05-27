@@ -94,6 +94,16 @@ public class PostService {
 	}
 	
 	
+
+    public Post getPost(String postId)throws Exception {
+        Query query = new Query(Criteria.where("_id").is(postId));
+        Post post = mongoOperations.findOne(query, Post.class, "post");
+
+        if (post == null) {
+            throw new Exception("post with id: " + postId + " is not found");
+        }
+        return post;
+    }
     public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
