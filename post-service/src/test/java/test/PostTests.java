@@ -53,15 +53,30 @@ public class PostTests {
 		return post;
 	}
 
+//	// given
+//    DBObject objectToSave = BasicDBObjectBuilder.start()
+//        .add("key", "value")
+//        .get();
+//
+//    // when
+//    mongoTemplate.save(objectToSave, "collection");
+//
+//    // then
+//    assertThat(mongoTemplate.findAll(DBObject.class, "collection")).extracting("key")
+//        .containsOnly("value");
+	
 	@Test
 	public void createPostTest(){
-		UUID uuid = UUID.randomUUID();
-		ArrayList userID = new ArrayList<String>();
-		userID.add(uuid.toString());
+		
 		try {
+			// given
 			Post post=makePost();
+			
+			// when
 			String realOut=postService.createPost(post);
 			String expected="DONE, created post is: "+(post).toString();
+			
+			// then
 			Assert.assertEquals(expected, realOut);
 
 		} catch (ExecutionException e) {
