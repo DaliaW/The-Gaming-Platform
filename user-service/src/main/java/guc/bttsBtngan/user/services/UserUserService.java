@@ -123,7 +123,6 @@ public class UserUserService {
 //    }
 
 
-
     @Transactional
     public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException {
 
@@ -171,6 +170,12 @@ public class UserUserService {
                 throw new IllegalStateException("Please enter new password");
         }
         if(photo!=null && !photo.isEmpty()){
+            String currentPhoto=user.getPhotoRef();
+//            System.out.println("check= "+(currentPhoto.isEmpty()));
+            if(!currentPhoto.isEmpty() && currentPhoto!=""){
+//                System.out.println("in delete "+ currentPhoto);
+                firebaseImage.delete(currentPhoto);
+            }
             String textPath=firebaseImage.save(photo);
             user.setPhotoRef(textPath);
         }
@@ -195,6 +200,76 @@ public class UserUserService {
 
 
     }
+
+//    @Transactional
+//    public String updateUser(String id, String username, String email, String oldPassword, String newPassword, MultipartFile photo) throws IOException {
+//
+//        // update a user
+//        UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
+//
+//        // if the name not equal to null, not empty & not the same as the current name
+//        if(username != null && username.length() > 0 && !Objects.equals(username, user.getusername())) {
+//            // update the name
+//            user.setusername(username);
+//        }
+//        // if email is not null, not empty & not the same as the current email & not already have been taken
+//        if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){
+//            Optional<UserUserInteraction> emailExists = userRepository.findByEmail(email);
+//            // check if the email is already registered
+//            if (!emailExists.isPresent()) {
+//                user.setEmail(email);
+//
+//            } else {
+//                throw new IllegalStateException("Email already exists");
+//
+//            }
+//
+//        }
+//        // if password is not null, not empty & not the same as the current password
+//        if((oldPassword ==null ||oldPassword.length()==0)&& newPassword!=null) {
+//            throw new IllegalStateException("Please enter old password.");
+//        }
+//        if(oldPassword != null && oldPassword.length()>0){
+//
+////            if(!Objects.equals(encryptedPassword, user.getPassword())) {
+//            if(!passwordEncoder.matches(oldPassword,user.getPassword())){
+//                throw new IllegalStateException("Old Password is incorrect.");
+//            }
+//            else if(newPassword!=null && newPassword.length()>0){
+//                if(!passwordEncoder.matches(newPassword,user.getPassword())){
+//                    String encryptedNewPassword= passwordEncoder.encode(newPassword);
+//                    user.setPassword(encryptedNewPassword);
+//                }
+//                else
+//                    throw new IllegalStateException("New password is same as old password.");
+//
+//            }
+//            else
+//                throw new IllegalStateException("Please enter new password");
+//        }
+//        if(photo!=null && !photo.isEmpty()){
+//            String textPath=firebaseImage.save(photo);
+//            user.setPhotoRef(textPath);
+//        }
+//
+//
+//        return "Profile updated successfully";
+//
+//    }
+//    @Transactional
+//    public String deleteProfilePicture(String id) throws IOException {
+//        UserUserInteraction user = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("User does not exist"));
+//        String photoRef= user.getPhotoRef();
+//        if(photoRef!=null && photoRef.length()>0) {
+//            firebaseImage.delete(photoRef);
+//            user.setPhotoRef("");
+//
+//        }
+//        else{
+//            throw new IllegalStateException("No photo to delete.");
+//        }
+//        return "Profile picture deleted successfully";
+//    }
     public String getAllphotoRef(String photoRef) {
         Optional<UserUserInteraction> user = userRepository.findByphotoRef(photoRef);
         return userRepository.findByphotoRef(photoRef).toString();
