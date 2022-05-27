@@ -104,6 +104,11 @@ public class PostController {
     	return service.postRecommend(req.userId);
     }
     
+    @GetMapping("/post/postValid")
+    public String getValidPostId() throws Exception{
+    	return service.getValidPostId();
+    }
+    
 //    @PostMapping("/post/addimage")
 //    public ResponseEntity addImage(@RequestBody imageAdder req) throws Exception {
 //        return service.addImage(req.postId,req.PhotoRef);
