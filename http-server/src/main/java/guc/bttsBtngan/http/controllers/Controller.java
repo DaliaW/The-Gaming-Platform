@@ -19,7 +19,7 @@ public class Controller {
 	
 	private AmqpTemplate amqpTemplate;
 	private Map<String, String> serviceToCommand;
-	
+
 	@Autowired
 	public Controller(AmqpTemplate amqpTemplate) {
 		this.amqpTemplate = amqpTemplate;
@@ -27,12 +27,10 @@ public class Controller {
 		serviceToCommand.put("chat", "messaging_req");
 		serviceToCommand.put("authentication", "authentication_req");
 		serviceToCommand.put("notification", "notification_req");
-		serviceToCommand.put("user", "messaging_req");
+		serviceToCommand.put("user", "user_req");
 		serviceToCommand.put("post", "messaging_req");
 		this.serviceToCommand = serviceToCommand;
 	}
-
-
 	@SuppressWarnings("unchecked")
 	@PostMapping("/")
 	public Map<String, Object> handler(@RequestBody Map<String, Object> body,
@@ -70,7 +68,7 @@ public class Controller {
 					serviceToCommand.get(service), body, m -> {
 	        	m.getMessageProperties().setHeader("command", command);
 	    		m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);
-
+						System.out.println("auth"+m);
 	        	return m;
 	        });
 		}
