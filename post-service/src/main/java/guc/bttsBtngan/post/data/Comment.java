@@ -94,6 +94,15 @@ public class Comment {
 
 	public static class CommentVote{
 		private String voterId;
+
+		@Override
+		public String toString() {
+			return "CommentVote{" +
+					"voterId='" + voterId + '\'' +
+					", upVote=" + upVote +
+					'}';
+		}
+
 		private boolean upVote;
 		
 		public CommentVote(String voterId, boolean upVote) {

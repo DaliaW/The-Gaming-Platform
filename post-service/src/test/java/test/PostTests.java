@@ -98,7 +98,7 @@ public class PostTests {
 		try {
 			// given
 			String userId = "";
-			String postId = "";
+			String postId = postService.getValidPostId();
 			boolean follow = true;
 
 			// when
@@ -120,7 +120,7 @@ public class PostTests {
 		try {
 			// given
 			String userId = "";
-			String postId = "";
+			String postId = postService.getValidPostId();
 			String reportComment = "";
 
 			// when
@@ -174,8 +174,8 @@ public class PostTests {
 			Comment comment = new Comment("1234", "test comment");
 			String id = postService.getValidPostId();
 			// when
-			String realOut = postService.commentPost(id, "post id", "test comment");
-			String expected = "DONE, created post is: " + (comment).toString();
+			String realOut = postService.commentPost("", id, "test comment");
+			String expected = "DONE, Potatoes comment post";
 
 			// then
 			Assert.assertEquals(expected, realOut);

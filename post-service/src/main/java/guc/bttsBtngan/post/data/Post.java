@@ -164,7 +164,15 @@ public class Post {
 	public static class PostVote{
 		private String voterId;
 		private boolean upVote;
-		
+
+		@Override
+		public String toString() {
+			return "PostVote{" +
+					"voterId='" + voterId + '\'' +
+					", upVote=" + upVote +
+					'}';
+		}
+
 		public PostVote(String voterId, boolean upVote) {
 			this.voterId = voterId;
 			this.upVote = upVote;
