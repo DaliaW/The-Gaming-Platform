@@ -1,17 +1,16 @@
 package guc.bttsBtngan.user.data;
 
+import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@ApiModel(description = "User Profile Data Model in postgresql")
 // For postgresql
 @Entity
 @Table
 public class UserUserInteraction {
-//<<<<<<< HEAD
-//    @Id
-//    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;

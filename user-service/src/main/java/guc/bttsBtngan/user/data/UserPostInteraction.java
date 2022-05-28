@@ -1,10 +1,12 @@
 package guc.bttsBtngan.user.data;
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import java.util.List;
 
+@ApiModel(description = "model for user interaction but in MongoDB")
 @Document
 public class UserPostInteraction {
     @Id
