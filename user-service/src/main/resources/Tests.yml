@@ -1,0 +1,104 @@
+scenarios:
+  - name: "Get all Users"
+    flow:
+      - get:
+          url: "/users"
+
+  - name: "Block User"
+    flow:
+      - delete:
+          url: "users/block"
+          json:
+            user_id: "1"
+            otherId: "2"
+
+  - name: "Unblock User"
+    flow:
+      - delete:
+          url: "users/unblock"
+          json:
+            user_id: "1"
+            otherId: "2"
+
+  - name: "Moderator see reports of users"
+    flow:
+      - get:
+          url: "/users/reports"
+
+  - name: "report a user"
+    flow:
+      - post:
+          url: "/users/report"
+          json:
+            user_id: "1"
+            otherId: "2"
+
+  - name: "Recommend users"
+    flow:
+      - get:
+          url: "/users/recommendUser"
+          json:
+            user_id: "1"
+
+  - name: "Register user"
+    flow:
+      - post:
+          url: "/users/register"
+          json:
+            username: "heo1"
+            password: "123456",
+            email: "heo11@gmail.com",
+            isModerator: true,
+            isBanned: false
+
+  - name: "Delete user"
+    flow:
+      - delete:
+          url: "/users/user-profile/delete"
+          json:
+            user_id: "1"
+
+  - name: "Update user"
+    flow:
+      - put:
+          url: "/users/user-profile"
+          json:
+            user_id: "1"
+            username: "heo1"
+            email: "heo@gmail.com"
+            oldPassword: "123456"
+            newPassword: "1234567"
+            photo: "myphoto.jpg"
+
+  - name: "Delete profile picture"
+    flow:
+      - delete:
+          url: "/users/deleteProfilePicture"
+          json:
+            user_id: "1"
+
+  - name: "Ban a user"
+    flow:
+      - post:
+          url: "/users/ban"
+          json:
+            user_id: "1"
+            userToBan: "2"
+
+  - name: "Unban a user"
+    flow:
+      - post:
+          url: "/users/unban"
+          json:
+            user_id: "1"
+            userToUnban: "2"
+
+  - name: "Follow a user"
+    flow:
+      - put:
+          url: "/users/follow/{userId}/{userToBeFollowed}"
+
+  - name: "Unfollow a user"
+    flow:
+      - put:
+          url: "/users/unfollow/{userId}/{userToBeUnfollowed}"

@@ -40,10 +40,10 @@ public class UserPostController {
     }
     @PostMapping(path = "users/report")
 //    public String reportUser(@RequestBody HashMap<String, Object> map) throws Exception {
-        public String reportUser(@RequestParam String userId, @RequestParam String userId2, @RequestParam String reportComment ) throws Exception {
+        public String reportUser(@RequestParam String user_id, @RequestParam String userId2, @RequestParam String reportComment ) throws Exception {
 //        String myId = "1";
         HashMap<String, Object> map = new HashMap<>();
-        map.put("userId",userId);
+        map.put("userId",user_id);
         map.put("userId2",userId2);
         map.put("reportComment",reportComment);
 //        System.out.println("report user:-  "+ (String) reportUserCommand.execute(map));
@@ -51,7 +51,7 @@ public class UserPostController {
 //        System.out.print("ana henaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 //        return userPostService.reportUser((String) map.get("userId"),(String) map.get("userId2"),(String) map.get("reportComment"));
 //        return userPostService.reportUser("userId","userId2","reportComment");
-        return userPostService.reportUser(userId,userId2,reportComment);
+        return userPostService.reportUser(user_id,userId2,reportComment);
 
     }
     @DeleteMapping(path = "users/block")

@@ -105,16 +105,16 @@ public class UserUserController {
         return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
     }
 
-    @DeleteMapping(path = "block/{userId}")
-    public void blockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-    @DeleteMapping(path = "unblock/{userId}")
-    public void unblockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
+//    @DeleteMapping(path = "block/{userId}")
+//    public void blockuser(@PathVariable("userId") Long id) {
+//        // TODO: implement
+//        //userUserService.deleteUser(id);
+//    }
+//    @DeleteMapping(path = "unblock/{userId}")
+//    public void unblockuser(@PathVariable("userId") Long id) {
+//        // TODO: implement
+//        //userUserService.deleteUser(id);
+//    }
 
 //    @GetMapping("/api/employeeswithvariable/{id}")
 //    @ResponseBody
@@ -122,9 +122,14 @@ public class UserUserController {
 //        return "ID: " + employeeId;
 //    }
 
-    @PutMapping(path = "/users/follow")
-    public String followUser(@RequestBody HashMap<String, Object> body) throws Exception {
-        return userUserService.followUser((String)body.get("userId"), (String)body.get("userToFollow"));
+    @PutMapping(path = "/users/follow/{userId}/{userToBeFollowed}")
+    public String followUser(@PathVariable("userId") String userId,
+                             @PathVariable("userToBeFollowed") String userToBeFollowedId
+    ) throws Exception {
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("user_id",userId);
+        map.put("userToFollowId",userToBeFollowedId);
+        return userUserService.followUser(userId, userToBeFollowedId);
     }
 
     @PutMapping(path = "/users/unfollow/{userId}/{userToBeUnfollowed}")
