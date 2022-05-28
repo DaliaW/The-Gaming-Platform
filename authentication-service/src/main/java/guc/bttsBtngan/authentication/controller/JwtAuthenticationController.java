@@ -43,7 +43,7 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @RequestMapping(value = "/log-out", method = RequestMethod.GET)
+    @RequestMapping(value = "/log-out", method = RequestMethod.POST)
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorization) throws Exception {
         authorization = authorization.substring(7);
         System.out.println("The authorization token is "+ authorization);
