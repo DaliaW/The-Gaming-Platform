@@ -511,7 +511,7 @@ public class PostService {
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
-					m.getMessageProperties().setHeader("command", "blockedByComman");
+					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
