@@ -9,6 +9,6 @@ public class PostRecommendCommand extends PostCommand{
 
     @Override
     public Object execute(HashMap<String, Object> map) throws Exception {
-        return getService().postRecommend((String)map.get("userId"));
+        return getService().postRecommend((String)map.get("user_id"));
     }
 }

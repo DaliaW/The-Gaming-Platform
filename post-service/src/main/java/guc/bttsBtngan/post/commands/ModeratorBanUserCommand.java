@@ -11,7 +11,7 @@ public class ModeratorBanUserCommand extends PostCommand{
     public Object execute(HashMap<String, Object> map) throws Exception {
         return getService().moderatorBanUser((String)map.get("modId"),
         		(String)map.get("postId"),  
-        		(String)map.get("userId"),
+        		(String)map.get("user_id"),
         		(boolean)map.get("ban"));
     }
 }

@@ -15,7 +15,7 @@ public class CreatePostCommand extends PostCommand {
     public Object execute(HashMap<String, Object> map) throws Exception {
         Post post = new Post();
 
-        post.setUserId((String)map.get("userId"));
+        post.setUserId((String)map.get("user_id"));
 //        post.setAdmin_id((String) map.get("admin_id"));TODO
 //        post.setName((String) map.get("name"));
         return getService().createPost(post);
