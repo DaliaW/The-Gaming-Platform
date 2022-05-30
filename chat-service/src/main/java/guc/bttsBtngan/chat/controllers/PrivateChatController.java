@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import guc.bttsBtngan.chat.commands.Command;
 import guc.bttsBtngan.chat.data.PrivateChat;
 import guc.bttsBtngan.chat.services.PrivateChatService;
 
@@ -20,36 +21,36 @@ import guc.bttsBtngan.chat.services.PrivateChatService;
 public class PrivateChatController {
 	
 	@Autowired
-	private PrivateChatService service;
+	private Map<String, Command> commands;
 	
 	@PostMapping("/private")
-	public String createPrivateChat(@RequestBody PrivateChat chat) throws Exception {
-		return service.createPrivateChat(chat);
+	public String createPrivateChat(@RequestBody HashMap<String, Object> body) throws Exception {
+		return (String) commands.get("createPrivateChatCommand").execute(body);
 	}
 	
 	@PostMapping("/private/message")
 	public String sendPrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.sendPrivateMessage((String) body.get("user_id"), (String) body.get("private_id"),
-				(String) body.get("content"), (String) body.get("timestamp"));
+		return (String) commands.get("sendPrivateMessageCommand").execute(body);
 	}
 
 	@DeleteMapping("/private")
 	public String deletePrivateChat(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.deletePrivateChat((String) body.get("user_id"), (String) body.get("private_id"));
+		return (String) commands.get("deletePrivateChatCommand").execute(body);
 	}
 	
 	@DeleteMapping("/private/message")
 	public String deletePrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.deletePrivateMessage((String) body.get("user_id"), (String) body.get("private_id"), (String) body.get("message_id"));
+		return (String) commands.get("deletePrivateMessageCommand").execute(body);
 	}
 	
 	@PutMapping("/private/message")
 	public String updatePrivateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.updateMessage((String) body.get("user_id"), (String) body.get("private_id"), (String) body.get("message_id"), (String) body.get("content"));
+		return (String) commands.get("updatePrivateMessageCommand").execute(body);
 	}
 	
 	@GetMapping("/private/{id}")
 	public Map<String, Object> getPrivateChat(@PathVariable String id, @RequestBody HashMap<String, Object> body) throws Exception {
-		return service.getPrivateChat((String) body.get("user_id"), id);
+		body.put("private_id", id);
+		return (Map<String, Object>) commands.get("getPrivateChatCommand").execute(body);
 	}
 }

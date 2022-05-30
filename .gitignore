@@ -229,7 +229,7 @@ package-lock.json
 config.json
 .idea/dataSources.xml
 
-
+.idea
 
 # MacOS
 .DS_Store
@@ -239,3 +239,5 @@ config.json
 
 #intellij
 .idea
+.idea/vcs.xml
+.idea/runConfigurations.xml

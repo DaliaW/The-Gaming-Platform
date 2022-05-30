@@ -1,2 +1,17 @@
 server:
-  port: 4000
+  port: 4700
+  
+spring:
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 1
+        prefetch: 1
+  data:
+    mongodb:
+      uri: mongodb+srv://Omar:KYCcRa1SwN5stM0n@cluster0.yuezt.mongodb.net/PostMS?retryWrites=true&w=majority
