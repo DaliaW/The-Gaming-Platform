@@ -349,7 +349,7 @@ public class PostTests {
 			Post post = postService.getPost(postId);
 
 			// when
-			String realOut = postService.delTagInPost(postId, userIdsToBeTagged);
+			String realOut = postService.delTagInPost(postId, userIdsToBeTagged, post.getUserId());
 			String expected = "DONE, Potatoes tag in post : " + (post).toString();
 
 			// then
@@ -377,7 +377,7 @@ public class PostTests {
 			String[] userIdsToBeTagged = new String[0];
 
 			// when
-			String realOut = postService.delCommentTagInPost(postId, commentId, userIdsToBeTagged);
+			String realOut = postService.delCommentTagInPost(postId, commentId, userIdsToBeTagged, post.getComments().get(post.getComments().size() - 1).getCommenterId());
 			String expected = "DONE, Potatoes tag in post : " + (post).toString();
 
 			// then

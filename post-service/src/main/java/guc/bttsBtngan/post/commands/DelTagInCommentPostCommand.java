@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class DelTagInCommentPostCommand  extends PostCommand{
     @Override
     public Object execute(HashMap<String, Object> map) throws Exception {
-        return getService().delCommentTagInPost((String)map.get("postId"),(String)map.get("commentId"),(String[])map.get("userIds"));
+        return getService().delCommentTagInPost((String)map.get("postId"),(String)map.get("commentId"),(String[])map.get("userIds"),(String)map.get("user_id"));
     }
 }

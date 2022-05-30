@@ -52,16 +52,16 @@ public class OrderService {
         return postService.tagInPost(postId,userIds,userIdSending);
     }
 
-    public String delTagInPost(String postId, String[]userIds)throws Exception {
-        return postService.delTagInPost(postId,userIds);
+    public String delTagInPost(String postId, String[]userIds,String user_id)throws Exception {
+        return postService.delTagInPost(postId,userIds,user_id);
     }
 
     public String commentTagInPost(String postId, String commentId, String[]userIds,String userIdSending)throws Exception {
         return postService.commentTagInPost(postId,commentId,userIds,userIdSending);
     }
 
-    public String delCommentTagInPost(String postId, String commentId, String[]userIds)throws Exception {
-        return postService.delCommentTagInPost(postId,commentId,userIds);
+    public String delCommentTagInPost(String postId, String commentId, String[]userIds, String user_id)throws Exception {
+        return postService.delCommentTagInPost(postId,commentId,userIds,user_id);
     }
     public String searchPosts(String subContent,String userId) throws Exception {
         return postService.searchPosts(subContent,userId);

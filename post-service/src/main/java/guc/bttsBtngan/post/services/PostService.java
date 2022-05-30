@@ -400,12 +400,15 @@ public class PostService {
 
 	}
 
-	public String delTagInPost(String postId, String[]userIds)throws Exception {
+	public String delTagInPost(String postId, String[]userIds, String userIdSending)throws Exception {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
 		if(post==null){
 			throw new Exception("post id is not valid");
+		}
+		if(!userIdSending.equals(post.getUserId())) {
+			throw new Exception("ya kalb");
 		}
 		for(String userId:userIds){
 			if(!post.getPostTags().contains(userId)){
@@ -440,6 +443,9 @@ public class PostService {
 		if(cmnt==null){
 			throw new Exception("comment id is not valid");
 		}
+		if(!userIdSending.equals(cmnt.getCommenterId())) {
+			throw new Exception("ya kalb");
+		}
 		for(String userId:userIds){
 			if(!validateUserId(userIdSending,userId) || isBannedFromPost(post, userId)){
 				throw new Exception("User with user id "+userId+" is not a valid user or is banned");
@@ -464,7 +470,7 @@ public class PostService {
 
 	}
 
-	public String delCommentTagInPost(String postId, String commentId, String[]userIds)throws Exception {
+	public String delCommentTagInPost(String postId, String commentId, String[]userIds, String userIdSending)throws Exception {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(postId));
 		Post post = mongoOperations.findOne(query, Post.class, "post");
@@ -482,6 +488,9 @@ public class PostService {
 		}
 		if(cmnt==null){
 			throw new Exception("comment id is not valid");
+		}
+		if(!userIdSending.equals(cmnt.getCommenterId())) {
+			throw new Exception("ya kalb");
 		}
 		for(String userId:userIds){
 			if(!cmnt.getCommentTags().contains(userId)){

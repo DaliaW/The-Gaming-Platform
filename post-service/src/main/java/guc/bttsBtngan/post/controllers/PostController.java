@@ -69,7 +69,7 @@ public class PostController {
 
     @DeleteMapping("/post/tag")
     public String delTagInPost(@RequestBody tagRequest req) throws Exception {
-        return service.delTagInPost(req.postId,req.userIds);
+        return service.delTagInPost(req.postId,req.userIds,req.userIdSending);
     }
 
     @PutMapping("/post/comment/tag")
@@ -79,7 +79,7 @@ public class PostController {
 
     @DeleteMapping("/post/comment/tag")
     public String delTagInCommentPost(@RequestBody commentTagRequest req) throws Exception {
-        return service.delCommentTagInPost(req.postId,req.commentId,req.userIds);
+        return service.delCommentTagInPost(req.postId,req.commentId,req.userIds, req.userIdSending);
     }
     
     @PostMapping("/post/assignmod")
