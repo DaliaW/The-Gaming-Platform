@@ -1,0 +1,17 @@
+{
+  "type": "service_account",
+  "project_id": "scalable-db",
+  "private_key_id": "7bfc82a91edb60174f44211dff4ffc11a9535089",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDDmQ54m+ZTbqoO\n6mwfA2rWvyuHOetmlWqLhvTe0XwbkiiMAsCJkgqM60iJpIcnv7Jz2oO8USEohYQs\nc4MmY+0crSYL7ugjSMpomTjXpLFJped0iuAr1PDPl/HrUB7A6hu8jsdJ0cmuXTR3\nTk1tGZXQ/UbuzeJ8AJB55obLKdPsLbELR6BHv6NcZZG3T+Sf/VzOyi2nUf3NWu0C\nMpemKgFKisXLVSMO0TqlrJQiJ+WFHDWMY9vKzIyxBxfDQngPiQGYb/odjkVRc3S+\nIdPAL2AqYOh0P2oERvn2gNof8XrHjwYjIMN7K1FFIA4TUDcFevw5AUokZ0vXxy0M\nDdZ1soLZAgMBAAECggEAAYE9vTCGcJ8sRQ6t8Y9s9MndBfDREMENrUvZJ7siJzxv\nkGzFSAUasT9J4MuBwdYIFc2rgjku/zIrxqgPbS3462XGfakn0MZAYPs1X9GjxYs2\nk3GbgzP1/OiZkxhlEL+cWSljxGlpkb6kQlZwPjO11Utusw/KBIGAUeoPMv/y4jyi\nT9TBeRkUdN/hgOFrvNNB83Z+1uZUR3zVP4ZTv5KK48nSo4eOVlzq0fCJYnjpjIl7\nD4fb3SWgjHfQd6zl3oFG410+WnBb0XiAVydzQUbHpC7H/wc2yN5ESEJ3mBLhRRJd\nTdWv9km2r0i0ClXZch1wzaVNJ8eRDhpytfM5QAoAKQKBgQDmt706ctMOGB/BEFMm\nbyuOdtu31yM07K13vesHjaaYdplcR/whRPmt2cF0kEgE8oa0H1IfcdLxwKzek2yY\nQMU7MHa0V0lFkMPyHoauAPBPk3SVsI6jF4qmADs5qBkvIV7AF0cAhwqXbIbVA1vF\nyqtr2t7utmthKGiYaQ23lJ9SJQKBgQDZCBwasNle7W0d1pHz66B9SU6qMqreJlwR\nGbOa4aP+zNX1rsSHr78WIpgE1l/1BBStHtlAPkBxE32wEj0HGLWBGmgr7uNsIP2B\nRnZY+/lLgQ7UeZoGT9Lq7EfzGNeBKmr6eeKkGqAa7kURE+1yAmcWZfyrUXmpW03G\nce4RQUT9pQKBgH5pReD0cPdT+HILw8NXPgI81X4Q/lVNKG5nPJNS5Wi78qNBPb/s\nzvCWUwzO0OcFCxE95/0anH2hGBaLqABz3JzlnOSKvrbC7tmGKDzGfuTa4hHyPvTV\nPT5e+hRJKiNMoWGWX2zGkOMOr4Ge6XWh6fKaZXNdt8/wF/8J8F4ZrIGRAoGAPmTH\nd6DqDRFi8lYShbZy4DHoDKQeXVlX1I64BMnj1MfcpxIEbCHJZLqzS4i5832l2BNr\nT73V1uxMkQbdRqIC5EfMNP0ropVla/nu4iwmgl9q/QiskC34rBMbqDa3Feo08SeD\nUbxZ1QQ1FPDOrZ0lN9pAJpx4xoh6NpfgYlOKWwUCgYBfOez9mMUQUbkCgHAORXdO\neYM9Yc8Lz+imstXntHmBHzFVcTnqxn08rJRQJcr4gSt2EO7UQh/NGJb8b9CJgJwm\n7RiSpipcK6NhlyI+qEDLtFN8x+hCnIeZ3oMlUBOS4qxl7zPGgQOYxpGvYvNpscrE\nlrE/FezaGGu/VlN6aIYWbQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-pughh@scalable-db.iam.gserviceaccount.com",
+  "client_id": "114959446802682925279",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-pughh%40scalable-db.iam.gserviceaccount.com",
+  "apiKey": "AIzaSyA4hE52zLbQYQcVNBzuIPIQIAtvweMogfc",
+  "authDomain": "scalable-db.firebaseapp.com",
+  "storageBucket": "scalable-db.appspot.com",
+  "messagingSenderId": "577914045006",
+  "appId": "1:577914045006:web:4fd48f1714ff52346df91f"
+}

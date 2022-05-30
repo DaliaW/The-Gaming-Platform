@@ -1,63 +1,52 @@
 package guc.bttsBtngan.user.controllers;
 
-import com.jlefebure.spring.boot.minio.MinioException;
 import guc.bttsBtngan.user.data.UserUserInteraction;
 import guc.bttsBtngan.user.services.UserUserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 @RestController
-//@RequestMapping(path = "users")
 public class UserUserController {
-
-//    @Autowired
-//    private FollowUserCommand followUserCommand;
-//    @Autowired
-//    private UnfollowUserCommand unfollowUserCommand;
-
-//    @Autowired
-//    private UpdateUserCommand updateUserCommand;
-//
-//    @Autowired
-//    private DeleteUserCommand deleteUserCommand;
-
 
     @Autowired
     private UserUserService userUserService;
 
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Get all users in the website", response = UserUserInteraction.class, responseContainer = "List")
     @GetMapping("/users")
     public String getAllUsers() {
         // TODO: implement
         return userUserService.getAllUsers();
     }
-//    @GetMapping("/test")
-//    public void test() throws MinioException, IOException {
-//        System.out.println("TESTTTTTTTTTTT");
-//        // TODO: implement
-//         userUserService.test();
-//    }
 
-
-
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Register a new user")
+    @ApiParam(name = "body", value = "The user to be registered", required = true, example = "{\n" +
+            "  \"username\": \"username\",\n" +
+            "  \"password\": \"password\",\n" +
+            "  \"email\": \"email\",\n" +
+            "  \"firstName\": \"firstName\",\n" +
+            "  \"lastName\": \"lastName\"\n" +
+            "}")
     @PostMapping("/users/register")
     public void registerUser(@RequestBody UserUserInteraction user) {
         userUserService.registerUser(user);
     }
 
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "delete a user")
+    @ApiParam(name = "user_id", value = "The user to be deleted", required = true, example = "c78181a980c794230180c794b3260000")
     @DeleteMapping(path = "/users/user-profile/delete")
     public void deleteUser(@RequestBody HashMap<String,Object> body) throws Exception {
-//        public void deleteUser(@RequestBody String userId) throws Exception {
-//        HashMap<String, Object> map=new HashMap<>();
-//        map.put("userId",userId);
-//        return (String) deleteUserCommand.execute(map);
-
         userUserService.DeleteUser((String) body.get("user_id"));
-//        return "the user has been deleted";
-
     }
 
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "update the user's profile")
     @PutMapping(path = "/users/user-profile")
     public void updateUser(@RequestParam(name="user_id") String id,
                            @RequestParam(name="username",required = false) String username,
@@ -67,58 +56,40 @@ public class UserUserController {
                         ,@RequestParam(name="photo",required = false) MultipartFile photo
     ) throws Exception {
         userUserService.updateUser(id, username, email, oldPassword, newPassword, photo);
-        // HashMap<String,Object>map=new HashMap<>();
-        // map.put("user_id",id);
-        // map.put("username",username);
-        // map.put("oldPassword",oldPassword);
-        // map.put("newPassword",newPassword);
-        // map.put("email",email);
-        // map.put("photo",photo);
-        // updateUserCommand.execute(map);
-    
     }
+
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Delete a user's profile picture")
     @DeleteMapping(path = "/users/deleteProfilePicture")
-    public void deleteProfilePicture(@RequestParam("user_id") String id) throws MinioException {
-//        System.out.println("in deleteeeeeee");
+    public void deleteProfilePicture(@RequestParam("user_id") String id) throws Exception {
         userUserService.deleteProfilePicture(id);
     }
 
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Get all user's profile pictures")
     @GetMapping(path = "users/photo/{photoRef}")
     public String getAllphotoRef(@PathVariable("photoRef") String photoRef) {
         return userUserService.getAllphotoRef(photoRef);
     }
 
-
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Moderator can ban a user from the website")
     // moderator can ban users
     @PostMapping(path = "users/ban")
     public String banUser(@RequestBody HashMap<String, Object> body) {
         return userUserService.banUser((String)body.get("user_id") ,(String)body.get("userToBan"));
     }
 
-
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "Moderator can unban a user from the website")
     // moderator can unban users
     @PostMapping(path = "users/unban")
     public String unbanUser(@RequestBody HashMap<String, Object> body) {
         return userUserService.unbanUser((String)body.get("user_id") ,(String)body.get("userToUnban"));
     }
 
-    @DeleteMapping(path = "block/{userId}")
-    public void blockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-    @DeleteMapping(path = "unblock/{userId}")
-    public void unblockuser(@PathVariable("userId") Long id) {
-        // TODO: implement
-        //userUserService.deleteUser(id);
-    }
-
-//    @GetMapping("/api/employeeswithvariable/{id}")
-//    @ResponseBody
-//    public String getEmployeesByIdWithVariableName(@PathVariable("id") String employeeId) {
-//        return "ID: " + employeeId;
-//    }
-
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "follow a user")
     @PutMapping(path = "/users/follow/{userId}/{userToBeFollowed}")
     public String followUser(@PathVariable("userId") String userId,
                              @PathVariable("userToBeFollowed") String userToBeFollowedId
@@ -126,12 +97,11 @@ public class UserUserController {
         HashMap<String, Object> map=new HashMap<>();
         map.put("user_id",userId);
         map.put("userToFollowId",userToBeFollowedId);
-//        System.out.println("HIIIIIIIIIIIIIIIIIIIIIIIIII");
-//        System.out.println(followUserCommand);
-        //return (String) followUserCommand.execute(map);
         return userUserService.followUser(userId, userToBeFollowedId);
     }
 
+    // ApiOperation for swagger ui configuration
+    @ApiOperation(value = "unfollow a user")
     @PutMapping(path = "/users/unfollow/{userId}/{userToBeUnfollowed}")
     public String unfollowUser(@PathVariable("userId") String userId,
                                @PathVariable("userToBeUnfollowed") String userToBeUnfollowedId

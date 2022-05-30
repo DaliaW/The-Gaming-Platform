@@ -8,6 +8,6 @@ import java.util.HashMap;
 public class BanUserCommand extends UserUserCommand {
     @Override
     public Object execute(HashMap<String, Object> map) {
-        return getService().banUser((String) map.get("userId"), (String) map.get("userToBan"));
+        return getService().banUser((String) map.get("user_id"), (String) map.get("userToBan"));
     }
 }
