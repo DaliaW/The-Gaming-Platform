@@ -18,17 +18,7 @@ import com.google.firebase.cloud.FirestoreClient;
 public class ChatMain {
 
 	public static void main(String[] args) throws IOException {
-		ClassLoader classLoader = ChatMain.class.getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader
-				.getResource("firebase_credentials.json")).getFile());
-		InputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
-		GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
-		FirebaseOptions options = new FirebaseOptions.Builder()
-		    .setCredentials(credentials)
-		    .build();
-		FirebaseApp.initializeApp(options);
 		SpringApplication.run(ChatMain.class, args);
-		FirestoreClient.getFirestore();
 	}
 
 }

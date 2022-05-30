@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import guc.bttsBtngan.chat.commands.Command;
 import guc.bttsBtngan.chat.data.GroupChat;
 import guc.bttsBtngan.chat.services.GroupChatService;
 
@@ -21,57 +22,58 @@ import guc.bttsBtngan.chat.services.GroupChatService;
 public class GroupChatController {
 	
 	@Autowired
-	private GroupChatService service;
+	private Map<String, Command> commands;
 	
 	@PostMapping("/groups")
-	public String createGroup(@RequestBody GroupChat chat) throws InterruptedException, ExecutionException {
-		return service.createGroup(chat);
+	public String createGroup(@RequestBody HashMap<String, Object> body) throws Exception {
+		return (String) commands.get("createGroupCommand").execute(body);
 	}
 	
 	@PostMapping("/groups/admin")
 	public String changeAdmin(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.changeAdmin((String)body.get("user_id"), (String)body.get("admin_id"), (String)body.get("group_id"));
+		return (String) commands.get("changeAdminCommand").execute(body);
 	}
 	
 	@PostMapping("/groups/join")
 	public String joinGroup(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.joinGroup((String)body.get("user_id"), (String)body.get("group_id"));
+		return (String) commands.get("joinGroupCommand").execute(body);
 	}
 	
 	@PostMapping("/groups/message")
 	public String sendGroupMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.sendGroupMessage((String) body.get("user_id"), (String) body.get("group_id"),
-				(String) body.get("content"), (String) body.get("timestamp"));
+		return (String) commands.get("sendGroupMessageCommand").execute(body);
+
 	}
 	
 	@PostMapping("/groups/name")
 	public String changeGroupName(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.changeGroupName((String)body.get("user_id"), (String)body.get("name"), (String)body.get("group_id"));
+		return (String) commands.get("changeGroupNameCommand").execute(body);
 	}
 	
 	@PostMapping("/groups/leave")
 	public String leaveGroup(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.leaveGroup((String)body.get("user_id"), (String)body.get("group_id"));
+		return (String) commands.get("leaveGroupCommand").execute(body);
 	}
 	
 	@DeleteMapping("/groups")
 	public String deleteGroup(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.deleteGroup((String) body.get("group_id"), (String) body.get("user_id"));
+		return (String) commands.get("deleteGroupCommand").execute(body);
 	}
 	
 	@DeleteMapping("/groups/message")
 	public String deleteMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.deleteMessage((String) body.get("group_id"), (String) body.get("user_id"), (String) body.get("message_id"));
+		return (String) commands.get("deleteMessageCommand").execute(body);
 	}
 	
 	@PutMapping("/groups/message")
 	public String updateMessage(@RequestBody HashMap<String, Object> body) throws Exception {
-		return service.updateMessage((String) body.get("group_id"), (String) body.get("user_id"),
-					(String) body.get("message_id"), (String) body.get("content"));
+		return (String) commands.get("updateMessageCommand").execute(body);
 	}
 	
 	@GetMapping("/groups/{id}")
 	public Map<String, Object> getGroup(@PathVariable String id) throws Exception {
-		return service.getGroup(id);
+		HashMap<String, Object> body = new HashMap<>();
+		body.put("id", id);
+		return (Map<String, Object>) commands.get("getGroupCommand").execute(body);
 	}
 }
