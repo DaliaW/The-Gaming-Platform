@@ -1,0 +1,70 @@
+version: '2'
+
+services:
+  app:
+    image: 'http-docker:latest'
+    build:
+      context: .
+    container_name: http
+    ports:
+      - "10000:10000"
+    depends_on:
+      - postgresql
+      - rabbitmq
+#      - firebase
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ec2-52-200-215-149.compute-1.amazonaws.com:5432/da123k6qij3ong
+      - SPRING_DATASOURCE_USERNAME=inxdeiyuuyrtpa
+      - SPRING_DATASOURCE_PASSWORD=5091ced29c41c7b07813ebe6d0250ebf7e4c85755704628fd08e00cbf0f6ee73
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  postgresql:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresql
+    environment:
+      - POSTGRES_USER=inxdeiyuuyrtpa
+      - POSTGRES_PASSWORD=5091ced29c41c7b07813ebe6d0250ebf7e4c85755704628fd08e00cbf0f6ee73
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "25672:25672"
+      - "5672:5672"
+    networks:
+      - spring
+
+
+#  firebase:
+#    image: andreysenov/firebase-tools
+#    container_name: firebase
+#    ports:
+#      - "4400:4400"
+#      - "4500:4500"
+#      - "5001:5001"
+#      - "8001:8001"
+#      - "8080:8080"
+#      - "9000:9000"
+
+
+networks:
+  postgresql:
+    driver: bridge
+  app:
+    driver: bridge
+  rabbitmq:
+    driver: bridge
+  spring:
+    driver : bridge
+#  firebase:
+#    driver: bridge
+#  s3:
+#    image: minio/minio
+#    ports:
+#      - "5001:9000"
+#    volumes:
+#      - ./storage/minio:/data
+#    environment:
+#      MINIO_ACCESS_KEY: minioadmin
+#      MINIO_SECRET_KEY: minioadmin
+#    command:  server --address 192.168.1.11:9000 /data

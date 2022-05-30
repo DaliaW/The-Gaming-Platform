@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  app:
+    image: 'postfirebase-docker:latest'
+    build:
+      context: .
+    container_name: postfirebase
+    ports:
+      - "5001:5001"
+    depends_on:
+      - firebase
+
+  firebase:
+    image: andreysenov/firebase-tools
+    container_name: firebase
+    ports:
+      - "4400:4400"
+      - "4500:4500"
+      - "5001:5001"
+      - "8001:8001"
+      - "8080:8080"
+      - "9000:9000"
+
+
+networks:
+  app:
+    driver: bridge
+  firebase:
+    driver: bridge
+#  s3:
+#    image: minio/minio
+#    ports:
+#      - "5001:9000"
+#    volumes:
+#      - ./storage/minio:/data
+#    environment:
+#      MINIO_ACCESS_KEY: minioadmin
+#      MINIO_SECRET_KEY: minioadmin
+#    command:  server --address 192.168.1.11:9000 /data

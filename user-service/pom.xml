@@ -10,6 +10,21 @@
           <target>8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>guc.bttsBtngan.user.UserMain</mainClass>
+        </configuration>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <parent>
@@ -17,6 +32,7 @@
     <artifactId>the-gaming-platform</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <packaging>jar</packaging>
   <artifactId>user-service</artifactId>
   <name>User Service</name>
   <dependencies>
@@ -52,15 +68,10 @@
       <version>0.0.20131108.vaadin1</version>
       <scope>compile</scope>
     </dependency>
-      <dependency>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-crypto</artifactId>
-      </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-crypto</artifactId>
     </dependency>
-
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
@@ -77,22 +88,31 @@
       <groupId>com.google.firebase</groupId>
       <artifactId>firebase-admin</artifactId>
       <version>6.10.0</version>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-crypto</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>0.26.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-storage</artifactId>
-      <version>1.96.0</version>
+      <version>1.118.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.api-client</groupId>
-      <artifactId>google-api-client</artifactId>
-      <version>1.30.4</version>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>6.10.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
+
 </project>
