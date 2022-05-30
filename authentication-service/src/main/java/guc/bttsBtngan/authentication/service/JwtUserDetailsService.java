@@ -57,8 +57,8 @@ public class JwtUserDetailsService implements UserDetailsService {
         newUser.setUsername(user.getUsername());
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
         newUser.setEmail(user.getEmail());
-        newUser.setBanned(user.isBanned());
-        newUser.setModerator(user.isModerator());
+        newUser.setBanned(user.getIsBanned());
+        newUser.setModerator(user.getIsModerator());
         newUser.setPhoto_ref(user.getPhoto_ref());
         return userRepository.save(newUser);
     }

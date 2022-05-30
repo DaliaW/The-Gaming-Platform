@@ -24,19 +24,19 @@ public class UserDTO {
         this.photo_ref = photo_ref;
     }
 
-    public boolean isModerator() {
+    public boolean getIsModerator() {
         return isModerator;
     }
 
-    public void setModerator(boolean moderator) {
+    public void setIsModerator(boolean moderator) {
         isModerator = moderator;
     }
 
-    public boolean isBanned() {
+    public boolean getIsBanned() {
         return isBanned;
     }
 
-    public void setBanned(boolean banned) {
+    public void setIsBanned(boolean banned) {
         isBanned = banned;
     }
 

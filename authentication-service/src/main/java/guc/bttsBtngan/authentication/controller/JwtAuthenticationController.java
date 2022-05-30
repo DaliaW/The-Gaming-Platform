@@ -46,7 +46,6 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/log-out", method = RequestMethod.POST)
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorization) throws Exception {
         authorization = authorization.substring(7);
-        System.out.println("The authorization token is "+ authorization);
         return ResponseEntity.ok(authService.logout(authorization));
     }
 
@@ -58,19 +57,8 @@ public class JwtAuthenticationController {
 
 
     @RequestMapping(value="/verify", method = RequestMethod.POST)
-    public String verify(@RequestHeader ("Authorization") String token) throws Exception{
-        //String token = header.get("Authorization").substring(7);
+    public String verify(@RequestHeader ("Authorization") String token) throws Exception {
         token = token.substring(7);
-        System.out.println("The token is "+token);
-       return authService.verify(token);
+        return authService.verify(token);
     }
-
-    public String hello(){
-       // System.out.println(cacheManager.getCache("token").get("Mazenelgamed").get());
-
-        return "hello";
-    }
-
-
-
 }
