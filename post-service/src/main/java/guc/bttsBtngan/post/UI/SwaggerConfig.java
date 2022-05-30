@@ -1,4 +1,4 @@
-package guc.bttsBtngan.user.UI;
+package guc.bttsBtngan.post.UI;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("The Gaming Platform: User Microservice")
+                .title("The Gaming Platform: Post Microservice")
                 .description("A distributed Gaming platform facebook like replica for sharing games information, posting, following other users and much more")
                 .version("1.0").build();
     }
