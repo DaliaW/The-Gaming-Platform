@@ -1,18 +1,21 @@
 package guc.bttsBtngan.post.data;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import guc.bttsBtngan.post.data.Comment.CommentVote;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @Document
 public class Post {
+	private ObjectId _id = null;
 	private String userId;
 	private String content;
 	private String photoRef;
-	private Timestamp date;
+	private Date date;
 	private Integer noOfFollwer;
 	private String moderatorId;
 	private ArrayList<Comment> comments;
@@ -102,11 +105,11 @@ public class Post {
 		this.photoRef = photoRef;
 	}
 
-	public Timestamp getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -161,7 +164,15 @@ public class Post {
 	public static class PostVote{
 		private String voterId;
 		private boolean upVote;
-		
+
+		@Override
+		public String toString() {
+			return "PostVote{" +
+					"voterId='" + voterId + '\'' +
+					", upVote=" + upVote +
+					'}';
+		}
+
 		public PostVote(String voterId, boolean upVote) {
 			this.voterId = voterId;
 			this.upVote = upVote;
@@ -226,6 +237,14 @@ public class Post {
 				", postTags=" + postTags +
 				", postFollowers=" + postFollowers +
 				'}';
+	}
+
+	public ObjectId get_id() {
+		return _id;
+	}
+
+	public void set_id(ObjectId _id) {
+		this._id = _id;
 	}
 
 }

@@ -70,10 +70,10 @@ public class OrderService {
         return postService.assignModerator(postId,userId,modId);
     }
 
-    public String checkPostReports(String postId, String userId)throws Exception {
-        return postService.checkPostReports(postId,userId);
-    }
+//    public String checkPostReports(String postId, String userId)throws Exception {
+//        return postService.checkPostReports(postId,userId);
+//    }
     public String postRecommend(String userId) throws Exception  {
-        return postService.postRecommend(userId);
+        return postService.postRecommend(userId).toString();
     }
 }

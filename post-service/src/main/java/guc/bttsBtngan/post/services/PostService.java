@@ -49,7 +49,7 @@ public class PostService {
 		}
 		
 
-		post.setDate(new Timestamp(System.currentTimeMillis()) );
+		post.setDate(new Date(System.currentTimeMillis()) );
 		
 		post.setNoOfFollwer(0);
 		
@@ -86,6 +86,24 @@ public class PostService {
         return "DONE, created post is: "+(post).toString();
     }
     
+	public String getValidPostId() throws Exception{
+		Query query = new Query();
+    	Post post = mongoOperations.findOne(query, Post.class, "post"); 
+    	if(post==null)return "post is null";
+    	return post.get_id().toString();
+	}
+	
+	
+
+    public Post getPost(String postId)throws Exception {
+        Query query = new Query(Criteria.where("_id").is(postId));
+        Post post = mongoOperations.findOne(query, Post.class, "post");
+
+        if (post == null) {
+            throw new Exception("post with id: " + postId + " is not found");
+        }
+        return post;
+    }
     public String followPost(String userId, String postId, boolean follow)throws Exception {
     	Query query = new Query(Criteria.where("_id").is(postId));
     	Post post = mongoOperations.findOne(query, Post.class, "post");  	
@@ -154,13 +172,7 @@ public class PostService {
         	
              notifyFollowersOfPost(postOwner, "new follower followed your post : "+userId);
               
-         
-           
-       
-        
-        
-        
-        
+      
         
     	return "request done!";
     	
@@ -499,7 +511,7 @@ public class PostService {
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
 				"authentication", body, m -> {
-					m.getMessageProperties().setHeader("command", "blockedByComman");
+					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
@@ -623,7 +635,7 @@ public class PostService {
   			return false;
 	}
 	
-	public String checkPostReports(String postId, String userId)throws Exception {
+	public ArrayList<PostReport> checkPostReports(String postId, String userId)throws Exception {
 		
 		if(postId == null)
 			throw new Exception("Must include postId");
@@ -640,7 +652,7 @@ public class PostService {
 		if(!post.getModeratorId().equals(userId)) 
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "access denied");
 
-		return post.getPostReports().toString();
+		return post.getPostReports();
 
 	}
 
@@ -674,7 +686,7 @@ public class PostService {
 	
 	
 	
-	public String postRecommend(String userId) throws Exception  {
+	public List<Post> postRecommend(String userId) throws Exception  {
         
 
 	      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
@@ -704,7 +716,7 @@ public class PostService {
 	        }
 	        
 	      
-	        return filteredPosts.toString();
+	        return filteredPosts;
 	 }
 	
 	
