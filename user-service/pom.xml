@@ -88,8 +88,8 @@
       <groupId>com.google.firebase</groupId>
       <artifactId>firebase-admin</artifactId>
       <version>6.10.0</version>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-crypto</artifactId>
+<!--      <groupId>org.springframework.security</groupId>-->
+<!--      <artifactId>spring-security-crypto</artifactId>-->
     </dependency>
     <dependency>
       <groupId>com.google.auth</groupId>
