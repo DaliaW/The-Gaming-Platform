@@ -69,7 +69,7 @@ public class PostService {
         
         HashMap<String, Object> type_ID= new HashMap<String, Object>();
         type_ID.put("type", "post");
-        type_ID.put("userID", post.getUserId());
+        type_ID.put("user_id", post.getUserId());
 
        ArrayList<String> followers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_ID,  m -> {
         m.getMessageProperties().setHeader("command", "getAllFollowersCommand");
@@ -509,7 +509,7 @@ public class PostService {
 	public boolean validateUserId(String me,String suspiciousUser){
 
 		Map<String, Object> body = new HashMap<>();
-		body.put("userId",me);
+		body.put("user_id",me);
 		//check first if suspicious user exist in the database
 //		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
 //				"authentication", body, m -> {
@@ -519,7 +519,7 @@ public class PostService {
 //				});
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
-				"authentication", body, m -> {
+				"user_req", body, m -> {
 					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
@@ -529,7 +529,7 @@ public class PostService {
 	public boolean validUserId(String me,List<Post>posts){
 
 		Map<String, Object> body = new HashMap<>();
-		body.put("userId",me);
+		body.put("user_id",me);
 		//check first if suspicious user exist in the database
 //		final boolean auth_res = (boolean) amqpTemplate.convertSendAndReceive(
 //				"authentication", body, m -> {
@@ -539,12 +539,12 @@ public class PostService {
 //				});
 		//then check if he is blocked
 		final List<String> res = (List<String>) amqpTemplate.convertSendAndReceive(
-				"authentication", body, m -> {
+				"user_req", body, m -> {
 					m.getMessageProperties().setHeader("command", "blockedByCommand");
 					m.getMessageProperties().setReplyTo(RabbitMQConfig.reply_queue);//reply queue
 					return m;
 				});
-		posts.removeIf(p -> res.contains(p.getUserId()));
+		posts.removeIf(p -> res!=null && res.contains(p.getUserId()));
 		return true;
 	}
 	public String searchPosts(String subContent,String userId) throws Exception {
@@ -700,7 +700,7 @@ public class PostService {
 
 	      HashMap<String, Object> type_IDs= new HashMap<String, Object>();
 	      type_IDs.put("type", "post");
-	      type_IDs.put("userID", userId);
+	      type_IDs.put("user_id", userId);
 
 	     ArrayList<String> blockingUsers=(ArrayList<String>)amqpTemplate.convertSendAndReceive("user_req",type_IDs,  m -> {
 	      m.getMessageProperties().setHeader("command", "blockedByCommand");

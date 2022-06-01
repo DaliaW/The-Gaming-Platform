@@ -11,6 +11,25 @@ import java.util.Date;
 
 @Document
 public class Post {
+	@Override
+	public String toString() {
+		return "Post{" +
+				"_id=" + _id +
+				", userId='" + userId + '\'' +
+				", content='" + content + '\'' +
+				", photoRef='" + photoRef + '\'' +
+				", date=" + date +
+				", noOfFollwer=" + noOfFollwer +
+				", moderatorId='" + moderatorId + '\'' +
+				", comments=" + comments +
+				", postVotes=" + postVotes +
+				", postReports=" + postReports +
+				", postTags=" + postTags +
+				", postFollowers=" + postFollowers +
+				", bannedUsers=" + bannedUsers +
+				'}';
+	}
+
 	private ObjectId _id = null;
 	private String userId;
 	private String content;
@@ -221,22 +240,6 @@ public class Post {
 		}
 
 
-	}
-
-	@Override
-	public String toString() {
-		return "Post{" +
-				"userId='" + userId + '\'' +
-				", content='" + content + '\'' +
-				", photoRef='" + photoRef + '\'' +
-				", date=" + date +
-				", moderatorId='" + moderatorId + '\'' +
-				", comments=" + comments +
-				", postVotes=" + postVotes +
-				", postReports=" + postReports +
-				", postTags=" + postTags +
-				", postFollowers=" + postFollowers +
-				'}';
 	}
 
 	public ObjectId get_id() {
