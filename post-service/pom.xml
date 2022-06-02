@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>post-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mdb-spring-boot</name>
+    <name>post-service</name>
     <description>Spring boot mongodb</description>
     <properties>
         <java.version>1.8</java.version>
