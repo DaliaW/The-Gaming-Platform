@@ -1,4 +1,4 @@
 FROM openjdk:8
 
-COPY user-service-0.0.1-SNAPSHOT.jar /user-docker.jar
-CMD ["java", "-jar", "/user-docker.jar"]
+COPY mdb-spring-boot-0.0.1-SNAPSHOT.jar /post-docker.jar
+CMD ["java", "-jar", "/post-docker.jar"]

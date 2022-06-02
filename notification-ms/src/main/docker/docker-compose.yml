@@ -2,12 +2,12 @@ version: '2'
 
 services:
   app:
-    image: 'user-docker:latest'
+    image: 'notification-docker:latest'
     build:
       context: .
-    container_name: user
+    container_name: notification
     ports:
-      - "5000:5000"
+      - "3000:3000"
     depends_on:
       - postgresql
       - rabbitmq
@@ -17,7 +17,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=inxdeiyuuyrtpa
       - SPRING_DATASOURCE_PASSWORD=5091ced29c41c7b07813ebe6d0250ebf7e4c85755704628fd08e00cbf0f6ee73
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_RABBITMQ_HOST= rabbitmq
 
   postgresql:
     image: 'postgres:13.1-alpine'
@@ -28,8 +27,6 @@ services:
   rabbitmq:
     image: rabbitmq:3.9.11-management-alpine
     container_name: rabbitmq
-    environment:
-      - SPRING_RABBITMQ_HOST= rabbitmq
     ports:
       - "15672:15672"
       - "25672:25672"
