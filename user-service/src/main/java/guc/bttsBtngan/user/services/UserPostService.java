@@ -26,9 +26,10 @@ public class UserPostService {
     @Autowired
     UserRepository userRepository;
 
-    public String getAllFollowers() {
-        //TODO: this method will return all followers of the current user
-        return "";
+    public List<String> getFollowers(String userId){
+        UserPostInteraction user = userPostRepository.findByUserId(userId);
+        List<String> followers = user.getFollowers();
+        return followers;
     }
 
     // moderator see reports being made by users
