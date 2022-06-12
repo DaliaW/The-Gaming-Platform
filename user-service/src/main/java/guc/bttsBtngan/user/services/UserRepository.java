@@ -11,12 +11,12 @@ import java.util.Optional;
 // to perform CRUD operations on user entity
 @Repository
 public interface UserRepository extends JpaRepository<UserUserInteraction, String> {
-    @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.email = ?1")
-    Optional<UserUserInteraction> findByEmail(String email);
+    //@Query(value = "SELECT s FROM UserUserInteraction s WHERE s.email = ?1")
+    Optional<UserUserInteraction> findByEmailIgnoreCase(String email);
 
     @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.photoRef = ?1")
     Optional<UserUserInteraction> findByphotoRef(String photoRef);
 
-    @Query(value = "SELECT s FROM UserUserInteraction s WHERE s.username = ?1")
-    Optional<UserUserInteraction> findByUsername(String username);
+    //@Query(value = "SELECT s FROM UserUserInteraction s WHERE s.username = ?1")
+    Optional<UserUserInteraction> findByUsernameIgnoreCase(String username);
 }
