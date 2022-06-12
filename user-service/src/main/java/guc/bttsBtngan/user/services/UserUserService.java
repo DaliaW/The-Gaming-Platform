@@ -69,7 +69,7 @@ public class UserUserService {
             throw new IllegalArgumentException("Username, email and password cannot be empty");
         }
         // check if the email is already registered
-        Optional<UserUserInteraction> email = userRepository.findByEmail(user.getEmail());
+        Optional<UserUserInteraction> email = userRepository.findByEmailIgnoreCase(user.getEmail());
         if (email.isPresent()) {
             // if the user email already exists
             throw new IllegalStateException("Email already exists");
@@ -139,7 +139,7 @@ public class UserUserService {
         }
         // if email is not null, not empty & not the same as the current email & not already have been taken
         if(email != null && email.length() > 0 && !Objects.equals(email, user.getEmail())){
-            Optional<UserUserInteraction> emailExists = userRepository.findByEmail(email);
+            Optional<UserUserInteraction> emailExists = userRepository.findByEmailIgnoreCase(email);
             // check if the email is already registered
             if (!emailExists.isPresent()) {
                 user.setEmail(email);
