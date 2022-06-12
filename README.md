@@ -2,9 +2,17 @@
  
 A scalable Facebook like replica but for games. :sparkles: :sparkles:
 
+## Project Architecture
+![Desktop - 8](https://user-images.githubusercontent.com/47950134/173245038-9b9aedfd-024a-498e-b3a2-dd32a8b7a7cb.png)
+
 ## Technologies & Tools
+### UI for documentation
+- Swagger UI
+
+![ezgif-3-654a130ce8](https://user-images.githubusercontent.com/47950134/173242271-edf19ba0-b8a3-4779-893a-dddcedb14502.gif)
+
 ### Framework used
-- Spring Boot
+- Java Spring Boot
 
 ### Server
 - Rabbit MQ
@@ -17,8 +25,6 @@ A scalable Facebook like replica but for games. :sparkles: :sparkles:
 ### Cache
 - Redis
 
-### UI for documentation
-- Swagger UI
 ----------------------------------------------------------------------------------
 ## Features
 ### Authentication Microservice:
