@@ -82,7 +82,7 @@ public class UserUserService {
         }
 
         // check if the username already exists
-        Optional<UserUserInteraction> username = userRepository.findByUsername(user.getusername());
+        Optional<UserUserInteraction> username = userRepository.findByUsernameIgnoreCase(user.getusername());
         if (username.isPresent()) {
             // if the user username already exists
             throw new IllegalStateException("Username already exists");

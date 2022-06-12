@@ -159,7 +159,7 @@ class UserUserServiceTest {
         Optional<UserUserInteraction> ofResult2 = Optional.of(userUserInteraction3);
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
         when(this.userRepository.findByEmailIgnoreCase((String) any())).thenReturn(ofResult);
-        when(this.userRepository.findByUsername((String) any())).thenReturn(ofResult1);
+        when(this.userRepository.findByUsernameIgnoreCase((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult2);
 
         UserUserInteraction userUserInteraction4 = new UserUserInteraction();
@@ -205,7 +205,7 @@ class UserUserServiceTest {
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction2);
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
         when(this.userRepository.findByEmailIgnoreCase((String) any())).thenReturn(Optional.empty());
-        when(this.userRepository.findByUsername((String) any())).thenReturn(ofResult);
+        when(this.userRepository.findByUsernameIgnoreCase((String) any())).thenReturn(ofResult);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult1);
 
         UserUserInteraction userUserInteraction3 = new UserUserInteraction();
@@ -217,7 +217,7 @@ class UserUserServiceTest {
         userUserInteraction3.setusername("janedoe");
         assertThrows(IllegalStateException.class, () -> this.userUserService.registerUser(userUserInteraction3));
         verify(this.userRepository).findByEmailIgnoreCase((String) any());
-        verify(this.userRepository).findByUsername((String) any());
+        verify(this.userRepository).findByUsernameIgnoreCase((String) any());
     }
 
     /**
@@ -261,7 +261,7 @@ class UserUserServiceTest {
         Optional<UserUserInteraction> ofResult2 = Optional.of(userUserInteraction3);
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
         when(this.userRepository.findByEmailIgnoreCase((String) any())).thenReturn(ofResult);
-        when(this.userRepository.findByUsername((String) any())).thenReturn(ofResult1);
+        when(this.userRepository.findByUsernameIgnoreCase((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult2);
         UserUserInteraction userUserInteraction4 = mock(UserUserInteraction.class);
         when(userUserInteraction4.getPassword()).thenReturn("Pass123");
@@ -333,7 +333,7 @@ class UserUserServiceTest {
         Optional<UserUserInteraction> ofResult2 = Optional.of(userUserInteraction3);
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
         when(this.userRepository.findByEmailIgnoreCase((String) any())).thenReturn(ofResult);
-        when(this.userRepository.findByUsername((String) any())).thenReturn(ofResult1);
+        when(this.userRepository.findByUsernameIgnoreCase((String) any())).thenReturn(ofResult1);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult2);
         UserUserInteraction userUserInteraction4 = mock(UserUserInteraction.class);
         when(userUserInteraction4.getPassword()).thenThrow(new IllegalArgumentException("janedoe"));
@@ -395,7 +395,7 @@ class UserUserServiceTest {
         Optional<UserUserInteraction> ofResult1 = Optional.of(userUserInteraction2);
         when(this.userRepository.save((UserUserInteraction) any())).thenReturn(userUserInteraction);
         when(this.userRepository.findByEmailIgnoreCase((String) any())).thenReturn(Optional.empty());
-        when(this.userRepository.findByUsername((String) any())).thenReturn(ofResult);
+        when(this.userRepository.findByUsernameIgnoreCase((String) any())).thenReturn(ofResult);
         when(this.userRepository.findById((String) any())).thenReturn(ofResult1);
         UserUserInteraction userUserInteraction3 = mock(UserUserInteraction.class);
         when(userUserInteraction3.getPassword()).thenReturn("Pass123");
@@ -415,7 +415,7 @@ class UserUserServiceTest {
         userUserInteraction3.setusername("janedoe");
         assertThrows(IllegalStateException.class, () -> this.userUserService.registerUser(userUserInteraction3));
         verify(this.userRepository).findByEmailIgnoreCase((String) any());
-        verify(this.userRepository).findByUsername((String) any());
+        verify(this.userRepository).findByUsernameIgnoreCase((String) any());
         verify(userUserInteraction3, atLeast(1)).getEmail();
         verify(userUserInteraction3).getPassword();
         verify(userUserInteraction3, atLeast(1)).getusername();
